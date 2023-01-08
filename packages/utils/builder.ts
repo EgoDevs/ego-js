@@ -3,7 +3,7 @@ import shell from 'shelljs';
 import yargs from 'yargs';
 
 import { ProjectConfig, getEgos } from './settings/config';
-import { artifacts, rustEntry } from './settings/env';
+import { artifacts, canisters } from './settings/env';
 
 interface ThisArgv {
   [x: string]: unknown;
@@ -23,7 +23,7 @@ const argv = yargs
 
 function buildDID(ego: ProjectConfig) {
   console.log({ ego });
-  let originFile = `${process.cwd()}/${rustEntry}/${ego.category}/${ego.package}/${ego.package}.did`;
+  let originFile = `${process.cwd()}/${canisters}/${ego.category}/${ego.package}/${ego.package}.did`;
 
   let shouldSaveAutoName = `${process.cwd()}/${artifacts}/${ego.package}/${ego.package}.auto.did`;
   let shouldSaveName = `${process.cwd()}/${artifacts}/${ego.package}/${ego.package}.did`;
@@ -41,12 +41,12 @@ function buildDID(ego: ProjectConfig) {
   console.log({ did_file_exist });
   if (did_file_exist && ego.custom_candid) {
     shell.exec(`
-    EGO_DIR="${process.cwd()}/${rustEntry}/${ego.category}/${ego.package}"
+    EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
     cd $EGO_DIR/actor && cargo run ${ego.bin_name} > ${shouldSaveAutoName}
     `);
   } else {
     shell.exec(`
-    EGO_DIR="${process.cwd()}/${rustEntry}/${ego.category}/${ego.package}"
+    EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
     cd $EGO_DIR/actor && cargo run ${ego.bin_name} > ${shouldSaveAutoName} && cargo run ${ego.bin_name} > ${shouldSaveName}
     `);
   }
@@ -65,9 +65,9 @@ function runBuildRust(ego: ProjectConfig) {
   if (ego.no_build === false || ego.no_build === undefined) {
     let shouldSaveName = `${process.cwd()}/${artifacts}/${ego.package}/${ego.package}_opt.wasm`;
     shell.exec(`
-          PARENT_DIR="${process.cwd()}/${rustEntry}"
-          EGO_DIR="${process.cwd()}/${rustEntry}/${ego.category}/${ego.package}"
-          CAT_DIR="${process.cwd()}/${rustEntry}/${ego.category}"
+          PARENT_DIR="${process.cwd()}/${canisters}"
+          EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
+          CAT_DIR="${process.cwd()}/${canisters}/${ego.category}"
           TARGET="wasm32-unknown-unknown"
           cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --target $TARGET --release -j1
           cargo install ic-wasm

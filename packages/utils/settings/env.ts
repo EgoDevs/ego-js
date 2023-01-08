@@ -16,7 +16,7 @@ export function getEgoConfig<T>(key: string): T {
 }
 export const dfxVersion = getEgoConfig<number>('dfxVersion');
 export const dfxPort = getEgoConfig<number>('dfxPort');
-export const rustEntry = getEgoConfig<string>('rustEntry');
+export const canisters = getEgoConfig<string>('canisters');
 export const artifacts = getEgoConfig<string>('artifacts');
 export const configs = getEgoConfig<string>('configs');
 export const productionPem = getEgoConfig<CredentialProject>('credentials').production_pem;

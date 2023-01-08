@@ -224,7 +224,7 @@ async function runInstall() {
       } else {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
-        const config = readConfig(process.cwd() + '/configs/' + f.package + '.json');
+        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
 
         if (!isProduction) {
           try {
@@ -333,7 +333,7 @@ async function runReInstall() {
       } else {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
-        const config = readConfig(process.cwd() + '/configs/' + f.package + '.json');
+        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
 
         if (!isProduction) {
           try {
@@ -431,7 +431,7 @@ async function runUpgrade() {
       } else {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
-        const config = readConfig(process.cwd() + '/configs/' + f.package + '.json');
+        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
         if (!isProduction) {
           try {
             console.log(`upgrading ${f.package} to ${config.LOCAL_CANISTERID!}`);
@@ -527,7 +527,7 @@ async function runPostPatch() {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
         console.log(pkg.wasm);
-        const config = readConfig(process.cwd() + '/configs/' + f.package + '.json');
+        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
         if (!isProduction) {
         } else {
           try {

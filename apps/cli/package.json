@@ -9,6 +9,9 @@
     "scripts": {
         "build": "rm -rf ./bin && swc src -d ./bin"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "devDependencies": {
         "@dfinity/agent": "0.15.1",
         "@dfinity/candid": "0.15.1",

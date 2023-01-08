@@ -2,9 +2,24 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    runClean: ()=>runClean,
+    checkAndArtifacts: ()=>checkAndArtifacts,
+    generateDFXJson: ()=>generateDFXJson,
+    runCreate: ()=>runCreate,
+    runInstall: ()=>runInstall,
+    runReInstall: ()=>runReInstall,
+    runUpgrade: ()=>runUpgrade,
+    runPostPatch: ()=>runPostPatch
+});
 const _fs = _interopRequireDefault(require("fs"));
 const _shelljs = _interopRequireDefault(require("shelljs"));
-const _yargs = _interopRequireDefault(require("yargs"));
 const _utils = require("@ego-js/utils");
 const _principal = require("@dfinity/principal");
 const _candid = require("@dfinity/candid");
@@ -65,31 +80,6 @@ function _objectSpreadProps(target, source) {
     }
     return target;
 }
-const argv = _yargs.default.option('clean', {
-    alias: 'c',
-    description: 'clean .dfx/ folder',
-    type: 'boolean'
-}).option('create', {
-    alias: 'n',
-    description: 'create only',
-    type: 'boolean'
-}).option('install', {
-    alias: 'i',
-    description: 'install only',
-    type: 'boolean'
-}).option('reinstall', {
-    alias: 'r',
-    description: 'reinstall only',
-    type: 'boolean'
-}).option('upgrade', {
-    alias: 'u',
-    description: 'upgrade only',
-    type: 'boolean'
-}).option('postPatch', {
-    alias: 'post',
-    description: 'postPatch only',
-    type: 'boolean'
-}).help().alias('help', 'h').argv;
 function runClean() {
     for (const f of (0, _utils.getEgos)()){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
@@ -562,24 +552,4 @@ async function runPostPatch() {
             }
         }
     }
-}
-checkAndArtifacts();
-generateDFXJson();
-if (argv.clean) {
-    runClean();
-}
-if (argv.create) {
-    runCreate();
-}
-if (argv.install) {
-    runInstall();
-}
-if (argv.reinstall) {
-    runReInstall();
-}
-if (argv.upgrade) {
-    runUpgrade();
-}
-if (argv.postPatch) {
-    runPostPatch();
 }

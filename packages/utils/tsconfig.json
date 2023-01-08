@@ -10,13 +10,16 @@
         "incremental": true,
         "module": "ES2020",
         "moduleResolution": "node",
-        "outDir": "./",
+        "outDir": ".",
         "resolveJsonModule": true,
         "sourceMap": true,
         "strict": true,
         "target": "es2017"
       },
     "include": ["."],
-    "exclude": ["dist", "build", "node_modules"]
+    "exclude": ["dist", "build", "node_modules"],
+    "ts-node": {
+      "swc": true
+    }
 }
   

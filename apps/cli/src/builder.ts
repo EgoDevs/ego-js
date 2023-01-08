@@ -100,5 +100,3 @@ export function runEgoBuilder(): void {
     }
   });
 }
-
-runEgoBuilder();

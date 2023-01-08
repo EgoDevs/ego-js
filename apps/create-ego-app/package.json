@@ -1,6 +1,6 @@
 {
     "name": "create-ego-app",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "license": "MIT",
     "bin": {
         "create-ego-app": "bin/cli.js"

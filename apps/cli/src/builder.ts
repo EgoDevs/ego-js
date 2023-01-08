@@ -2,8 +2,8 @@ import file, { fstat } from 'fs';
 import shell from 'shelljs';
 import yargs from 'yargs';
 
-import { ProjectConfig, getEgos } from './settings/config';
-import { artifacts, canisters } from './settings/env';
+import { ProjectConfig, getEgos } from '@ego-js/utils';
+import { artifacts, canisters } from '@ego-js/utils';
 
 interface ThisArgv {
   [x: string]: unknown;
@@ -88,7 +88,7 @@ function runBuildRust(ego: ProjectConfig) {
   }
 }
 
-function runEgoBuilder(): void {
+export function runEgoBuilder(): void {
   getEgos().forEach(ego => {
     runBuildRust(ego);
     if ((argv as ThisArgv).idl) {

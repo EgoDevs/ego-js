@@ -1,7 +1,4 @@
-import fs from 'fs';
-import { randomBytes } from 'crypto';
 import Mock from 'mockjs';
-import { toHexString } from '@dfinity/candid';
 import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
 
 const BIP32Factory = require('bip32');

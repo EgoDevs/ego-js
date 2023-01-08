@@ -1,12 +1,12 @@
 import file, { fstat } from 'fs';
 import shell from 'shelljs';
 import yargs from 'yargs';
-import { dfxConfigTemplate, getEgos } from './settings/config';
-import { cycleWalletActor, cycleWalletCanisterId, managementActor, readConfig, readEgoDfxJson, readWasm } from './manager';
+import { dfxConfigTemplate, getEgos } from '@ego-js/utils';
+import { cycleWalletActor, cycleWalletCanisterId, managementActor, readConfig, readEgoDfxJson, readWasm } from '@ego-js/utils';
 import { Principal } from '@dfinity/principal';
-import { artifacts, configs, cyclesCreateCanister, isProduction } from './settings/env';
-import { identity } from './settings/identity';
-import { hasOwnProperty } from './settings/utils';
+import { artifacts, configs, cyclesCreateCanister, isProduction } from '@ego-js/utils';
+import { identity } from '@ego-js/utils';
+import { hasOwnProperty } from '@ego-js/utils';
 import { IDL } from '@dfinity/candid';
 
 interface ThisArgv {

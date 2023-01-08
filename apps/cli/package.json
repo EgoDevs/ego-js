@@ -1,0 +1,28 @@
+{
+    "name": "@ego-js/cli",
+    "version": "0.0.0",
+    "main": "./src/index.ts",
+    "bin": {
+        "ego": "./bin/index.js"
+    },
+    "license": "MIT",
+    "scripts": {
+        "build": "rm -rf ./bin && swc src -d ./bin"
+    },
+    "devDependencies": {
+        "@dfinity/agent": "0.15.1",
+        "@dfinity/candid": "0.15.1",
+        "@dfinity/identity": "0.15.1",
+        "@dfinity/identity-secp256k1": "0.15.1",
+        "@dfinity/principal": "0.15.1",
+        "@ego-js/utils": "workspace:*",
+        "@swc/cli": "^0.1.55",
+        "@swc/core": "^1.2.141",
+        "@types/jest": "^27.5.1",
+        "@types/node": "^17.0.18",
+        "@types/shelljs": "^0.8.11",
+        "@types/yargs": "^17.0.10",
+        "shelljs": "^0.8.5",
+        "yargs": "^17.3.1"
+    }
+}

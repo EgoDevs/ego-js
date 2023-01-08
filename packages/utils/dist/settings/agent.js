@@ -1,3 +1,28 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    "_createActor" () {
+        return _createActor;
+    },
+    getActor () {
+        return getActor;
+    },
+    getActor2 () {
+        return getActor2;
+    }
+});
+var _agent = require("@dfinity/agent");
+var _principal = require("@dfinity/principal");
+var _crossFetch = require("cross-fetch");
+var _env = require("./env");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
         var info = gen[key](arg);
@@ -27,7 +52,7 @@ function _asyncToGenerator(fn) {
         });
     };
 }
-var __generator = this && this.__generator || function(thisArg, body) {
+var __generator = (void 0) && (void 0).__generator || function(thisArg, body) {
     var f, y, t, g, _ = {
         label: 0,
         sent: function() {
@@ -122,17 +147,13 @@ var __generator = this && this.__generator || function(thisArg, body) {
         };
     }
 };
-import { Actor, HttpAgent } from "@dfinity/agent";
-import { Principal } from "@dfinity/principal";
-import { fetch } from "cross-fetch";
-import { dfxPort, isProduction } from "./env";
 if (!globalThis.fetch) {
-    globalThis.fetch = fetch;
+    globalThis.fetch = _crossFetch.fetch;
 }
 if (!global.fetch) {
-    global.fetch = fetch;
+    global.fetch = _crossFetch.fetch;
 }
-export function _createActor(interfaceFactory, canisterId, identity, host) {
+function _createActor(interfaceFactory, canisterId, identity, host) {
     return __createActor.apply(this, arguments);
 }
 function __createActor() {
@@ -141,11 +162,11 @@ function __createActor() {
         return __generator(this, function(_state) {
             switch(_state.label){
                 case 0:
-                    agent = new HttpAgent({
-                        identity: identity,
-                        host: (host !== null && host !== void 0 ? host : !isProduction) ? "http://127.0.0.1:".concat(dfxPort) : "https://ic0.app/"
+                    agent = new _agent.HttpAgent({
+                        identity,
+                        host: (host !== null && host !== void 0 ? host : !_env.isProduction) ? "http://127.0.0.1:".concat(_env.dfxPort) : "https://ic0.app/"
                     });
-                    if (!!isProduction) return [
+                    if (!!_env.isProduction) return [
                         3,
                         2
                     ];
@@ -157,15 +178,15 @@ function __createActor() {
                     _state.sent();
                     _state.label = 2;
                 case 2:
-                    actor = Actor.createActor(interfaceFactory, {
-                        agent: agent,
-                        canisterId: canisterId === "" ? Principal.fromText("aaaaa-aa") : canisterId
+                    actor = _agent.Actor.createActor(interfaceFactory, {
+                        agent,
+                        canisterId: canisterId === "" ? _principal.Principal.fromText("aaaaa-aa") : canisterId
                     });
                     return [
                         2,
                         {
-                            actor: actor,
-                            agent: agent
+                            actor,
+                            agent
                         }
                     ];
             }
@@ -173,11 +194,8 @@ function __createActor() {
     });
     return __createActor.apply(this, arguments);
 }
-export function getActor(signIdentity, interfaceFactory, canisterId) {
-    return _getActor.apply(this, arguments);
-}
-function _getActor() {
-    _getActor = _asyncToGenerator(function(signIdentity, interfaceFactory, canisterId) {
+var getActor = function() {
+    var _ref = _asyncToGenerator(function(signIdentity, interfaceFactory, canisterId) {
         var actor;
         return __generator(this, function(_state) {
             switch(_state.label){
@@ -195,13 +213,12 @@ function _getActor() {
             }
         });
     });
-    return _getActor.apply(this, arguments);
-}
-export function getActor2(signIdentity, interfaceFactory, canisterId) {
-    return _getActor2.apply(this, arguments);
-}
-function _getActor2() {
-    _getActor2 = _asyncToGenerator(function(signIdentity, interfaceFactory, canisterId) {
+    return function getActor(signIdentity, interfaceFactory, canisterId) {
+        return _ref.apply(this, arguments);
+    };
+}();
+var getActor2 = function() {
+    var _ref = _asyncToGenerator(function(signIdentity, interfaceFactory, canisterId) {
         var actor;
         return __generator(this, function(_state) {
             switch(_state.label){
@@ -219,5 +236,7 @@ function _getActor2() {
             }
         });
     });
-    return _getActor2.apply(this, arguments);
-}
+    return function getActor2(signIdentity, interfaceFactory, canisterId) {
+        return _ref.apply(this, arguments);
+    };
+}();

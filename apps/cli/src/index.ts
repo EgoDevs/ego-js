@@ -2,14 +2,11 @@ import { runEgoBuilder } from './builder';
 import { checkAndArtifacts, generateDFXJson, runClean, runCreate, runInstall, runReInstall, runUpgrade, runPostPatch } from './deployer';
 import yargs from 'yargs';
 
-runEgoBuilder();
-checkAndArtifacts();
-generateDFXJson();
-
 interface ThisArgv {
   [x: string]: unknown;
   clean: boolean | undefined;
   create: boolean | undefined;
+  build: boolean | undefined;
   install: boolean | undefined;
   reinstall: boolean | undefined;
   upgrade: boolean | undefined;
@@ -60,7 +57,13 @@ if ((argv as ThisArgv).clean) {
 
 if ((argv as ThisArgv).create) {
   // console.log('create');
+  checkAndArtifacts();
+  generateDFXJson();
   runCreate();
+}
+
+if ((argv as ThisArgv).build) {
+  runEgoBuilder();
 }
 
 if ((argv as ThisArgv).install) {

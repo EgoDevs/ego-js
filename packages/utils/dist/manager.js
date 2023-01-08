@@ -1,3 +1,47 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    InstallMode () {
+        return InstallMode;
+    },
+    cycleWalletCanisterId () {
+        return cycleWalletCanisterId;
+    },
+    managementActor () {
+        return managementActor;
+    },
+    cycleWalletActor () {
+        return cycleWalletActor;
+    },
+    readWasm () {
+        return readWasm;
+    },
+    readEgoDfxJson () {
+        return readEgoDfxJson;
+    },
+    readConfig () {
+        return readConfig;
+    },
+    ManagementApi () {
+        return ManagementApi;
+    }
+});
+var _agent = require("./settings/agent");
+var _path = _interopRequireDefault(require("path"));
+var _managementIdl = require("./idls/management.idl");
+var _cycleWalletIdl = require("./idls/cycle_wallet.idl");
+var _fs = _interopRequireDefault(require("fs"));
+var _principal = require("@dfinity/principal");
+var _identity = require("./settings/identity");
+var _env = require("./settings/env");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
         var info = gen[key](arg);
@@ -46,7 +90,12 @@ function _createClass(Constructor, protoProps, staticProps) {
     if (staticProps) _defineProperties(Constructor, staticProps);
     return Constructor;
 }
-var __generator = this && this.__generator || function(thisArg, body) {
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
+}
+var __generator = (void 0) && (void 0).__generator || function(thisArg, body) {
     var f, y, t, g, _ = {
         label: 0,
         sent: function() {
@@ -141,19 +190,11 @@ var __generator = this && this.__generator || function(thisArg, body) {
         };
     }
 };
-import { getActor2 } from "./settings/agent";
-import path from "path";
-import { idlFactory as managementIdl } from "./idls/management.idl";
-import { idlFactory as cycleWalletIdl } from "./idls/cycle_wallet.idl";
-import fs from "fs";
-import { Principal } from "@dfinity/principal";
-import { identity } from "./settings/identity";
-import { productionCyclesWallet } from "./settings/env";
 var managementCanisterId = "";
-export var cycleWalletCanisterId = fs.readFileSync(path.join(process.cwd(), productionCyclesWallet), {
+var cycleWalletCanisterId = _fs.default.readFileSync(_path.default.join(process.cwd(), _env.productionCyclesWallet), {
     encoding: "utf8"
 }).toString();
-export function managementActor() {
+function managementActor() {
     return _managementActor.apply(this, arguments);
 }
 function _managementActor() {
@@ -163,7 +204,7 @@ function _managementActor() {
                 case 0:
                     return [
                         4,
-                        getActor2(identity, managementIdl, managementCanisterId)
+                        (0, _agent.getActor2)(_identity.identity, _managementIdl.idlFactory, managementCanisterId)
                     ];
                 case 1:
                     return [
@@ -175,7 +216,7 @@ function _managementActor() {
     });
     return _managementActor.apply(this, arguments);
 }
-export function cycleWalletActor() {
+function cycleWalletActor() {
     return _cycleWalletActor.apply(this, arguments);
 }
 function _cycleWalletActor() {
@@ -185,7 +226,7 @@ function _cycleWalletActor() {
                 case 0:
                     return [
                         4,
-                        getActor2(identity, cycleWalletIdl, cycleWalletCanisterId)
+                        (0, _agent.getActor2)(_identity.identity, _cycleWalletIdl.idlFactory, cycleWalletCanisterId)
                     ];
                 case 1:
                     return [
@@ -197,25 +238,25 @@ function _cycleWalletActor() {
     });
     return _cycleWalletActor.apply(this, arguments);
 }
-export function readWasm(packagePath) {
-    return Array.from(new Uint8Array(fs.readFileSync(packagePath)));
+function readWasm(packagePath) {
+    return Array.from(new Uint8Array(_fs.default.readFileSync(packagePath)));
 }
-export function readEgoDfxJson(folder, packageName) {
-    var dfxFile = fs.readFileSync(folder + "/dfx.json").toString();
+function readEgoDfxJson(folder, packageName) {
+    var dfxFile = _fs.default.readFileSync(folder + "/dfx.json").toString();
     var jsonFile = JSON.parse(dfxFile);
     var pkg = jsonFile["canisters"][packageName];
     return pkg;
 }
-export function readConfig(configPath) {
-    return JSON.parse(fs.readFileSync(configPath).toString());
+function readConfig(configPath) {
+    return JSON.parse(_fs.default.readFileSync(configPath).toString());
 }
-export var InstallMode;
+var InstallMode;
 (function(InstallMode) {
     InstallMode[InstallMode["install"] = 0] = "install";
     InstallMode[InstallMode["reinstall"] = 1] = "reinstall";
     InstallMode[InstallMode["upgrade"] = 2] = "upgrade";
 })(InstallMode || (InstallMode = {}));
-export var ManagementApi = /*#__PURE__*/ function() {
+var ManagementApi = function() {
     "use strict";
     function ManagementApi(_actor) {
         _classCallCheck(this, ManagementApi);
@@ -291,8 +332,8 @@ export var ManagementApi = /*#__PURE__*/ function() {
                             manager.actor.install_code({
                                 arg: [],
                                 wasm_module: readWasm(wasm_path),
-                                mode: mode,
-                                canister_id: Principal.fromText(canister_id)
+                                mode,
+                                canister_id: _principal.Principal.fromText(canister_id)
                             })
                         ];
                     case 3:
@@ -329,8 +370,8 @@ export var ManagementApi = /*#__PURE__*/ function() {
                         return [
                             4,
                             manager.actor.update_settings({
-                                canister_id: Principal.fromText(canister_id),
-                                settings: settings
+                                canister_id: _principal.Principal.fromText(canister_id),
+                                settings
                             })
                         ];
                     case 2:

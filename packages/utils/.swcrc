@@ -1,0 +1,36 @@
+{
+    "jsc": {
+      "parser": {
+        "syntax": "typescript",
+        "tsx": false,
+        "dynamicImport": true,
+        "decorators": true
+      },
+      "transform": {
+        "legacyDecorator": true,
+        "decoratorMetadata": true
+      },
+      "target": "es5",
+      "externalHelpers": false,
+      "keepClassNames": true,
+      "loose": false,
+      "minify": {
+        "compress": false,
+        "mangle": false
+      },
+      "baseUrl": "./"
+    },
+    "env": {
+      "targets": {
+        "ios": "9",
+        "android": "56"
+      }
+    },
+    "module": {
+      "type": "commonjs"
+    }
+  }
+  
+  
+  
+  

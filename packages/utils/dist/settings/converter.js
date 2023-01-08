@@ -1,3 +1,104 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    TokenSymbol () {
+        return TokenSymbol;
+    },
+    AddressType () {
+        return AddressType;
+    },
+    uint8ArrayToBigInt () {
+        return uint8ArrayToBigInt;
+    },
+    bigIntToUint8Array () {
+        return bigIntToUint8Array;
+    },
+    arrayBufferToArrayOfNumber () {
+        return arrayBufferToArrayOfNumber;
+    },
+    arrayOfNumberToUint8Array () {
+        return arrayOfNumberToUint8Array;
+    },
+    arrayOfNumberToArrayBuffer () {
+        return arrayOfNumberToArrayBuffer;
+    },
+    arrayBufferToNumber () {
+        return arrayBufferToNumber;
+    },
+    numberToArrayBuffer () {
+        return numberToArrayBuffer;
+    },
+    asciiStringToByteArray () {
+        return asciiStringToByteArray;
+    },
+    toSubAccountId () {
+        return toSubAccountId;
+    },
+    fromSubAccountId () {
+        return fromSubAccountId;
+    },
+    accountIdentifierToBytes () {
+        return accountIdentifierToBytes;
+    },
+    accountIdentifierFromBytes () {
+        return accountIdentifierFromBytes;
+    },
+    principalToAccountIdentifier () {
+        return principalToAccountIdentifier;
+    },
+    principalToSubAccount () {
+        return principalToSubAccount;
+    },
+    stringToAccountIdentifier () {
+        return stringToAccountIdentifier;
+    },
+    calculateCrc32 () {
+        return calculateCrc32;
+    },
+    E8S_PER_ICP () {
+        return E8S_PER_ICP;
+    },
+    getDecimalFromSymbol () {
+        return getDecimalFromSymbol;
+    },
+    formatAssetBySymbol () {
+        return formatAssetBySymbol;
+    },
+    parseBalance () {
+        return parseBalance;
+    },
+    balanceFromString () {
+        return balanceFromString;
+    },
+    balanceToString () {
+        return balanceToString;
+    },
+    validateAccountId () {
+        return validateAccountId;
+    },
+    validatePrincipalId () {
+        return validatePrincipalId;
+    },
+    validateCanisterId () {
+        return validateCanisterId;
+    },
+    getAddressType () {
+        return getAddressType;
+    }
+});
+var _principal = require("@dfinity/principal");
+var _jsSha256 = require("js-sha256");
+var _buffer = require("buffer");
+var _crc = _interopRequireDefault(require("crc"));
+var _constants = require("./constants");
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
@@ -5,6 +106,11 @@ function _arrayLikeToArray(arr, len) {
 }
 function _arrayWithoutHoles(arr) {
     if (Array.isArray(arr)) return _arrayLikeToArray(arr);
+}
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+        default: obj
+    };
 }
 function _iterableToArray(iter) {
     if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter);
@@ -23,12 +129,7 @@ function _unsupportedIterableToArray(o, minLen) {
     if (n === "Map" || n === "Set") return Array.from(n);
     if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
-import { Principal } from "@dfinity/principal";
-import { sha224 } from "js-sha256";
-import { Buffer } from "buffer";
-import crc from "crc";
-import { ALPHANUM_REGEX, CANISTER_MAX_LENGTH, SUB_ACCOUNT_BYTE_LENGTH } from "./constants";
-export var uint8ArrayToBigInt = function(array) {
+var uint8ArrayToBigInt = function(array) {
     var view = new DataView(array.buffer, array.byteOffset, array.byteLength);
     if (typeof view.getBigUint64 === "function") {
         return view.getBigUint64(0);
@@ -39,7 +140,7 @@ export var uint8ArrayToBigInt = function(array) {
     }
 };
 var TWO_TO_THE_32 = BigInt(1) << BigInt(32);
-export var bigIntToUint8Array = function(value) {
+var bigIntToUint8Array = function(value) {
     var array = new Uint8Array(8);
     var view = new DataView(array.buffer, array.byteOffset, array.byteLength);
     if (typeof view.setBigUint64 === "function") {
@@ -50,69 +151,67 @@ export var bigIntToUint8Array = function(value) {
     }
     return array;
 };
-export var arrayBufferToArrayOfNumber = function(buffer) {
+var arrayBufferToArrayOfNumber = function(buffer) {
     var typedArray = new Uint8Array(buffer);
     return Array.from(typedArray);
 };
-export var arrayOfNumberToUint8Array = function(numbers) {
+var arrayOfNumberToUint8Array = function(numbers) {
     return new Uint8Array(numbers);
 };
-export var arrayOfNumberToArrayBuffer = function(numbers) {
+var arrayOfNumberToArrayBuffer = function(numbers) {
     return arrayOfNumberToUint8Array(numbers).buffer;
 };
-export var arrayBufferToNumber = function(buffer) {
+var arrayBufferToNumber = function(buffer) {
     var view = new DataView(buffer);
     return view.getUint32(view.byteLength - 4);
 };
-export var numberToArrayBuffer = function(value, byteLength) {
+var numberToArrayBuffer = function(value, byteLength) {
     var buffer = new ArrayBuffer(byteLength);
     new DataView(buffer).setUint32(byteLength - 4, value);
     return buffer;
 };
-export var asciiStringToByteArray = function(text) {
+var asciiStringToByteArray = function(text) {
     return Array.from(text).map(function(c) {
         return c.charCodeAt(0);
     });
 };
-export var toSubAccountId = function(subAccount) {
+var toSubAccountId = function(subAccount) {
     var bytes = arrayOfNumberToArrayBuffer(subAccount);
     return arrayBufferToNumber(bytes);
 };
-export var fromSubAccountId = function(subAccountId) {
-    var buffer = numberToArrayBuffer(subAccountId, SUB_ACCOUNT_BYTE_LENGTH);
+var fromSubAccountId = function(subAccountId) {
+    var buffer = numberToArrayBuffer(subAccountId, _constants.SUB_ACCOUNT_BYTE_LENGTH);
     return arrayBufferToArrayOfNumber(buffer);
 };
-export var accountIdentifierToBytes = function(accountIdentifier) {
-    return Uint8Array.from(Buffer.from(accountIdentifier, "hex")).subarray(4);
+var accountIdentifierToBytes = function(accountIdentifier) {
+    return Uint8Array.from(_buffer.Buffer.from(accountIdentifier, "hex")).subarray(4);
 };
-export var accountIdentifierFromBytes = function(accountIdentifier) {
-    return Buffer.from(accountIdentifier).toString("hex");
+var accountIdentifierFromBytes = function(accountIdentifier) {
+    return _buffer.Buffer.from(accountIdentifier).toString("hex");
 };
-export var principalToAccountIdentifier = function(principal, subAccount) {
-    // Hash (sha224) the principal, the subAccount and some padding
+var principalToAccountIdentifier = function(principal, subAccount) {
     var padding = asciiStringToByteArray("\naccount-id");
-    var shaObj = sha224.create();
+    var shaObj = _jsSha256.sha224.create();
     shaObj.update(_toConsumableArray(padding).concat(_toConsumableArray(principal.toUint8Array()), _toConsumableArray(subAccount !== null && subAccount !== void 0 ? subAccount : Array(32).fill(0))));
     var hash = new Uint8Array(shaObj.array());
-    // Prepend the checksum of the hash and convert to a hex string
     var checksum = calculateCrc32(hash);
     var bytes = new Uint8Array(_toConsumableArray(checksum).concat(_toConsumableArray(hash)));
     return toHexString(bytes);
 };
-export var principalToSubAccount = function(principal) {
+var principalToSubAccount = function(principal) {
     var bytes = principal.toUint8Array();
     var subAccount = new Uint8Array(32);
     subAccount[0] = bytes.length;
     subAccount.set(bytes, 1);
     return subAccount;
 };
-export var stringToAccountIdentifier = function(str) {
+var stringToAccountIdentifier = function(str) {
     try {
         if (str.length === 64) {
             return str;
         }
         if (str.length === 63) {
-            return principalToAccountIdentifier(Principal.fromText(str));
+            return principalToAccountIdentifier(_principal.Principal.fromText(str));
         }
         return undefined;
     } catch (error) {
@@ -124,19 +223,18 @@ var toHexString = function(bytes) {
         return str + byte.toString(16).padStart(2, "0");
     }, "");
 };
-// 4 bytes
-export var calculateCrc32 = function(bytes) {
+var calculateCrc32 = function(bytes) {
     var checksumArrayBuf = new ArrayBuffer(4);
     var view = new DataView(checksumArrayBuf);
-    view.setUint32(0, crc.crc32(Buffer.from(bytes)), false);
-    return Buffer.from(checksumArrayBuf);
+    view.setUint32(0, _crc.default.crc32(_buffer.Buffer.from(bytes)), false);
+    return _buffer.Buffer.from(checksumArrayBuf);
 };
-export var E8S_PER_ICP = 100000000;
-export var TokenSymbol;
+var E8S_PER_ICP = 100000000;
+var TokenSymbol;
 (function(TokenSymbol) {
     TokenSymbol["ICP"] = "ICP";
 })(TokenSymbol || (TokenSymbol = {}));
-export var getDecimalFromSymbol = function(sym) {
+var getDecimalFromSymbol = function(sym) {
     switch(sym){
         case TokenSymbol.ICP:
             return 8;
@@ -144,14 +242,14 @@ export var getDecimalFromSymbol = function(sym) {
             return 8;
     }
 };
-export var formatAssetBySymbol = function(_amount, symbol) {
+var formatAssetBySymbol = function(_amount, symbol) {
     var balanceString = balanceToString(_amount, getDecimalFromSymbol(symbol));
     var amount = Number(balanceString.total);
     var tokenMap = [
         {
             ICP: {
                 amount: amount,
-                balanceString: balanceString,
+                balanceString,
                 symbol: "ICP"
             }
         }
@@ -161,10 +259,10 @@ export var formatAssetBySymbol = function(_amount, symbol) {
     });
     return found === null || found === void 0 ? void 0 : found[symbol];
 };
-export var parseBalance = function(balance) {
+var parseBalance = function(balance) {
     return (parseInt(balance.value, 10) / Math.pow(10, balance.decimals)).toString();
 };
-export var balanceFromString = function(balance) {
+var balanceFromString = function(balance) {
     var decimal = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 8;
     var list = balance.split(".");
     var aboveZero = list[0];
@@ -176,7 +274,7 @@ export var balanceFromString = function(balance) {
     }
     return aboveZeroBigInt + belowZeroBigInt;
 };
-export var balanceToString = function(balance) {
+var balanceToString = function(balance) {
     var decimal = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : 8;
     var balanceString = balance.toString(10);
     var balanceStringLength = balanceString.length;
@@ -192,32 +290,32 @@ export var balanceToString = function(balance) {
     var _parseFloat_toString_split_, _parseFloat_toFixed_toString_split_;
     return {
         total: aboveZero + "." + belowZero,
-        aboveZero: aboveZero,
-        belowZero: belowZero,
-        formatAboveZero: formatAboveZero,
+        aboveZero,
+        belowZero,
+        formatAboveZero,
         formatTotal: formatAboveZero + "." + ((_parseFloat_toString_split_ = parseFloat("0." + belowZero).toString().split(".")[1]) !== null && _parseFloat_toString_split_ !== void 0 ? _parseFloat_toString_split_ : "0"),
         formatTotalTo8: formatAboveZero + "." + belowZero,
         formatTotalTo4: formatAboveZero + "." + ((_parseFloat_toFixed_toString_split_ = parseFloat("0." + belowZero).toFixed(4).toString().split(".")[1]) !== null && _parseFloat_toFixed_toString_split_ !== void 0 ? _parseFloat_toFixed_toString_split_ : "0")
     };
 };
-export var validateAccountId = function(text) {
-    return text.length === 64 && ALPHANUM_REGEX.test(text);
+var validateAccountId = function(text) {
+    return text.length === 64 && _constants.ALPHANUM_REGEX.test(text);
 };
-export var validatePrincipalId = function(text) {
+var validatePrincipalId = function(text) {
     try {
-        return text === Principal.fromText(text).toString();
+        return text === _principal.Principal.fromText(text).toString();
     } catch (e) {
         return false;
     }
 };
-export var validateCanisterId = function(text) {
+var validateCanisterId = function(text) {
     try {
-        return text.length <= CANISTER_MAX_LENGTH && validatePrincipalId(text);
+        return text.length <= _constants.CANISTER_MAX_LENGTH && validatePrincipalId(text);
     } catch (e) {
         return false;
     }
 };
-export var AddressType;
+var AddressType;
 (function(AddressType) {
     AddressType["PRINCIPAL"] = "principal";
     AddressType["ACCOUNT"] = "accountId";
@@ -225,7 +323,7 @@ export var AddressType;
     AddressType["ERC20"] = "erc20";
     AddressType["INVALID"] = "invalid";
 })(AddressType || (AddressType = {}));
-export var getAddressType = function(text) {
+var getAddressType = function(text) {
     try {
         if (validateAccountId(text)) {
             return AddressType.ACCOUNT;

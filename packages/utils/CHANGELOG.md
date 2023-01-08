@@ -1,4 +1,10 @@
-# @ego-js/cli
+# @ego-js/utils
+
+## 2.2.1
+
+### Patch Changes
+
+- patches
 
 ## 2.2.0
 
@@ -11,6 +17,12 @@
 - Patching version
 
 ## 2.1.0
+
+### Minor Changes
+
+- deps changes
+
+## 2.0.1
 
 ### Minor Changes
 

@@ -1,9 +1,10 @@
 {
     "name": "@ego-js/cli",
-    "version": "1.0.0",
+    "version": "2.2.13",
     "main": "./src/index.ts",
     "bin": {
-        "ego": "./bin/index.js"
+        "ego": "./bin/index.js",
+        "ego-cli": "./bin_cli/cli.js"
     },
     "license": "MIT",
     "scripts": {
@@ -27,5 +28,18 @@
         "@types/yargs": "^17.0.10",
         "shelljs": "^0.8.5",
         "yargs": "^17.3.1"
+    },
+    "dependencies": {
+        "@types/figlet": "^1.5.5",
+        "@types/fs-extra": "^9.0.13",
+        "@types/inquirer": "^9.0.3",
+        "axios": "^1.2.2",
+        "chalk": "^4.1.1",
+        "commander": "^9.5.0",
+        "download-git-repo": "^3.0.2",
+        "figlet": "^1.5.2",
+        "fs-extra": "^10.0.0",
+        "inquirer": "^8.0.0",
+        "ora": "^5.4.0"
     }
 }

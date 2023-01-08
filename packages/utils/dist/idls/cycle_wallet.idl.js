@@ -1,4 +1,22 @@
-export var idlFactory = function(param) {
+"use strict";
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+function _export(target, all) {
+    for(var name in all)Object.defineProperty(target, name, {
+        enumerable: true,
+        get: all[name]
+    });
+}
+_export(exports, {
+    idlFactory () {
+        return idlFactory;
+    },
+    init () {
+        return init;
+    }
+});
+var idlFactory = function(param) {
     var IDL = param.IDL;
     var Kind = IDL.Variant({
         "User": IDL.Null,
@@ -404,7 +422,7 @@ export var idlFactory = function(param) {
         ], [], [])
     });
 };
-export var init = function(param) {
+var init = function(param) {
     var IDL = param.IDL;
     return [];
 };

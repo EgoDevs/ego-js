@@ -39,18 +39,18 @@ export async function _createActor<T>(
   return { actor, agent };
 }
 
-export async function getActor<T>(signIdentity: SignIdentity, interfaceFactory: InterfaceFactory, canisterId: string): Promise<ActorSubclass<T>> {
+export const getActor = async <T>(signIdentity: SignIdentity, interfaceFactory: InterfaceFactory, canisterId: string): Promise<ActorSubclass<T>> => {
   const actor = await _createActor<T>(interfaceFactory, canisterId, signIdentity);
 
   return actor.actor;
-}
+};
 
-export async function getActor2<T>(
+export const getActor2 = async <T>(
   signIdentity: SignIdentity,
   interfaceFactory: InterfaceFactory,
   canisterId: string,
-): Promise<CreateActorResult<T>> {
+): Promise<CreateActorResult<T>> => {
   const actor = await _createActor<T>(interfaceFactory, canisterId, signIdentity);
 
   return actor;
-}
+};

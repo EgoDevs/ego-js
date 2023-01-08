@@ -10,9 +10,6 @@ function _interopRequireDefault(obj) {
         default: obj
     };
 }
-(0, _builder.runEgoBuilder)();
-(0, _deployer.checkAndArtifacts)();
-(0, _deployer.generateDFXJson)();
 const argv = _yargs.default.option('clean', {
     alias: 'c',
     description: 'clean .dfx/ folder',
@@ -42,7 +39,12 @@ if (argv.clean) {
     (0, _deployer.runClean)();
 }
 if (argv.create) {
+    (0, _deployer.checkAndArtifacts)();
+    (0, _deployer.generateDFXJson)();
     (0, _deployer.runCreate)();
+}
+if (argv.build) {
+    (0, _builder.runEgoBuilder)();
 }
 if (argv.install) {
     (0, _deployer.runInstall)();

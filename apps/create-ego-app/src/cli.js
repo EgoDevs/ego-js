@@ -7,7 +7,7 @@ program
   .description('create a new project')
   .option('-f, --force', 'overwrite target directory if it exist') // 是否强制创建，当文件夹已经存在
   .action((name, options) => {
-    require('./generator')(name, options);
+    require('../src/generator')(name, options);
   });
 
 program.parse(process.argv);

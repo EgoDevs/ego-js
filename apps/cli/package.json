@@ -1,6 +1,6 @@
 {
     "name": "@ego-js/cli",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "main": "./src/index.ts",
     "bin": {
         "ego": "./bin/index.js"

@@ -10,7 +10,7 @@
       "legacyDecorator": true,
       "decoratorMetadata": true
     },
-    "target": "es2017",
+    "target": "es5",
     "externalHelpers": false,
     "keepClassNames": true,
     "loose": false,
@@ -20,9 +20,13 @@
     },
     "baseUrl": "./"
   },
-  "module": {
-    "type": "commonjs"
-  }
+  "env": {
+    "targets": {
+      "ios": "9",
+      "android": "56"
+    }
+  },
+  "isModule": "unknown"
 }
 
 

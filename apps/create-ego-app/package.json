@@ -1,12 +1,11 @@
 {
     "name": "create-ego-app",
-    "version": "0.0.3",
+    "version": "0.0.5",
     "license": "MIT",
     "bin": {
         "create-ego-app": "bin/cli.js"
     },
     "scripts": {
-        "create-ego-app": "node bin/cli.js",
         "build": "rm -rf ./bin && swc src -d ./bin"
     },
     "publishConfig": {

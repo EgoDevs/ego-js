@@ -51,7 +51,7 @@ function _interopRequireDefault(obj) {
 }
 function getEgoConfig(key) {
     var config = JSON.parse(_fs.default.readFileSync("".concat(process.cwd(), "/ego-config.json"), {
-        encoding: "utf-8"
+        encoding: "utf8"
     }));
     return config[key];
 }

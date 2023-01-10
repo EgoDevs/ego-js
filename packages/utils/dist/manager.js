@@ -35,7 +35,6 @@ _export(exports, {
     }
 });
 var _agent = require("./settings/agent");
-var _path = _interopRequireDefault(require("path"));
 var _managementIdl = require("./idls/management.idl");
 var _cycleWalletIdl = require("./idls/cycle_wallet.idl");
 var _fs = _interopRequireDefault(require("fs"));
@@ -191,9 +190,7 @@ var __generator = (void 0) && (void 0).__generator || function(thisArg, body) {
     }
 };
 var managementCanisterId = "";
-var cycleWalletCanisterId = _fs.default.readFileSync(_path.default.join(process.cwd(), _env.productionCyclesWallet), {
-    encoding: "utf8"
-}).toString();
+var cycleWalletCanisterId = _env.productionCyclesWallet;
 function managementActor() {
     return _managementActor.apply(this, arguments);
 }

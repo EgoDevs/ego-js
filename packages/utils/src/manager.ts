@@ -11,11 +11,7 @@ import { Principal } from '@dfinity/principal';
 import { identity } from './settings/identity';
 import { productionCyclesWallet } from './settings/env';
 const managementCanisterId = '';
-export const cycleWalletCanisterId = fs
-  .readFileSync(path.join(process.cwd(), productionCyclesWallet), {
-    encoding: 'utf8',
-  })
-  .toString();
+export const cycleWalletCanisterId = productionCyclesWallet;
 
 export async function managementActor(): Promise<CreateActorResult<ManagementService>> {
   return await getActor2<ManagementService>(identity, managementIdl, managementCanisterId);

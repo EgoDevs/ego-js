@@ -9,7 +9,7 @@ export interface CredentialProject {
 export function getEgoConfig<T>(key: string): T {
   const config = JSON.parse(
     fs.readFileSync(`${process.cwd()}/ego-config.json`, {
-      encoding: 'utf-8',
+      encoding: 'utf8',
     }),
   );
   return config[key] as T;

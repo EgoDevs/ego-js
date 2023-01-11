@@ -10,12 +10,13 @@ const _fs = _interopRequireDefault(require("fs"));
 const _shelljs = _interopRequireDefault(require("shelljs"));
 const _yargs = _interopRequireDefault(require("yargs"));
 const _utils = require("@ego-js/utils");
+const _ = require(".");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
 }
-const argv = _yargs.default.option('idl', {
+const argv2 = _yargs.default.option('idl', {
     alias: 'i',
     description: 'build idl only',
     type: 'boolean'
@@ -85,9 +86,9 @@ function runBuildRust(ego) {
     }
 }
 function runEgoBuilder() {
-    (0, _utils.getEgos)().forEach((ego)=>{
+    (0, _utils.getEgos)(_.argv).forEach((ego)=>{
         runBuildRust(ego);
-        if (argv.idl) {
+        if (argv2.idl) {
             buildIDL(ego);
         } else {
             buildDID(ego);

@@ -27,6 +27,9 @@ _export(exports, {
     configs () {
         return configs;
     },
+    credentials () {
+        return credentials;
+    },
     productionPem () {
         return productionPem;
     },
@@ -60,8 +63,11 @@ var dfxPort = getEgoConfig("dfxPort");
 var canisters = getEgoConfig("canisters");
 var artifacts = getEgoConfig("artifacts");
 var configs = getEgoConfig("configs");
+var _getEgoConfig_folder;
+var credentials = (_getEgoConfig_folder = getEgoConfig("credentials").folder) !== null && _getEgoConfig_folder !== void 0 ? _getEgoConfig_folder : "credentials";
 var productionPem = getEgoConfig("credentials").production_pem;
-var productionCyclesWallet = getEgoConfig("credentials").production_cycles_wallet;
+var _getEgoConfig_production_cycles_wallet;
+var productionCyclesWallet = (_getEgoConfig_production_cycles_wallet = getEgoConfig("credentials").production_cycles_wallet) !== null && _getEgoConfig_production_cycles_wallet !== void 0 ? _getEgoConfig_production_cycles_wallet : "";
 var seedPhrase = getEgoConfig("credentials").seedPhrase;
 var isProduction = process.env.NODE_ENV === "production";
 var cyclesCreateCanister = BigInt(getEgoConfig("cycles_install_code").replace("_", ""));

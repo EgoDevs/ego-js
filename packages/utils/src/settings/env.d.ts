@@ -1,4 +1,5 @@
 export interface CredentialProject {
+    folder?: string;
     seedPhrase: string;
     production_pem: string;
     production_cycles_wallet: string;
@@ -9,6 +10,7 @@ export declare const dfxPort: number;
 export declare const canisters: string;
 export declare const artifacts: string;
 export declare const configs: string;
+export declare const credentials: string;
 export declare const productionPem: string;
 export declare const productionCyclesWallet: string;
 export declare const seedPhrase: string;

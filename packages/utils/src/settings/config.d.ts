@@ -23,4 +23,18 @@ export declare const dfxConfigTemplate: {
     };
     version: number;
 };
-export declare function getEgos(): Configs;
+export interface ThisArgv {
+    [x: string]: unknown;
+    clean: boolean | undefined;
+    create: boolean | undefined;
+    credentials: boolean | undefined;
+    build: boolean | undefined;
+    install: boolean | undefined;
+    reinstall: boolean | undefined;
+    upgrade: boolean | undefined;
+    remove: string | undefined;
+    postPatch: boolean | undefined;
+    _: (string | number)[];
+    $0: string;
+}
+export declare function getEgos(argv: ThisArgv): Configs;

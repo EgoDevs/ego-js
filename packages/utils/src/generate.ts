@@ -1,9 +1,15 @@
 import Mock from 'mockjs';
 import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
+import curve from 'starkbank-ecdsa';
+import fs from 'fs';
+import { toHexString } from '@dfinity/candid';
+import KeyEncoder from 'key-encoder';
 
 const BIP32Factory = require('bip32');
 const bip39 = require('bip39');
 const ecc = require('tiny-secp256k1');
+
+const keyEncoder = new KeyEncoder('secp256k1');
 
 const { Random } = Mock;
 
@@ -16,7 +22,7 @@ export interface MockIdentity {
   seed: String;
 }
 
-export function getIdentityFromPhraseWithSeed(phrase: string): {
+export function getIdentityFromPhraseWithSeed2(phrase: string): {
   identity: Secp256k1KeyIdentity;
   seed: Uint8Array;
 } {
@@ -36,6 +42,19 @@ export function getIdentityFromPhraseWithSeed(phrase: string): {
     seed: new Uint8Array(seed),
   };
   // return seed;
+}
+
+export function generateSeedphraseText(pathToSave: string): string {
+  const str = bip39.generateMnemonic();
+  fs.writeFileSync(pathToSave, str);
+  return str;
+}
+
+export function generatePemfile(pathToSave: string, { seedPhrase }: { seedPhrase?: string }) {
+  const str = seedPhrase ?? bip39.generateMnemonic();
+  const res = getIdentityFromPhraseWithSeed2(str);
+  const save = keyEncoder.encodePrivate(toHexString(res.identity.getKeyPair().secretKey), 'raw', 'pem');
+  fs.writeFileSync(pathToSave, save);
 }
 
 // function identityFactoryWihPhrase(phrase: string, index: number, group: number) {

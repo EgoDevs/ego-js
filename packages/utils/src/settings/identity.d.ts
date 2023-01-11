@@ -7,5 +7,5 @@ export declare function getIdentityFromPhraseWithSeed(phrase: string): {
     identity: SignIdentity;
     seed: Uint8Array;
 };
-declare const identity: SignIdentity;
+declare const identity: () => SignIdentity;
 export { identity };

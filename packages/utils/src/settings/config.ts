@@ -33,11 +33,39 @@ export const dfxConfigTemplate = {
   version: 1,
 };
 
-export function getEgos(): Configs {
-  const file = fs.readFileSync(process.cwd() + '/' + 'ego-projects.json', { encoding: 'utf-8' });
-  return JSON.parse(file) as Configs;
+export interface ThisArgv {
+  [x: string]: unknown;
+  clean: boolean | undefined;
+  create: boolean | undefined;
+  credentials: boolean | undefined;
+  build: boolean | undefined;
+  install: boolean | undefined;
+  reinstall: boolean | undefined;
+  upgrade: boolean | undefined;
+  remove: string | undefined;
+  postPatch: boolean | undefined;
+  _: (string | number)[];
+  $0: string;
 }
 
+export function getEgos(argv: ThisArgv): Configs {
+  const file = fs.readFileSync(process.cwd() + '/' + 'ego-projects.json', { encoding: 'utf-8' });
+
+  let egos: Configs = JSON.parse(file) as Configs;
+
+  if ((argv as ThisArgv).project) {
+    const project = (argv as ThisArgv).project;
+    const ego = egos.find(e => e.package === project);
+    if (ego) {
+      if ((argv as ThisArgv).install || (argv as ThisArgv).reinstall || (argv as ThisArgv).upgrade || (argv as ThisArgv).postPatch) {
+        egos = [{ ...ego, no_deploy: false }];
+      } else {
+        egos = [ego];
+      }
+    }
+  }
+  return egos;
+}
 // export const infraConfig: Configs = [
 //   {
 //     category: 'infra',

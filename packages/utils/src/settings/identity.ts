@@ -5,6 +5,7 @@ import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
 const BIP32Factory = require('bip32');
 const bip39 = require('bip39');
 const ecc = require('tiny-secp256k1');
+
 import { SignIdentity } from '@dfinity/agent';
 import curve from 'starkbank-ecdsa';
 import { isProduction, productionPem, seedPhrase as seedPhraseFile } from './env';
@@ -65,12 +66,21 @@ export function getIdentityFromPhraseWithSeed(phrase: string): {
   // return seed;
 }
 
-const seedPhrase = fs
-  .readFileSync(path.join(process.cwd(), seedPhraseFile), {
-    encoding: 'utf8',
-  })
-  .toString();
-
-const identity = !isProduction ? getIdentityFromPhrase(seedPhrase) : getIdentityFromPem();
+const identity = () => {
+  if (!isProduction) {
+    if (fs.existsSync(path.join(process.cwd(), seedPhraseFile))) {
+      const seedPhrase = fs
+        .readFileSync(path.join(process.cwd(), seedPhraseFile), {
+          encoding: 'utf8',
+        })
+        .toString();
+      return getIdentityFromPhrase(seedPhrase);
+    } else {
+      return Secp256k1KeyIdentity.generate();
+    }
+  } else {
+    return getIdentityFromPem();
+  }
+};
 
 export { identity };

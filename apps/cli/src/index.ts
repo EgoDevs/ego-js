@@ -1,22 +1,19 @@
 import { runEgoBuilder } from './builder';
-import { checkAndArtifacts, generateDFXJson, runClean, runCreate, runInstall, runReInstall, runUpgrade, runPostPatch } from './deployer';
+import {
+  checkAndArtifacts,
+  generateDFXJson,
+  runClean,
+  runCreate,
+  runInstall,
+  runReInstall,
+  runUpgrade,
+  runPostPatch,
+  runCredentials,
+} from './deployer';
 import yargs from 'yargs';
+import { ThisArgv } from '@ego-js/utils';
 
-interface ThisArgv {
-  [x: string]: unknown;
-  clean: boolean | undefined;
-  create: boolean | undefined;
-  build: boolean | undefined;
-  install: boolean | undefined;
-  reinstall: boolean | undefined;
-  upgrade: boolean | undefined;
-  remove: string | undefined;
-  postPatch: boolean | undefined;
-  _: (string | number)[];
-  $0: string;
-}
-
-const argv = yargs
+export const argv = yargs
   .option('clean', {
     alias: 'c',
     description: 'clean .dfx/ folder',
@@ -25,6 +22,11 @@ const argv = yargs
   .option('create', {
     alias: 'n',
     description: 'create only',
+    type: 'boolean',
+  })
+  .option('credentials', {
+    alias: 'd',
+    description: 'bootstrap credentials',
     type: 'boolean',
   })
   .option('install', {
@@ -53,6 +55,11 @@ const argv = yargs
 if ((argv as ThisArgv).clean) {
   // console.log('clean');
   runClean();
+}
+
+if ((argv as ThisArgv).credentials) {
+  // console.log('clean');
+  runCredentials();
 }
 
 if ((argv as ThisArgv).create) {

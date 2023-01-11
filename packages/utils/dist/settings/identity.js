@@ -62,25 +62,35 @@ function getIdentityFromPem() {
 function getIdentityFromPhrase(phrase) {
     var seed = bip39.mnemonicToSeedSync(phrase);
     var ICP_PATH = "m/44'/223'/0'";
-    var _$path = "".concat(ICP_PATH, "/0/0");
+    var path = "".concat(ICP_PATH, "/0/0");
     var bip32 = BIP32Factory.default(ecc);
     var node = bip32.fromSeed(seed);
-    var child = node.derivePath(_$path);
+    var child = node.derivePath(path);
     return _identitySecp256K1.Secp256k1KeyIdentity.fromSecretKey(child.privateKey);
 }
 function getIdentityFromPhraseWithSeed(phrase) {
     var seed = bip39.mnemonicToSeedSync(phrase);
     var ICP_PATH = "m/44'/223'/0'";
-    var _$path = "".concat(ICP_PATH, "/0/0");
+    var path = "".concat(ICP_PATH, "/0/0");
     var bip32 = BIP32Factory.default(ecc);
     var node = bip32.fromSeed(seed);
-    var child = node.derivePath(_$path);
+    var child = node.derivePath(path);
     return {
         identity: _identitySecp256K1.Secp256k1KeyIdentity.fromSecretKey(child.privateKey),
         seed: new Uint8Array(seed)
     };
 }
-var seedPhrase = _fs.default.readFileSync(_path.default.join(process.cwd(), _env.seedPhrase), {
-    encoding: "utf8"
-}).toString();
-var identity = !_env.isProduction ? getIdentityFromPhrase(seedPhrase) : getIdentityFromPem();
+var identity = function() {
+    if (!_env.isProduction) {
+        if (_fs.default.existsSync(_path.default.join(process.cwd(), _env.seedPhrase))) {
+            var seedPhrase = _fs.default.readFileSync(_path.default.join(process.cwd(), _env.seedPhrase), {
+                encoding: "utf8"
+            }).toString();
+            return getIdentityFromPhrase(seedPhrase);
+        } else {
+            return _identitySecp256K1.Secp256k1KeyIdentity.generate();
+        }
+    } else {
+        return getIdentityFromPem();
+    }
+};

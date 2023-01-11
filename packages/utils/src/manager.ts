@@ -14,11 +14,11 @@ const managementCanisterId = '';
 export const cycleWalletCanisterId = productionCyclesWallet;
 
 export async function managementActor(): Promise<CreateActorResult<ManagementService>> {
-  return await getActor2<ManagementService>(identity, managementIdl, managementCanisterId);
+  return await getActor2<ManagementService>(identity(), managementIdl, managementCanisterId);
 }
 
 export async function cycleWalletActor(): Promise<CreateActorResult<CycleWalletService>> {
-  return await getActor2<CycleWalletService>(identity, cycleWalletIdl, cycleWalletCanisterId);
+  return await getActor2<CycleWalletService>(identity(), cycleWalletIdl, cycleWalletCanisterId);
 }
 
 export function readWasm(packagePath: string): number[] {

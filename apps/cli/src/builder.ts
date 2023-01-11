@@ -2,17 +2,18 @@ import file, { fstat } from 'fs';
 import shell from 'shelljs';
 import yargs from 'yargs';
 
-import { ProjectConfig, getEgos } from '@ego-js/utils';
+import { ProjectConfig, getEgos, ThisArgv } from '@ego-js/utils';
 import { artifacts, canisters } from '@ego-js/utils';
+import { argv } from '.';
 
-interface ThisArgv {
+interface ThatArgv {
   [x: string]: unknown;
   idl: boolean | undefined;
   _: (string | number)[];
   $0: string;
 }
 
-const argv = yargs
+const argv2 = yargs
   .option('idl', {
     alias: 'i',
     description: 'build idl only',
@@ -89,9 +90,9 @@ function runBuildRust(ego: ProjectConfig) {
 }
 
 export function runEgoBuilder(): void {
-  getEgos().forEach(ego => {
+  getEgos(argv as ThisArgv).forEach(ego => {
     runBuildRust(ego);
-    if ((argv as ThisArgv).idl) {
+    if ((argv2 as ThatArgv).idl) {
       buildIDL(ego);
     } else {
       buildDID(ego);

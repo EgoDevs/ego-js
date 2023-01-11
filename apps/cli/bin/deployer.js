@@ -10,6 +10,7 @@ function _export(target, all) {
 }
 _export(exports, {
     runClean: ()=>runClean,
+    runCredentials: ()=>runCredentials,
     checkAndArtifacts: ()=>checkAndArtifacts,
     generateDFXJson: ()=>generateDFXJson,
     runCreate: ()=>runCreate,
@@ -23,6 +24,7 @@ const _shelljs = _interopRequireDefault(require("shelljs"));
 const _utils = require("@ego-js/utils");
 const _principal = require("@dfinity/principal");
 const _candid = require("@dfinity/candid");
+const _ = require(".");
 function _defineProperty(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -81,13 +83,26 @@ function _objectSpreadProps(target, source) {
     return target;
 }
 function runClean() {
-    for (const f of (0, _utils.getEgos)()){
+    console.log('run clean');
+    for (const f of (0, _utils.getEgos)(_.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         _shelljs.default.exec(`rm -rf ${dfx_folder}`);
     }
 }
+function runCredentials() {
+    console.log('run credentials');
+    let exist = _fs.default.existsSync(`${process.cwd()}/${_utils.credentials}`);
+    if (!exist) {
+        _shelljs.default.exec(`mkdir ${process.cwd()}/${_utils.credentials}`);
+    }
+    const sp = (0, _utils.generateSeedphraseText)(`${_utils.seedPhrase}`);
+    (0, _utils.generatePemfile)(`${_utils.productionPem}`, {
+        seedPhrase: sp
+    });
+}
 function checkAndArtifacts() {
-    for (const ego of (0, _utils.getEgos)()){
+    console.log('run checkAndArtifacts');
+    for (const ego of (0, _utils.getEgos)(_.argv)){
         let folder_exist = true;
         try {
             folder_exist = _fs.default.existsSync(`${process.cwd()}/${_utils.artifacts}/${ego.package}`);
@@ -102,7 +117,8 @@ function checkAndArtifacts() {
     }
 }
 function generateDFXJson() {
-    for (const ego of (0, _utils.getEgos)()){
+    console.log('run generateDFXJson');
+    for (const ego of (0, _utils.getEgos)(_.argv)){
         let shouldSaveName = `${process.cwd()}/${_utils.artifacts}/${ego.package}/dfx.json`;
         _shelljs.default.exec(`rm -rf ${shouldSaveName}`);
         const packageItem = {};
@@ -117,9 +133,9 @@ function generateDFXJson() {
     }
 }
 async function runCreate() {
+    console.log('run runCreate');
     const { actor  } = await (0, _utils.managementActor)();
-    const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
-    for (const f of (0, _utils.getEgos)()){
+    for (const f of (0, _utils.getEgos)(_.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package + '/.dfx';
         const dfx_local_json = dfx_folder + '/local/canister_ids.json';
         const dfx_ic_json = dfx_folder + '/ic/canister_ids.json';
@@ -134,7 +150,7 @@ async function runCreate() {
                             freezing_threshold: [],
                             controllers: [
                                 [
-                                    _utils.identity.getPrincipal()
+                                    (0, _utils.identity)().getPrincipal()
                                 ]
                             ],
                             memory_allocation: [],
@@ -144,6 +160,7 @@ async function runCreate() {
                     amount: []
                 })).canister_id;
             } else {
+                const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                 const walletCreateResult = await walletActor.wallet_create_canister({
                     cycles: _utils.cyclesCreateCanister,
                     settings: {
@@ -151,7 +168,7 @@ async function runCreate() {
                         controller: [],
                         controllers: [
                             [
-                                _utils.identity.getPrincipal(),
+                                (0, _utils.identity)().getPrincipal(),
                                 _principal.Principal.fromText(_utils.cycleWalletCanisterId)
                             ]
                         ],
@@ -217,14 +234,18 @@ async function runCreate() {
                 json1[f.package] = {
                     ic: canister_id.toText()
                 };
+                if (!_fs.default.existsSync(dfx_ic_json.replace('/canister_ids.json', ''))) {
+                    _shelljs.default.exec(`mkdir ${dfx_ic_json.replace('/canister_ids.json', '')}`);
+                }
                 _fs.default.writeFileSync(dfx_ic_json, JSON.stringify(json1));
             }
         }
     }
 }
 async function runInstall() {
+    console.log('run runInstall');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)()){
+    for (const f of (0, _utils.getEgos)(_.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -247,7 +268,7 @@ async function runInstall() {
                         ], [
                             {
                                 init_caller: [
-                                    _utils.identity.getPrincipal()
+                                    (0, _utils.identity)().getPrincipal()
                                 ]
                             }
                         ])));
@@ -285,7 +306,7 @@ async function runInstall() {
                         ], [
                             {
                                 init_caller: [
-                                    _utils.identity.getPrincipal()
+                                    (0, _utils.identity)().getPrincipal()
                                 ]
                             }
                         ])));
@@ -323,8 +344,9 @@ async function runInstall() {
     }
 }
 async function runReInstall() {
+    console.log('run runReInstall');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)()){
+    for (const f of (0, _utils.getEgos)(_.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -374,7 +396,7 @@ async function runReInstall() {
                         ], [
                             {
                                 init_caller: [
-                                    _utils.identity.getPrincipal()
+                                    (0, _utils.identity)().getPrincipal()
                                 ]
                             }
                         ])));
@@ -412,8 +434,9 @@ async function runReInstall() {
     }
 }
 async function runUpgrade() {
+    console.log('run runUpgrade');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)()){
+    for (const f of (0, _utils.getEgos)(_.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -463,7 +486,7 @@ async function runUpgrade() {
                         ], [
                             {
                                 init_caller: [
-                                    _utils.identity.getPrincipal()
+                                    (0, _utils.identity)().getPrincipal()
                                 ]
                             }
                         ])));
@@ -501,9 +524,9 @@ async function runUpgrade() {
     }
 }
 async function runPostPatch() {
+    console.log('run runPostPatch');
     const { actor  } = await (0, _utils.managementActor)();
-    const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
-    for (const f of (0, _utils.getEgos)()){
+    for (const f of (0, _utils.getEgos)(_.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -518,6 +541,7 @@ async function runPostPatch() {
                 console.log(pkg.wasm);
                 const config = (0, _utils.readConfig)(process.cwd() + `/${_utils.configs}/` + f.package + '.json');
                 if (!_utils.isProduction) {} else {
+                    const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                     try {
                         console.log(`postPatching ${f.package} to ${config.PRODUCTION_CANISTERID}`);
                         const idl = _candid.IDL.Record({
@@ -528,7 +552,7 @@ async function runPostPatch() {
                             idl
                         ], [
                             {
-                                principal: _utils.identity.getPrincipal(),
+                                principal: (0, _utils.identity)().getPrincipal(),
                                 name: 'local'
                             }
                         ]);

@@ -4,3 +4,4 @@ export * from './settings/config';
 export * from './settings/env';
 export * from './settings/identity';
 export * from './settings/utils';
+export * from './generate';

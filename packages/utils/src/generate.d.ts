@@ -7,7 +7,11 @@ export interface MockIdentity {
     userGroup: number;
     seed: String;
 }
-export declare function getIdentityFromPhraseWithSeed(phrase: string): {
+export declare function getIdentityFromPhraseWithSeed2(phrase: string): {
     identity: Secp256k1KeyIdentity;
     seed: Uint8Array;
 };
+export declare function generateSeedphraseText(pathToSave: string): string;
+export declare function generatePemfile(pathToSave: string, { seedPhrase }: {
+    seedPhrase?: string;
+}): void;

@@ -201,7 +201,7 @@ function _managementActor() {
                 case 0:
                     return [
                         4,
-                        (0, _agent.getActor2)(_identity.identity, _managementIdl.idlFactory, managementCanisterId)
+                        (0, _agent.getActor2)((0, _identity.identity)(), _managementIdl.idlFactory, managementCanisterId)
                     ];
                 case 1:
                     return [
@@ -223,7 +223,7 @@ function _cycleWalletActor() {
                 case 0:
                     return [
                         4,
-                        (0, _agent.getActor2)(_identity.identity, _cycleWalletIdl.idlFactory, cycleWalletCanisterId)
+                        (0, _agent.getActor2)((0, _identity.identity)(), _cycleWalletIdl.idlFactory, cycleWalletCanisterId)
                     ];
                 case 1:
                     return [

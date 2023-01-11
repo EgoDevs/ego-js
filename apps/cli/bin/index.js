@@ -2,6 +2,10 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+Object.defineProperty(exports, "argv", {
+    enumerable: true,
+    get: ()=>argv
+});
 const _builder = require("./builder");
 const _deployer = require("./deployer");
 const _yargs = _interopRequireDefault(require("yargs"));
@@ -17,6 +21,10 @@ const argv = _yargs.default.option('clean', {
 }).option('create', {
     alias: 'n',
     description: 'create only',
+    type: 'boolean'
+}).option('credentials', {
+    alias: 'd',
+    description: 'bootstrap credentials',
     type: 'boolean'
 }).option('install', {
     alias: 'i',
@@ -37,6 +45,9 @@ const argv = _yargs.default.option('clean', {
 }).help().alias('help', 'h').argv;
 if (argv.clean) {
     (0, _deployer.runClean)();
+}
+if (argv.credentials) {
+    (0, _deployer.runCredentials)();
 }
 if (argv.create) {
     (0, _deployer.checkAndArtifacts)();

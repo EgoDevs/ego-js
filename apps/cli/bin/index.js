@@ -26,6 +26,10 @@ const argv = _yargs.default.option('clean', {
     alias: 'd',
     description: 'bootstrap credentials',
     type: 'boolean'
+}).option('init', {
+    alias: 'init',
+    description: 'init config',
+    type: 'boolean'
 }).option('install', {
     alias: 'i',
     description: 'install only',
@@ -45,6 +49,9 @@ const argv = _yargs.default.option('clean', {
 }).help().alias('help', 'h').argv;
 if (argv.clean) {
     (0, _deployer.runClean)();
+}
+if (argv.init) {
+    (0, _deployer.readDFX)();
 }
 if (argv.credentials) {
     (0, _deployer.runCredentials)();

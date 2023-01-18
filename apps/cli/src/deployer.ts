@@ -29,6 +29,45 @@ export function runCredentials() {
   generatePemfile(`${productionPem}`, { seedPhrase: sp });
 }
 
+export interface DFXJson {
+  local: {
+    bind: string;
+    type: string;
+    replica: {
+      subnet_type: string;
+    };
+    bitcoin?: {
+      enabled: boolean;
+      nodes: Array<string>;
+    };
+  };
+}
+
+export function readDFX() {
+  console.log('run readDFX');
+  const filePath = shell.exec(`dfx info networks-json-path`).replace('\n', '');
+
+  const [_, dfxVersion] = shell.exec(`dfx --version`).replace('\n', '').split(' ');
+
+  let dfxJson = file.readFileSync(Buffer.from(filePath), { encoding: 'utf-8' });
+
+  const dfxJSON = JSON.parse(dfxJson) as DFXJson;
+
+  const [__, dfxPort] = dfxJSON.local.bind.split(':');
+
+  // const cyclesWallet = shell.exec(`dfx identity --network=ic get-wallet`).replace('\n', '');
+  const config = JSON.parse(
+    file.readFileSync(`${process.cwd()}/ego-config.json`, {
+      encoding: 'utf8',
+    }),
+  );
+
+  config['dfxVersion'] = dfxVersion;
+  config['dfxPort'] = Number.parseInt(dfxPort);
+  // config['credentials']['production_cycles_wallet'] = cyclesWallet;
+  file.writeFileSync(`${process.cwd()}/ego-config.json`, JSON.stringify(config));
+}
+
 export function checkAndArtifacts() {
   console.log('run checkAndArtifacts');
   for (const ego of getEgos(argv as ThisArgv)) {

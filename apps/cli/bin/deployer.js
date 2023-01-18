@@ -11,6 +11,7 @@ function _export(target, all) {
 _export(exports, {
     runClean: ()=>runClean,
     runCredentials: ()=>runCredentials,
+    readDFX: ()=>readDFX,
     checkAndArtifacts: ()=>checkAndArtifacts,
     generateDFXJson: ()=>generateDFXJson,
     runCreate: ()=>runCreate,
@@ -99,6 +100,22 @@ function runCredentials() {
     (0, _utils.generatePemfile)(`${_utils.productionPem}`, {
         seedPhrase: sp
     });
+}
+function readDFX() {
+    console.log('run readDFX');
+    const filePath = _shelljs.default.exec(`dfx info networks-json-path`).replace('\n', '');
+    const [_, dfxVersion] = _shelljs.default.exec(`dfx --version`).replace('\n', '').split(' ');
+    let dfxJson = _fs.default.readFileSync(Buffer.from(filePath), {
+        encoding: 'utf-8'
+    });
+    const dfxJSON = JSON.parse(dfxJson);
+    const [__, dfxPort] = dfxJSON.local.bind.split(':');
+    const config = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/ego-config.json`, {
+        encoding: 'utf8'
+    }));
+    config['dfxVersion'] = dfxVersion;
+    config['dfxPort'] = Number.parseInt(dfxPort);
+    _fs.default.writeFileSync(`${process.cwd()}/ego-config.json`, JSON.stringify(config));
 }
 function checkAndArtifacts() {
     console.log('run checkAndArtifacts');
@@ -362,8 +379,19 @@ async function runReInstall() {
                 if (!_utils.isProduction) {
                     try {
                         console.log(`reinstalling ${f.package} to ${config.LOCAL_CANISTERID}`);
+                        const initArgs = Array.from(new Uint8Array(_candid.IDL.encode([
+                            _candid.IDL.Record({
+                                init_caller: _candid.IDL.Opt(_candid.IDL.Principal)
+                            })
+                        ], [
+                            {
+                                init_caller: [
+                                    (0, _utils.identity)().getPrincipal()
+                                ]
+                            }
+                        ])));
                         await actor.install_code({
-                            arg: [],
+                            arg: initArgs,
                             wasm_module: wasm,
                             mode: {
                                 reinstall: null
@@ -389,7 +417,7 @@ async function runReInstall() {
                             }),
                             canister_id: _candid.IDL.Principal
                         });
-                        const initArgs = Array.from(new Uint8Array(_candid.IDL.encode([
+                        const initArgs1 = Array.from(new Uint8Array(_candid.IDL.encode([
                             _candid.IDL.Record({
                                 init_caller: _candid.IDL.Opt(_candid.IDL.Principal)
                             })
@@ -404,7 +432,7 @@ async function runReInstall() {
                             idl
                         ], [
                             {
-                                arg: initArgs,
+                                arg: initArgs1,
                                 wasm_module: wasm,
                                 mode: {
                                     reinstall: null

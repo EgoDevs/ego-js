@@ -27,6 +27,7 @@ export interface ThisArgv {
     [x: string]: unknown;
     clean: boolean | undefined;
     create: boolean | undefined;
+    init: boolean | undefined;
     credentials: boolean | undefined;
     build: boolean | undefined;
     install: boolean | undefined;

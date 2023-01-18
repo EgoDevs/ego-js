@@ -9,6 +9,7 @@ import {
   runUpgrade,
   runPostPatch,
   runCredentials,
+  readDFX,
 } from './deployer';
 import yargs from 'yargs';
 import { ThisArgv } from '@ego-js/utils';
@@ -27,6 +28,11 @@ export const argv = yargs
   .option('credentials', {
     alias: 'd',
     description: 'bootstrap credentials',
+    type: 'boolean',
+  })
+  .option('init', {
+    alias: 'init',
+    description: 'init config',
     type: 'boolean',
   })
   .option('install', {
@@ -55,6 +61,10 @@ export const argv = yargs
 if ((argv as ThisArgv).clean) {
   // console.log('clean');
   runClean();
+}
+if ((argv as ThisArgv).init) {
+  // console.log('clean');
+  readDFX();
 }
 
 if ((argv as ThisArgv).credentials) {

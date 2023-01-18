@@ -312,8 +312,20 @@ export async function runReInstall() {
         if (!isProduction) {
           try {
             console.log(`reinstalling ${f.package} to ${config.LOCAL_CANISTERID!}`);
+            const initArgs = Array.from(
+              new Uint8Array(
+                IDL.encode(
+                  [IDL.Record({ init_caller: IDL.Opt(IDL.Principal) })],
+                  [
+                    {
+                      init_caller: [identity().getPrincipal()],
+                    },
+                  ],
+                ),
+              ),
+            );
             await actor.install_code({
-              arg: [],
+              arg: initArgs,
               wasm_module: wasm,
               mode: { reinstall: null },
               canister_id: Principal.fromText(config.LOCAL_CANISTERID!),

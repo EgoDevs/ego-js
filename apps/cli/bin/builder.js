@@ -42,14 +42,8 @@ function buildDID(ego) {
     });
     if (did_file_exist && ego.custom_candid) {
         const exist = _fs.default.existsSync(`${process.cwd()}/${_utils.canisters}/target/release/${ego.bin_name}`);
-        console.log({
-            exist
-        });
         const dir = exist ? `${process.cwd()}/${_utils.canisters}/target/release` : `${process.cwd()}/${_utils.canisters}`;
         const useCargo = exist ? './' : 'cargo run --release --bin ';
-        console.log({
-            useCargo
-        });
         _shelljs.default.exec(`
     EGO_DIR= ${dir}
     cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName}
@@ -57,15 +51,8 @@ function buildDID(ego) {
     } else {
         console.log('Generating DID files');
         const exist1 = _fs.default.existsSync(`${process.cwd()}/${_utils.canisters}/target/release/${ego.bin_name}`);
-        console.log({
-            exist: exist1
-        });
         const dir1 = exist1 ? `${process.cwd()}/${_utils.canisters}/target/release` : `${process.cwd()}/${_utils.canisters}`;
         const useCargo1 = exist1 ? './' : 'cargo run --release --bin ';
-        console.log({
-            useCargo: useCargo1,
-            dir: dir1
-        });
         _shelljs.default.exec(`
     EGO_DIR=${dir1}
     cd $EGO_DIR && ${useCargo1}${ego.bin_name} > ${shouldSaveAutoName} && ${useCargo1}${ego.bin_name}> ${shouldSaveName}

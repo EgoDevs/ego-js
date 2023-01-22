@@ -42,14 +42,14 @@ function buildDID(ego) {
     });
     if (did_file_exist && ego.custom_candid) {
         _shelljs.default.exec(`
-    EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
-    cd $EGO_DIR/actor && cargo run ${ego.bin_name} --release > ${shouldSaveAutoName}
+    EGO_DIR="${process.cwd()}/${_utils.canisters}"
+    cd $EGO_DIR && cargo run --release ${ego.bin_name} > ${shouldSaveAutoName}
     `);
     } else {
         console.log('Generating DID files');
         _shelljs.default.exec(`
-    EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
-    cd $EGO_DIR/actor && cargo run ${ego.bin_name} --release > ${shouldSaveAutoName} && cargo run ${ego.bin_name} --release> ${shouldSaveName}
+    EGO_DIR="${process.cwd()}/${_utils.canisters}"
+    cd $EGO_DIR && cargo run --release ${ego.bin_name} > ${shouldSaveAutoName} && cargo run --release ${ego.bin_name}> ${shouldSaveName}
     `);
     }
 }
@@ -68,8 +68,9 @@ function runBuildRust(ego) {
           PARENT_DIR="${process.cwd()}/${_utils.canisters}"
           EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
           CAT_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}"
+          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --bin ${ego.bin_name} --release -j1
           TARGET="wasm32-unknown-unknown"
-          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --target $TARGET --release -j1
+          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --lib --target $TARGET --release -j1
           cargo install ic-wasm
           STATUS=$?
           echo "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm"
@@ -84,6 +85,7 @@ function runBuildRust(ego) {
              echo Could not install ic-wasm.
              false
            fi
+          
           `);
     }
 }

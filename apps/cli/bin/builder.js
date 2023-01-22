@@ -43,16 +43,18 @@ function buildDID(ego) {
     if (did_file_exist && ego.custom_candid) {
         _shelljs.default.exec(`
     EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
-    cd $EGO_DIR/actor && cargo run ${ego.bin_name} > ${shouldSaveAutoName}
+    cd $EGO_DIR/actor && cargo run ${ego.bin_name} --release > ${shouldSaveAutoName}
     `);
     } else {
+        console.log('Generating DID files');
         _shelljs.default.exec(`
     EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
-    cd $EGO_DIR/actor && cargo run ${ego.bin_name} > ${shouldSaveAutoName} && cargo run ${ego.bin_name} > ${shouldSaveName}
+    cd $EGO_DIR/actor && cargo run ${ego.bin_name} --release > ${shouldSaveAutoName} && cargo run ${ego.bin_name} --release> ${shouldSaveName}
     `);
     }
 }
 function buildIDL(ego) {
+    console.log('Build typescript IDL files');
     _shelljs.default.exec(`
     EGO_DIR="${process.cwd()}/${_utils.artifacts}/${ego.package}"
     didc bind $EGO_DIR/${ego.package}.did -t ts > ${process.cwd()}/clients/idls/${ego.package}.d.ts

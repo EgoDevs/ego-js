@@ -43,17 +43,19 @@ function buildDID(ego: ProjectConfig) {
   if (did_file_exist && ego.custom_candid) {
     shell.exec(`
     EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
-    cd $EGO_DIR/actor && cargo run ${ego.bin_name} > ${shouldSaveAutoName}
+    cd $EGO_DIR/actor && cargo run ${ego.bin_name} --release > ${shouldSaveAutoName}
     `);
   } else {
+    console.log('Generating DID files');
     shell.exec(`
     EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
-    cd $EGO_DIR/actor && cargo run ${ego.bin_name} > ${shouldSaveAutoName} && cargo run ${ego.bin_name} > ${shouldSaveName}
+    cd $EGO_DIR/actor && cargo run ${ego.bin_name} --release > ${shouldSaveAutoName} && cargo run ${ego.bin_name} --release> ${shouldSaveName}
     `);
   }
 }
 
 function buildIDL(ego: ProjectConfig) {
+  console.log('Build typescript IDL files');
   shell.exec(`
     EGO_DIR="${process.cwd()}/${artifacts}/${ego.package}"
     didc bind $EGO_DIR/${ego.package}.did -t ts > ${process.cwd()}/clients/idls/${ego.package}.d.ts
@@ -65,6 +67,7 @@ function runBuildRust(ego: ProjectConfig) {
   // buildDID();
   if (ego.no_build === false || ego.no_build === undefined) {
     let shouldSaveName = `${process.cwd()}/${artifacts}/${ego.package}/${ego.package}_opt.wasm`;
+
     shell.exec(`
           PARENT_DIR="${process.cwd()}/${canisters}"
           EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"

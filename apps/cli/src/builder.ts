@@ -42,15 +42,21 @@ function buildDID(ego: ProjectConfig) {
   console.log({ did_file_exist });
   if (did_file_exist && ego.custom_candid) {
     // EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
+    const exist = file.existsSync(`${process.cwd()}/${canisters}/target/release/${ego.bin_name}`);
+    const dir = exist ? `${process.cwd()}/${canisters}/target/release` : `${process.cwd()}/${canisters}`;
+    const useCargo = exist ? './' : 'cargo run --release --bin ';
     shell.exec(`
-    EGO_DIR="${process.cwd()}/${canisters}"
-    cd $EGO_DIR && cargo run --release ${ego.bin_name} > ${shouldSaveAutoName}
+    EGO_DIR= ${dir}
+    cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName}
     `);
   } else {
     console.log('Generating DID files');
+    const exist = file.existsSync(`${process.cwd()}/${canisters}/target/release/${ego.bin_name}`);
+    const dir = exist ? `${process.cwd()}/${canisters}/target/release` : `${process.cwd()}/${canisters}`;
+    const useCargo = exist ? './' : 'cargo run --release --bin ';
     shell.exec(`
-    EGO_DIR="${process.cwd()}/${canisters}"
-    cd $EGO_DIR && cargo run --release ${ego.bin_name} > ${shouldSaveAutoName} && cargo run --release ${ego.bin_name}> ${shouldSaveName}
+    EGO_DIR=${dir}
+    cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName} && ${useCargo}${ego.bin_name}> ${shouldSaveName}
     `);
   }
 }

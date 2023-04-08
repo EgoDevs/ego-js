@@ -581,23 +581,17 @@ async function runPostPatch() {
                     const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                     try {
                         console.log(`postPatching ${f.package} to ${config.PRODUCTION_CANISTERID}`);
-                        const idl = _candid.IDL.Record({
-                            principal: _candid.IDL.Principal,
-                            name: _candid.IDL.Text
-                        });
+                        const idl = _candid.IDL.Principal;
                         const buf = _candid.IDL.encode([
                             idl
                         ], [
-                            {
-                                principal: (0, _utils.identity)().getPrincipal(),
-                                name: 'local'
-                            }
+                            (0, _utils.identity)().getPrincipal()
                         ]);
                         const args = Array.from(new Uint8Array(buf));
                         const result = await walletActor.wallet_call({
                             canister: _principal.Principal.fromText(config.PRODUCTION_CANISTERID),
                             cycles: BigInt(0),
-                            method_name: 'addManager',
+                            method_name: 'ego_owner_add',
                             args
                         });
                         if ((0, _utils.hasOwnProperty)(result, 'Ok')) {

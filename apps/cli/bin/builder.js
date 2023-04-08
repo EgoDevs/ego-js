@@ -11,10 +11,19 @@ const _shelljs = _interopRequireDefault(require("shelljs"));
 const _yargs = _interopRequireDefault(require("yargs"));
 const _utils = require("@ego-js/utils");
 const _ = require(".");
+const _crossFetch = require("cross-fetch");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
+}
+if (!globalThis.fetch) {
+    globalThis.fetch = _crossFetch.fetch;
+    globalThis.Headers = _crossFetch.Headers;
+}
+if (!global.fetch) {
+    global.fetch = _crossFetch.fetch;
+    global.Headers = _crossFetch.Headers;
 }
 const argv2 = _yargs.default.option('idl', {
     alias: 'i',

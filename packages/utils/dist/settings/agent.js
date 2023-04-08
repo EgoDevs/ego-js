@@ -21,8 +21,8 @@ _export(exports, {
 });
 var _agent = require("@dfinity/agent");
 var _principal = require("@dfinity/principal");
-var _crossFetch = require("cross-fetch");
 var _env = require("./env");
+var _crossFetch = require("cross-fetch");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
         var info = gen[key](arg);
@@ -149,9 +149,11 @@ var __generator = (void 0) && (void 0).__generator || function(thisArg, body) {
 };
 if (!globalThis.fetch) {
     globalThis.fetch = _crossFetch.fetch;
+    globalThis.Headers = _crossFetch.Headers;
 }
 if (!global.fetch) {
     global.fetch = _crossFetch.fetch;
+    global.Headers = _crossFetch.Headers;
 }
 function _createActor(interfaceFactory, canisterId, identity, host) {
     return __createActor.apply(this, arguments);

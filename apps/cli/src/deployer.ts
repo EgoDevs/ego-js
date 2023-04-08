@@ -9,6 +9,17 @@ import { identity } from '@ego-js/utils';
 import { hasOwnProperty } from '@ego-js/utils';
 import { IDL } from '@dfinity/candid';
 import { argv } from '.';
+import { fetch, Headers } from 'cross-fetch';
+
+if (!globalThis.fetch) {
+  (globalThis as any).fetch = fetch;
+  (globalThis as any).Headers = Headers;
+}
+
+if (!global.fetch) {
+  (global as any).fetch = fetch;
+  (global as any).Headers = Headers;
+}
 
 export function runClean() {
   console.log('run clean');
@@ -560,19 +571,16 @@ export async function runPostPatch() {
           const walletActor = (await cycleWalletActor()).actor;
           try {
             console.log(`postPatching ${f.package} to ${config.PRODUCTION_CANISTERID!}`);
-            const idl = IDL.Record({
-              principal: IDL.Principal,
-              name: IDL.Text,
-            });
+            const idl = IDL.Principal;
 
-            const buf = IDL.encode([idl], [{ principal: identity().getPrincipal(), name: 'local' }]);
+            const buf = IDL.encode([idl], [identity().getPrincipal()]);
 
             const args = Array.from(new Uint8Array(buf));
 
             const result = await walletActor.wallet_call({
               canister: Principal.fromText(config.PRODUCTION_CANISTERID!),
               cycles: BigInt(0),
-              method_name: 'addManager',
+              method_name: 'ego_owner_add',
               args,
             });
 

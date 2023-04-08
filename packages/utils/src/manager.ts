@@ -10,6 +10,18 @@ import fs from 'fs';
 import { Principal } from '@dfinity/principal';
 import { identity } from './settings/identity';
 import { productionCyclesWallet } from './settings/env';
+import { fetch, Headers } from 'cross-fetch';
+
+if (!globalThis.fetch) {
+  (globalThis as any).fetch = fetch;
+  (globalThis as any).Headers = Headers;
+}
+
+if (!global.fetch) {
+  (global as any).fetch = fetch;
+  (global as any).Headers = Headers;
+}
+
 const managementCanisterId = '';
 export const cycleWalletCanisterId = productionCyclesWallet;
 

@@ -1,15 +1,17 @@
 import { Actor, ActorSubclass, HttpAgent, SignIdentity } from '@dfinity/agent';
 import { InterfaceFactory } from '@dfinity/candid/lib/cjs/idl';
 import { Principal } from '@dfinity/principal';
-import { fetch } from 'cross-fetch';
 import { dfxPort, isProduction } from './env';
+import { fetch, Headers } from 'cross-fetch';
 
 if (!globalThis.fetch) {
   (globalThis as any).fetch = fetch;
+  (globalThis as any).Headers = Headers;
 }
 
 if (!global.fetch) {
   (global as any).fetch = fetch;
+  (global as any).Headers = Headers;
 }
 
 export interface CreateActorResult<T> {

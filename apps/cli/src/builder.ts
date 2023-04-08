@@ -5,6 +5,17 @@ import yargs from 'yargs';
 import { ProjectConfig, getEgos, ThisArgv } from '@ego-js/utils';
 import { artifacts, canisters } from '@ego-js/utils';
 import { argv } from '.';
+import { fetch, Headers } from 'cross-fetch';
+
+if (!globalThis.fetch) {
+  (globalThis as any).fetch = fetch;
+  (globalThis as any).Headers = Headers;
+}
+
+if (!global.fetch) {
+  (global as any).fetch = fetch;
+  (global as any).Headers = Headers;
+}
 
 interface ThatArgv {
   [x: string]: unknown;

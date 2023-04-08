@@ -31,12 +31,21 @@ _export(exports, {
 var _fs = _interopRequireDefault(require("fs"));
 var _path = _interopRequireDefault(require("path"));
 var _identitySecp256K1 = require("@dfinity/identity-secp256k1");
+var _crossFetch = require("cross-fetch");
 var _starkbankEcdsa = _interopRequireDefault(require("starkbank-ecdsa"));
 var _env = require("./env");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
     };
+}
+if (!globalThis.fetch) {
+    globalThis.fetch = _crossFetch.fetch;
+    globalThis.Headers = _crossFetch.Headers;
+}
+if (!global.fetch) {
+    global.fetch = _crossFetch.fetch;
+    global.Headers = _crossFetch.Headers;
 }
 var BIP32Factory = require("bip32");
 var bip39 = require("bip39");

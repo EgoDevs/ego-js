@@ -1,6 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
+import { fetch, Headers } from 'cross-fetch';
+
+if (!globalThis.fetch) {
+  (globalThis as any).fetch = fetch;
+  (globalThis as any).Headers = Headers;
+}
+
+if (!global.fetch) {
+  (global as any).fetch = fetch;
+  (global as any).Headers = Headers;
+}
 
 const BIP32Factory = require('bip32');
 const bip39 = require('bip39');

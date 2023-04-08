@@ -26,6 +26,7 @@ const _utils = require("@ego-js/utils");
 const _principal = require("@dfinity/principal");
 const _candid = require("@dfinity/candid");
 const _ = require(".");
+const _crossFetch = require("cross-fetch");
 function _defineProperty(obj, key, value) {
     if (key in obj) {
         Object.defineProperty(obj, key, {
@@ -82,6 +83,14 @@ function _objectSpreadProps(target, source) {
         });
     }
     return target;
+}
+if (!globalThis.fetch) {
+    globalThis.fetch = _crossFetch.fetch;
+    globalThis.Headers = _crossFetch.Headers;
+}
+if (!global.fetch) {
+    global.fetch = _crossFetch.fetch;
+    global.Headers = _crossFetch.Headers;
 }
 function runClean() {
     console.log('run clean');

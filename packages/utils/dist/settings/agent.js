@@ -166,7 +166,7 @@ function __createActor() {
                 case 0:
                     agent = new _agent.HttpAgent({
                         identity,
-                        host: (host !== null && host !== void 0 ? host : !_env.isProduction) ? "http://127.0.0.1:".concat(_env.dfxPort) : "https://ic0.app/"
+                        host: (host !== null && host !== void 0 ? host : !_env.isProduction) ? "http://127.0.0.1:".concat(_env.dfxPort) : "https://ic0.io/"
                     });
                     if (!!_env.isProduction) return [
                         3,

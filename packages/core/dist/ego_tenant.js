@@ -213,7 +213,7 @@ var EgoTenant = function(EgoInfraBase) {
     var _super = _createSuper(EgoTenant);
     function EgoTenant(signIdentity, currentNetwork) {
         _classCallCheck(this, EgoTenant);
-        return _super.call(this, (0, _util.getInfra)("ego_store"), _egoTenantIdl.idlFactory, signIdentity, currentNetwork);
+        return _super.call(this, (0, _util.getInfra)("ego_tenant"), _egoTenantIdl.idlFactory, signIdentity, currentNetwork);
     }
     var _proto = EgoTenant.prototype;
     _proto.appMainDelete = function appMainDelete(canister) {

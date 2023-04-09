@@ -16,11 +16,11 @@ importers:
 
   apps/cli:
     specifiers:
-      '@dfinity/agent': ^0.15.3
-      '@dfinity/candid': ^0.15.3
-      '@dfinity/identity': ^0.15.3
-      '@dfinity/identity-secp256k1': ^0.15.3
-      '@dfinity/principal': ^0.15.3
+      '@dfinity/agent': ^0.15.5
+      '@dfinity/candid': ^0.15.5
+      '@dfinity/identity': ^0.15.5
+      '@dfinity/identity-secp256k1': ^0.15.5
+      '@dfinity/principal': ^0.15.5
       '@ego-js/utils': workspace:*
       '@swc/cli': ^0.1.55
       '@swc/core': ^1.2.141
@@ -32,11 +32,11 @@ importers:
       shelljs: ^0.8.5
       yargs: ^17.3.1
     devDependencies:
-      '@dfinity/agent': 0.15.3_c4ofjkj5m65lmg5yk4cz7aajbq
-      '@dfinity/candid': 0.15.3_neg45has7ve5e2r6jj23v5ak5i
-      '@dfinity/identity': 0.15.3_u4mbpzmou4c66uknbyg3354n4m
-      '@dfinity/identity-secp256k1': 0.15.3_c4ofjkj5m65lmg5yk4cz7aajbq
-      '@dfinity/principal': 0.15.3_neg45has7ve5e2r6jj23v5ak5i
+      '@dfinity/agent': 0.15.5_7i64u3ipouwsz3xc6t3odnaugm
+      '@dfinity/candid': 0.15.5_neg45has7ve5e2r6jj23v5ak5i
+      '@dfinity/identity': 0.15.5_yd5zzn4kvz5t5d4vbatdvlyt3i
+      '@dfinity/identity-secp256k1': 0.15.5_7i64u3ipouwsz3xc6t3odnaugm
+      '@dfinity/principal': 0.15.5_neg45has7ve5e2r6jj23v5ak5i
       '@ego-js/utils': link:../../packages/utils
       '@swc/cli': 0.1.59_@swc+core@1.3.25
       '@swc/core': 1.3.25
@@ -848,14 +848,14 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  /@dfinity/agent/0.15.3_c4ofjkj5m65lmg5yk4cz7aajbq:
-    resolution: {integrity: sha512-yjJnAWI2CQY9kAFgavXU4TiKjb3NwaKUpu2LwCfgtJM4k6ofKlW+7q0tBJNs5WvHqRcKRDdn4d6yXKQi+ubS+w==}
+  /@dfinity/agent/0.15.5_7i64u3ipouwsz3xc6t3odnaugm:
+    resolution: {integrity: sha512-Ytn8eo0Gk8QkaCX2X+CS1NYOdCr0ZjanqFyKbR5rY7LGQoVaNzdVHJufzheuTFMhTZs6i/OtaG2BQug4cNIocw==}
     peerDependencies:
-      '@dfinity/candid': ^0.15.3
-      '@dfinity/principal': ^0.15.3
+      '@dfinity/candid': ^0.15.5
+      '@dfinity/principal': ^0.15.5
     dependencies:
-      '@dfinity/candid': 0.15.3_neg45has7ve5e2r6jj23v5ak5i
-      '@dfinity/principal': 0.15.3_neg45has7ve5e2r6jj23v5ak5i
+      '@dfinity/candid': 0.15.5_neg45has7ve5e2r6jj23v5ak5i
+      '@dfinity/principal': 0.15.5_neg45has7ve5e2r6jj23v5ak5i
       base64-arraybuffer: 0.2.0
       bignumber.js: 9.1.1
       borc: 2.1.2
@@ -867,7 +867,6 @@ packages:
       - '@swc/wasm'
       - '@types/node'
       - typescript
-    dev: true
 
   /@dfinity/agent/0.15.5_cm53n53bqwahca3c4emfnlrjia:
     resolution: {integrity: sha512-Ytn8eo0Gk8QkaCX2X+CS1NYOdCr0ZjanqFyKbR5rY7LGQoVaNzdVHJufzheuTFMhTZs6i/OtaG2BQug4cNIocw==}
@@ -890,17 +889,6 @@ packages:
       - typescript
     dev: false
 
-  /@dfinity/candid/0.15.3_neg45has7ve5e2r6jj23v5ak5i:
-    resolution: {integrity: sha512-jbfA+kr+gCrBuwxWm/j4Vpqzbnh9bsyUWu9CjopJis8xdxH3FIfNDWOzHZ/QaW7Co+6UoON1wzxMiy91/W5DQA==}
-    dependencies:
-      ts-node: 10.9.1_neg45has7ve5e2r6jj23v5ak5i
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - typescript
-    dev: true
-
   /@dfinity/candid/0.15.5_ciguckyjtxj7wuntzsc3zlsrfi:
     resolution: {integrity: sha512-SWf70AuFJ+SphvOHPiyCXE2s5b63c8U/UVGIRhnxSR/xi8iiP3tjPL6Cfe+TPsuXQShX8pPJBJhKC9O20cua2Q==}
     dependencies:
@@ -912,10 +900,20 @@ packages:
       - typescript
     dev: false
 
-  /@dfinity/identity-secp256k1/0.15.3_c4ofjkj5m65lmg5yk4cz7aajbq:
-    resolution: {integrity: sha512-JBdtwmw8EoQTxWR6fiN4Q0D1GJQMz0fvQSIwg8axgVkOcUSIhfPPtSSCWwJVyxfXZNU3OpEC0Kz44imbkEJKug==}
+  /@dfinity/candid/0.15.5_neg45has7ve5e2r6jj23v5ak5i:
+    resolution: {integrity: sha512-SWf70AuFJ+SphvOHPiyCXE2s5b63c8U/UVGIRhnxSR/xi8iiP3tjPL6Cfe+TPsuXQShX8pPJBJhKC9O20cua2Q==}
     dependencies:
-      '@dfinity/agent': 0.15.3_c4ofjkj5m65lmg5yk4cz7aajbq
+      ts-node: 10.9.1_neg45has7ve5e2r6jj23v5ak5i
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - typescript
+
+  /@dfinity/identity-secp256k1/0.15.5_7i64u3ipouwsz3xc6t3odnaugm:
+    resolution: {integrity: sha512-W0Y1bpuC6Nkl3zZlsFhYpLlaF6yw6uCZOEbLPqNfdUB5jv1fOS8SSsl557L3cG5d9utDLJOA9ejZ8cWxcTEMSw==}
+    dependencies:
+      '@dfinity/agent': 0.15.5_7i64u3ipouwsz3xc6t3odnaugm
       bip39: 3.0.4
       bs58check: 2.1.2
       secp256k1: 4.0.3
@@ -944,20 +942,6 @@ packages:
       - typescript
     dev: false
 
-  /@dfinity/identity/0.15.3_u4mbpzmou4c66uknbyg3354n4m:
-    resolution: {integrity: sha512-D5Sf01MvO3CO63nAYSdG2V8Ox4AEVAm+/O7oKU1oyg8m3z/9zklG6IyCOOKb6hQibWh81j+mduYuX4vYuEjSGw==}
-    peerDependencies:
-      '@dfinity/agent': ^0.15.3
-      '@dfinity/principal': ^0.15.3
-      '@peculiar/webcrypto': ^1.4.0
-    dependencies:
-      '@dfinity/agent': 0.15.3_c4ofjkj5m65lmg5yk4cz7aajbq
-      '@dfinity/principal': 0.15.3_neg45has7ve5e2r6jj23v5ak5i
-      borc: 2.1.2
-      js-sha256: 0.9.0
-      tweetnacl: 1.0.3
-    dev: true
-
   /@dfinity/identity/0.15.5_yd5zzn4kvz5t5d4vbatdvlyt3i:
     resolution: {integrity: sha512-Lli8I86y/3AGf3e5yXTQtFNij/1YrGWlgPDxMsmyzBQjkiUh8PLQYPNGbq7uH410gG+vvmBBJy7h/vEl3ECALA==}
     peerDependencies:
@@ -965,24 +949,11 @@ packages:
       '@dfinity/principal': ^0.15.5
       '@peculiar/webcrypto': ^1.4.0
     dependencies:
-      '@dfinity/agent': 0.15.5_cm53n53bqwahca3c4emfnlrjia
-      '@dfinity/principal': 0.15.5_ciguckyjtxj7wuntzsc3zlsrfi
+      '@dfinity/agent': 0.15.5_7i64u3ipouwsz3xc6t3odnaugm
+      '@dfinity/principal': 0.15.5_neg45has7ve5e2r6jj23v5ak5i
       borc: 2.1.2
       js-sha256: 0.9.0
       tweetnacl: 1.0.3
-    dev: false
-
-  /@dfinity/principal/0.15.3_neg45has7ve5e2r6jj23v5ak5i:
-    resolution: {integrity: sha512-XqHZVaJx/acmg6kFkF7PB156UwAquOS2WiAA753+nGKTG+TOC7OxbBXCr8vfEsd0mEzcmcLl+jLF8iUsC6Hk4w==}
-    dependencies:
-      js-sha256: 0.9.0
-      ts-node: 10.9.1_neg45has7ve5e2r6jj23v5ak5i
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - typescript
-    dev: true
 
   /@dfinity/principal/0.15.5_ciguckyjtxj7wuntzsc3zlsrfi:
     resolution: {integrity: sha512-K+oIH/zAuZf6JxQAZrPzkkGL+hPn96/CnFzjWNqwHADZjBShr9m1n2Sv/68hKoND5p/uMNVIAV0km39A03Se6g==}
@@ -995,6 +966,17 @@ packages:
       - '@types/node'
       - typescript
     dev: false
+
+  /@dfinity/principal/0.15.5_neg45has7ve5e2r6jj23v5ak5i:
+    resolution: {integrity: sha512-K+oIH/zAuZf6JxQAZrPzkkGL+hPn96/CnFzjWNqwHADZjBShr9m1n2Sv/68hKoND5p/uMNVIAV0km39A03Se6g==}
+    dependencies:
+      js-sha256: 0.9.0
+      ts-node: 10.9.1_neg45has7ve5e2r6jj23v5ak5i
+    transitivePeerDependencies:
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - typescript
 
   /@eslint/eslintrc/0.4.3:
     resolution: {integrity: sha512-J6KFFz5QCYUJq3pf0mjEcCJVERbzv71PUIDczuh9JkwGEzced6CO5ADLHB1rbf/+oPBtoPfMYNOpGDzCANlbXw==}
@@ -6921,7 +6903,6 @@ packages:
       make-error: 1.3.6
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
-    dev: true
 
   /tsc-alias/1.8.2:
     resolution: {integrity: sha512-ukBkcNekOgwtnSWYLD5QsMX3yQWg7JviAs8zg3qJGgu4LGtY3tsV4G6vnqvOXIDkbC+XL9vbhObWSpRA5/6wbg==}

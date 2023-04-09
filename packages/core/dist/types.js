@@ -197,6 +197,9 @@ var EgoInfraBase = function() {
             });
         })();
     };
+    _proto.useNetwork = function useNetwork(network) {
+        this.currentNetwork = network;
+    };
     _proto.toJSON = function toJSON() {
         return {
             name: this.name,
@@ -212,7 +215,21 @@ var EgoInfraBase = function() {
             case EgoNetwork.TestNet:
                 return this.testnet;
             case EgoNetwork.Local:
-                return this.local || this.testnet;
+                if (this.local) {
+                    return this.local;
+                } else {
+                    try {
+                        var localCanisterId = (0, _utils.getCanisterId)(this.name);
+                        if (localCanisterId) {
+                            this.overrideCanisterId(EgoNetwork.Local, localCanisterId);
+                            return localCanisterId;
+                        } else {
+                            throw new Error("Local canister id not found");
+                        }
+                    } catch (error) {
+                        throw error;
+                    }
+                }
         }
     };
     _proto.getCanisterName = function getCanisterName() {

@@ -7,6 +7,7 @@ import { EgoLedger } from './ego_ledger';
 import { EgoOps } from './ego_ops';
 import { EgoTenant } from './ego_tenant';
 import { EgoFile } from './ego_file';
+import { EgoRecord } from './ego_record';
 
 export class EgoFactory {
   constructor(
@@ -16,6 +17,7 @@ export class EgoFactory {
     public readonly ledger: EgoLedger,
     public readonly ops: EgoOps,
     public readonly tenant: EgoTenant,
+    public readonly record: EgoRecord,
   ) {}
 
   static async connect(signIdentity: SignIdentity = identity(), network: EgoNetwork = EgoNetwork.Local) {
@@ -25,7 +27,8 @@ export class EgoFactory {
     const ledger = new EgoLedger(signIdentity, network);
     const ops = new EgoOps(signIdentity, network);
     const tenant = new EgoTenant(signIdentity, network);
-    return new EgoFactory(store, dev, file, ledger, ops, tenant);
+    const record = new EgoRecord(signIdentity, network);
+    return new EgoFactory(store, dev, file, ledger, ops, tenant, record);
   }
 
   useNetwork(network: EgoNetwork): EgoFactory {
@@ -35,6 +38,7 @@ export class EgoFactory {
     this.ledger.useNetwork(network);
     this.ops.useNetwork(network);
     this.tenant.useNetwork(network);
+    this.record.useNetwork(network);
     return this;
   }
 }

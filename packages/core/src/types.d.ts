@@ -58,6 +58,7 @@ export declare class EgoInfraBase<T extends EgoLibWrapper> implements EgoInfraIn
     constructor(egoInfra: EgoInfraCanister, idl: InterfaceFactory, signIdentity?: SignIdentity, currentNetwork?: EgoNetwork);
     private _getActor;
     getActor(): Promise<ActorSubclass<T>>;
+    useNetwork(network: EgoNetwork): void;
     toJSON(): EgoInfraCanister;
     getCanisterId(network: EgoNetwork): string;
     getCanisterName(): string;

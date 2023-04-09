@@ -36,4 +36,9 @@ export const egoInfra: EgoInfraCanister[] = [
     mainnet: 'nodyb-naaaa-aaaah-ab7ca-cai',
     testnet: '4mxg6-raaaa-aaaah-abxyq-cai',
   },
+  {
+    name: 'ego_record',
+    mainnet: '2gyec-vyaaa-aaaah-acmua-cai',
+    testnet: '3lwam-2qaaa-aaaah-acmtq-cai',
+  },
 ];

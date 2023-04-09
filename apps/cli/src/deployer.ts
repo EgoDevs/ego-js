@@ -210,7 +210,7 @@ export async function runCreate() {
 
         if (f.url) {
           Object.assign(configObject, {
-            PRODUCTION_URL: `https://${productionId}.ic0.app`,
+            PRODUCTION_URL: `https://${productionId}.icp0.io`,
           });
         }
 

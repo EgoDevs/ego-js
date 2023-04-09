@@ -5,3 +5,4 @@ export * from './settings/env';
 export * from './settings/identity';
 export * from './settings/utils';
 export * from './generate';
+export * from './canisters';

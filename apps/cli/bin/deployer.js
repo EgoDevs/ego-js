@@ -247,7 +247,7 @@ async function runCreate() {
                 });
                 if (f.url) {
                     Object.assign(configObject1, {
-                        PRODUCTION_URL: `https://${productionId}.ic0.app`
+                        PRODUCTION_URL: `https://${productionId}.icp0.io`
                     });
                 }
                 const canister_ids_json = {};

@@ -1,6 +1,6 @@
 {
     "name": "@ego-js/cli",
-    "version": "2.2.31",
+    "version": "2.2.32",
     "main": "./src/index.ts",
     "bin": {
         "ego": "./bin/index.js"
@@ -13,11 +13,11 @@
         "access": "public"
     },
     "devDependencies": {
-        "@dfinity/agent": "^0.15.3",
-        "@dfinity/candid": "^0.15.3",
-        "@dfinity/identity": "^0.15.3",
-        "@dfinity/identity-secp256k1": "^0.15.3",
-        "@dfinity/principal": "^0.15.3",
+        "@dfinity/agent": "^0.15.5",
+        "@dfinity/candid": "^0.15.5",
+        "@dfinity/identity": "^0.15.5",
+        "@dfinity/identity-secp256k1": "^0.15.5",
+        "@dfinity/principal": "^0.15.5",
         "@ego-js/utils": "workspace:*",
         "@swc/cli": "^0.1.55",
         "@swc/core": "^1.2.141",

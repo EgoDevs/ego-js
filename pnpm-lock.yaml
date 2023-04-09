@@ -152,7 +152,7 @@ importers:
       '@dfinity/identity': ^0.15.5
       '@dfinity/identity-secp256k1': ^0.15.5
       '@dfinity/principal': ^0.15.5
-      '@ego-js/utils': ^2.2.31
+      '@ego-js/utils': workspace:*
       '@swc/cli': ^0.1.55
       '@swc/core': ^1.2.141
       '@types/jest': ^27.5.1

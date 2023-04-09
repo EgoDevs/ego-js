@@ -237,5 +237,447 @@ var EgoInfraBase = function() {
                 break;
         }
     };
+    _proto.egoOwnerAdd = function egoOwnerAdd(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_owner_add(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoOwnerAddWithName = function egoOwnerAddWithName(name, principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_owner_add_with_name(name, principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoOwnerRemove = function egoOwnerRemove(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_owner_remove(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoOwnerSet = function egoOwnerSet(principals) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_owner_set(principals)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoUserAdd = function egoUserAdd(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_user_add(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoUserRemove = function egoUserRemove(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_user_remove(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoUserSet = function egoUserSet(principals) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_user_set(principals)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoOpAdd = function egoOpAdd(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_op_add(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoIsUser = function egoIsUser() {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_is_user()
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                result.Ok
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoIsOwner = function egoIsOwner() {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_is_owner()
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                result.Ok
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoControllerAdd = function egoControllerAdd(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_controller_add(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoControllerRemove = function egoControllerRemove(principal) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_controller_remove(principal)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
+    _proto.egoControllerSet = function egoControllerSet(principals) {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var actor, result;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            _this.getActor()
+                        ];
+                    case 1:
+                        actor = _state.sent();
+                        return [
+                            4,
+                            actor.ego_controller_set(principals)
+                        ];
+                    case 2:
+                        result = _state.sent();
+                        if ((0, _utils.hasOwnProperty)(result, "Ok")) {
+                            return [
+                                2,
+                                true
+                            ];
+                        } else {
+                            throw result.Err;
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
     return EgoInfraBase;
 }();

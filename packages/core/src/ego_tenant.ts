@@ -8,7 +8,7 @@ import { Principal } from '@dfinity/principal';
 
 export class EgoTenant extends EgoInfraBase<tenantService> {
   constructor(signIdentity?: SignIdentity, currentNetwork?: EgoNetwork) {
-    super(getInfra('ego_store'), tenantIDL, signIdentity, currentNetwork);
+    super(getInfra('ego_tenant'), tenantIDL, signIdentity, currentNetwork);
   }
 
   async appMainDelete(canister: Principal): Promise<boolean> {

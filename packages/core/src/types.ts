@@ -1,7 +1,7 @@
 import { ActorMethod, ActorSubclass, SignIdentity } from '@dfinity/agent';
 import { InterfaceFactory } from '@dfinity/candid/lib/cjs/idl';
 import { Principal } from '@dfinity/principal';
-import { EgoInfraCanister, getActor, hasOwnProperty, identity } from '@ego-js/utils';
+import { EgoInfraCanister, getActor, getCanisterId, hasOwnProperty, identity } from '@ego-js/utils';
 import { Result_5, Result_6, Result_7, Result_8, Result_9, Result_10, CycleRecord, CycleInfo } from './idls/ego_store';
 
 export enum EgoNetwork {
@@ -79,6 +79,10 @@ export class EgoInfraBase<T extends EgoLibWrapper> implements EgoInfraInterface 
     return await this._actor;
   }
 
+  public useNetwork(network: EgoNetwork): void {
+    this.currentNetwork = network;
+  }
+
   public toJSON() {
     return {
       name: this.name,
@@ -94,7 +98,21 @@ export class EgoInfraBase<T extends EgoLibWrapper> implements EgoInfraInterface 
       case EgoNetwork.TestNet:
         return this.testnet;
       case EgoNetwork.Local:
-        return this.local || this.testnet;
+        if (this.local) {
+          return this.local;
+        } else {
+          try {
+            const localCanisterId = getCanisterId(this.name);
+            if (localCanisterId) {
+              this.overrideCanisterId(EgoNetwork.Local, localCanisterId);
+              return localCanisterId;
+            } else {
+              throw new Error('Local canister id not found');
+            }
+          } catch (error) {
+            throw error;
+          }
+        }
     }
   }
   public getCanisterName(): string {

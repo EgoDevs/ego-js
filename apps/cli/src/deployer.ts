@@ -567,6 +567,7 @@ export async function runPostPatch() {
         console.log(pkg.wasm);
         const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
         if (!isProduction) {
+          shell.exec(`dfx canister call ${f.package} ego_owner_add '("${identity().getPrincipal()}")'`);
         } else {
           const walletActor = (await cycleWalletActor()).actor;
           try {

@@ -1,6 +1,6 @@
 {
   "name": "@ego-js/utils",
-  "version": "2.2.35",
+  "version": "2.2.36",
   "main": "./dist/index.js",
   "types": "./src/index.d.ts",
   "license": "MIT",

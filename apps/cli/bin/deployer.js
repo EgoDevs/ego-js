@@ -578,7 +578,7 @@ async function runPostPatch() {
                 console.log(pkg.wasm);
                 const config = (0, _utils.readConfig)(process.cwd() + `/${_utils.configs}/` + f.package + '.json');
                 if (!_utils.isProduction) {
-                    _shelljs.default.exec(`dfx canister call ${f.package} ego_owner_add '("${(0, _utils.identity)().getPrincipal()}")'`);
+                    _shelljs.default.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '("${(0, _utils.identity)().getPrincipal()}")'`);
                 } else {
                     const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                     try {

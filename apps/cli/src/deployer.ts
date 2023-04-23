@@ -252,7 +252,7 @@ export async function runInstall() {
         if (!isProduction) {
           try {
             console.log(`installing ${f.package} to ${config.LOCAL_CANISTERID!}`);
-            const initArgs = Array.from(
+            let initArgs = Array.from(
               new Uint8Array(
                 IDL.encode(
                   [IDL.Record({ init_caller: IDL.Opt(IDL.Principal) })],
@@ -264,6 +264,10 @@ export async function runInstall() {
                 ),
               ),
             );
+            if (f.init_args) {
+              initArgs = Array.from(f.init_args);
+            }
+
             await actor.install_code({
               arg: initArgs,
               wasm_module: wasm,
@@ -291,7 +295,7 @@ export async function runInstall() {
             });
 
             // IDL.Tuple()
-            const initArgs = Array.from(
+            let initArgs = Array.from(
               new Uint8Array(
                 IDL.encode(
                   [IDL.Record({ init_caller: IDL.Opt(IDL.Principal) })],
@@ -303,6 +307,10 @@ export async function runInstall() {
                 ),
               ),
             );
+
+            if (f.init_args) {
+              initArgs = Array.from(f.init_args);
+            }
 
             const buf = IDL.encode(
               [idl],

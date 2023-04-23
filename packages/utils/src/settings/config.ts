@@ -19,6 +19,7 @@ export interface ProjectConfig {
   custom_deploy?: string | (() => void) | (() => Promise<void>);
   // if pass this script, deployer.js will run this shell after first install/deploy
   post_install_sequence?: number;
+  init_args?: Uint8Array;
 }
 
 export type Configs = Array<ProjectConfig>;

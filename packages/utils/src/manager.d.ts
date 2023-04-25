@@ -1,10 +1,11 @@
 import { CreateActorResult } from './settings/agent';
-import { canister_settings, _SERVICE as ManagementService } from './idls/management';
+import { canister_settings, definite_canister_settings, _SERVICE as ManagementService } from './idls/management';
 import { _SERVICE as CycleWalletService } from './idls/cycle_wallet';
-import { ActorSubclass } from '@dfinity/agent';
+import { ActorSubclass, SignIdentity } from '@dfinity/agent';
+import { Principal } from '@dfinity/principal';
 export declare const cycleWalletCanisterId: string;
-export declare function managementActor(): Promise<CreateActorResult<ManagementService>>;
-export declare function cycleWalletActor(): Promise<CreateActorResult<CycleWalletService>>;
+export declare function managementActor(id?: SignIdentity): Promise<CreateActorResult<ManagementService>>;
+export declare function cycleWalletActor(id?: SignIdentity): Promise<CreateActorResult<CycleWalletService>>;
 export declare function readWasm(packagePath: string): number[];
 export interface EGOPackage {
     type: string;
@@ -27,12 +28,27 @@ export declare class ManagementApi {
     private _actor;
     get actor(): ActorSubclass<ManagementService>;
     constructor(_actor: ActorSubclass<ManagementService>);
-    static create(): Promise<ManagementApi>;
-    static install({ name, wasm_path, canister_id, installMode, }: {
+    static create(id?: SignIdentity): Promise<ManagementApi>;
+    static install({ id, name, wasm_path, canister_id, installMode, }: {
+        id?: SignIdentity;
         name: string;
         wasm_path: string;
         canister_id: string;
         installMode: InstallMode;
     }): Promise<void>;
-    static updateSettings(name: string, canister_id: string, settings: canister_settings): Promise<void>;
+    static status(canister: string, id?: SignIdentity): Promise<{
+        status: {
+            stopped: null;
+        } | {
+            stopping: null;
+        } | {
+            running: null;
+        };
+        memory_size: bigint;
+        cycles: bigint;
+        settings: definite_canister_settings;
+        module_hash: [] | [Array<number>];
+    }>;
+    static getCanisterControllers(canister: string, id?: SignIdentity): Promise<Principal[]>;
+    static updateSettings(name: string, canister_id: string, settings: canister_settings, id?: SignIdentity): Promise<void>;
 }

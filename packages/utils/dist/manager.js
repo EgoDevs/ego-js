@@ -200,17 +200,17 @@ if (!global.fetch) {
 }
 var managementCanisterId = "";
 var cycleWalletCanisterId = _env.productionCyclesWallet;
-function managementActor() {
+function managementActor(id) {
     return _managementActor.apply(this, arguments);
 }
 function _managementActor() {
-    _managementActor = _asyncToGenerator(function() {
+    _managementActor = _asyncToGenerator(function(id) {
         return __generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
                         4,
-                        (0, _agent.getActor2)((0, _identity.identity)(), _managementIdl.idlFactory, managementCanisterId)
+                        (0, _agent.getActor2)(id !== null && id !== void 0 ? id : (0, _identity.identity)(), _managementIdl.idlFactory, managementCanisterId)
                     ];
                 case 1:
                     return [
@@ -222,17 +222,17 @@ function _managementActor() {
     });
     return _managementActor.apply(this, arguments);
 }
-function cycleWalletActor() {
+function cycleWalletActor(id) {
     return _cycleWalletActor.apply(this, arguments);
 }
 function _cycleWalletActor() {
-    _cycleWalletActor = _asyncToGenerator(function() {
+    _cycleWalletActor = _asyncToGenerator(function(id) {
         return __generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
                         4,
-                        (0, _agent.getActor2)((0, _identity.identity)(), _cycleWalletIdl.idlFactory, cycleWalletCanisterId)
+                        (0, _agent.getActor2)(id !== null && id !== void 0 ? id : (0, _identity.identity)(), _cycleWalletIdl.idlFactory, cycleWalletCanisterId)
                     ];
                 case 1:
                     return [
@@ -268,7 +268,7 @@ var ManagementApi = function() {
         _classCallCheck(this, ManagementApi);
         this._actor = _actor;
     }
-    ManagementApi.create = function create() {
+    ManagementApi.create = function create(id) {
         return _asyncToGenerator(function() {
             var actor;
             return __generator(this, function(_state) {
@@ -276,7 +276,7 @@ var ManagementApi = function() {
                     case 0:
                         return [
                             4,
-                            managementActor()
+                            managementActor(id)
                         ];
                     case 1:
                         actor = _state.sent().actor;
@@ -289,7 +289,7 @@ var ManagementApi = function() {
         })();
     };
     ManagementApi.install = function install(param) {
-        var name = param.name, wasm_path = param.wasm_path, canister_id = param.canister_id, _param_installMode = param.installMode, installMode = _param_installMode === void 0 ? InstallMode.install : _param_installMode;
+        var id = param.id, name = param.name, wasm_path = param.wasm_path, canister_id = param.canister_id, _param_installMode = param.installMode, installMode = _param_installMode === void 0 ? InstallMode.install : _param_installMode;
         return _asyncToGenerator(function() {
             var manager, mode, wasm, error;
             return __generator(this, function(_state) {
@@ -297,7 +297,7 @@ var ManagementApi = function() {
                     case 0:
                         return [
                             4,
-                            ManagementApi.create()
+                            ManagementApi.create(id)
                         ];
                     case 1:
                         manager = _state.sent();
@@ -360,7 +360,55 @@ var ManagementApi = function() {
             });
         })();
     };
-    ManagementApi.updateSettings = function updateSettings(name, canister_id, settings) {
+    ManagementApi.status = function status(canister, id) {
+        return _asyncToGenerator(function() {
+            var manager, status;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            ManagementApi.create(id)
+                        ];
+                    case 1:
+                        manager = _state.sent();
+                        return [
+                            4,
+                            manager.actor.canister_status({
+                                canister_id: _principal.Principal.fromText(canister)
+                            })
+                        ];
+                    case 2:
+                        status = _state.sent();
+                        return [
+                            2,
+                            status
+                        ];
+                }
+            });
+        })();
+    };
+    ManagementApi.getCanisterControllers = function getCanisterControllers(canister, id) {
+        return _asyncToGenerator(function() {
+            var status;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        return [
+                            4,
+                            ManagementApi.status(canister, id)
+                        ];
+                    case 1:
+                        status = _state.sent();
+                        return [
+                            2,
+                            status.settings.controllers
+                        ];
+                }
+            });
+        })();
+    };
+    ManagementApi.updateSettings = function updateSettings(name, canister_id, settings, id) {
         return _asyncToGenerator(function() {
             var manager;
             return __generator(this, function(_state) {
@@ -368,7 +416,7 @@ var ManagementApi = function() {
                     case 0:
                         return [
                             4,
-                            ManagementApi.create()
+                            ManagementApi.create(id)
                         ];
                     case 1:
                         manager = _state.sent();

@@ -90,9 +90,6 @@ function getCanisterId(configName, env) {
     var fileName;
     var combinedEnv = env !== null && env !== void 0 ? env : (0, _env.getEgoEnv)();
     var key = "ic";
-    console.log({
-        combinedEnv
-    });
     switch(combinedEnv){
         case "local":
             {

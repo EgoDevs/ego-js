@@ -11,6 +11,7 @@ import {
   runPostPatch,
   runCredentials,
   readDFX,
+  runMigrateV1,
 } from './deployer';
 
 if ((argv as ThisArgv).clean) {
@@ -25,6 +26,11 @@ if ((argv as ThisArgv).init) {
 if ((argv as ThisArgv).credentials) {
   // console.log('clean');
   runCredentials();
+}
+
+if ((argv as ThisArgv).migrate_v1) {
+  // console.log('clean');
+  runMigrateV1();
 }
 
 if ((argv as ThisArgv).create) {

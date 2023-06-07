@@ -14,6 +14,9 @@ if (_utils.argv.init) {
 if (_utils.argv.credentials) {
     (0, _deployer.runCredentials)();
 }
+if (_utils.argv.migrate_v1) {
+    (0, _deployer.runMigrateV1)();
+}
 if (_utils.argv.create) {
     (0, _deployer.checkAndArtifacts)();
     (0, _deployer.generateDFXJson)();

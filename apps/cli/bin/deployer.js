@@ -14,6 +14,7 @@ _export(exports, {
     readDFX: ()=>readDFX,
     checkAndArtifacts: ()=>checkAndArtifacts,
     generateDFXJson: ()=>generateDFXJson,
+    runMigrateV1: ()=>runMigrateV1,
     runCreate: ()=>runCreate,
     runInstall: ()=>runInstall,
     runReInstall: ()=>runReInstall,
@@ -133,6 +134,60 @@ function generateDFXJson() {
         _fs.default.writeFileSync(shouldSaveName, JSON.stringify(_utils.dfxConfigTemplate));
     }
 }
+async function runMigrateV1() {
+    console.log('run runMigrate');
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
+        var _f_config;
+        let configFile = (_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : `${process.cwd()}/${_utils.configs}/${f.package}.json`;
+        let configJson;
+        let configFileLocal = `${process.cwd()}/configs/local.json`;
+        let configFileMainnet = `${process.cwd()}/configs/mainnet.json`;
+        try {
+            configJson = (0, _utils.readConfig)(configFile);
+        } catch (error) {
+            console.log(`config file ${configFile} not found`);
+        }
+        console.log({
+            configFile
+        });
+        if (configJson) {
+            if (configJson.hasOwnProperty('LOCAL_CANISTERID')) {
+                const localCanisterId = configJson['LOCAL_CANISTERID'];
+                let configJsonLocal = JSON.stringify({});
+                try {
+                    configJsonLocal = _fs.default.readFileSync(configFileLocal).toString('utf8');
+                } catch (error1) {
+                    _fs.default.writeFileSync(configFileLocal, JSON.stringify({}));
+                }
+                const configObject = _objectSpread({}, JSON.parse(configJsonLocal));
+                configObject[`${f.package}`] = {
+                    local: localCanisterId
+                };
+                if (f.url) {
+                    configObject[`${f.package}_url`] = `http://${localCanisterId}.localhost:8000`;
+                }
+                _fs.default.writeFileSync(configFileLocal, JSON.stringify(configObject));
+            }
+            if (configJson.hasOwnProperty('PRODUCTION_CANISTERID')) {
+                const productionId = configJson['PRODUCTION_CANISTERID'];
+                let configJsonProd = JSON.stringify({});
+                try {
+                    configJsonProd = _fs.default.readFileSync(configFileMainnet).toString('utf8');
+                } catch (error2) {
+                    _fs.default.writeFileSync(configFileMainnet, JSON.stringify({}));
+                }
+                const configObject1 = _objectSpread({}, JSON.parse(configJsonProd));
+                configObject1[`${f.package}`] = {
+                    ic: productionId
+                };
+                if (f.url) {
+                    configObject1[`${f.package}_url`] = `https://${productionId}.icp0.io`;
+                }
+                _fs.default.writeFileSync(configFileMainnet, JSON.stringify(configObject1));
+            }
+        }
+    }
+}
 async function runCreate() {
     console.log('run runCreate');
     const { actor  } = await (0, _utils.managementActor)();
@@ -145,36 +200,31 @@ async function runCreate() {
         switch(f.env){
             case 'local':
                 {
-                    var _f_config;
-                    configFile = (_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : `${process.cwd()}/configs/local.json`;
+                    configFile = `${process.cwd()}/configs/local.json`;
                     isIC = false;
                     break;
                 }
             case 'mainnet':
                 {
-                    var _f_config1;
-                    configFile = (_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : `${process.cwd()}/configs/mainnet.json`;
+                    configFile = `${process.cwd()}/configs/mainnet.json`;
                     isIC = true;
                     break;
                 }
             case 'testnet':
                 {
-                    var _f_config2;
-                    configFile = (_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : `${process.cwd()}/configs/testnet.json`;
+                    configFile = `${process.cwd()}/configs/testnet.json`;
                     isIC = true;
                     break;
                 }
             case 'custom':
                 {
-                    var _f_config3;
-                    configFile = (_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : `${process.cwd()}/configs/custom.json`;
+                    configFile = `${process.cwd()}/configs/custom.json`;
                     isIC = false;
                     break;
                 }
             default:
                 {
-                    var _f_config4;
-                    configFile = (_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : `${process.cwd()}/configs/local.json`;
+                    configFile = `${process.cwd()}/configs/local.json`;
                     isIC = false;
                     break;
                 }
@@ -298,8 +348,7 @@ async function runInstall() {
                 switch(f.env){
                     case 'local':
                         {
-                            var _f_config;
-                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -307,8 +356,7 @@ async function runInstall() {
                         }
                     case 'mainnet':
                         {
-                            var _f_config1;
-                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -316,8 +364,7 @@ async function runInstall() {
                         }
                     case 'testnet':
                         {
-                            var _f_config2;
-                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -325,8 +372,7 @@ async function runInstall() {
                         }
                     case 'custom':
                         {
-                            var _f_config3;
-                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -334,8 +380,7 @@ async function runInstall() {
                         }
                     default:
                         {
-                            var _f_config4;
-                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -453,8 +498,7 @@ async function runReInstall() {
                 switch(f.env){
                     case 'local':
                         {
-                            var _f_config;
-                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -462,8 +506,7 @@ async function runReInstall() {
                         }
                     case 'mainnet':
                         {
-                            var _f_config1;
-                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -471,8 +514,7 @@ async function runReInstall() {
                         }
                     case 'testnet':
                         {
-                            var _f_config2;
-                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -480,8 +522,7 @@ async function runReInstall() {
                         }
                     case 'custom':
                         {
-                            var _f_config3;
-                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -489,8 +530,7 @@ async function runReInstall() {
                         }
                     default:
                         {
-                            var _f_config4;
-                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -602,8 +642,7 @@ async function runUpgrade() {
                 switch(f.env){
                     case 'local':
                         {
-                            var _f_config;
-                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -611,8 +650,7 @@ async function runUpgrade() {
                         }
                     case 'mainnet':
                         {
-                            var _f_config1;
-                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -620,8 +658,7 @@ async function runUpgrade() {
                         }
                     case 'testnet':
                         {
-                            var _f_config2;
-                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -629,8 +666,7 @@ async function runUpgrade() {
                         }
                     case 'custom':
                         {
-                            var _f_config3;
-                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -638,8 +674,7 @@ async function runUpgrade() {
                         }
                     default:
                         {
-                            var _f_config4;
-                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -741,8 +776,7 @@ async function runPostPatch() {
                 switch(f.env){
                     case 'local':
                         {
-                            var _f_config;
-                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -750,8 +784,7 @@ async function runPostPatch() {
                         }
                     case 'mainnet':
                         {
-                            var _f_config1;
-                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -759,8 +792,7 @@ async function runPostPatch() {
                         }
                     case 'testnet':
                         {
-                            var _f_config2;
-                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = true;
@@ -768,8 +800,7 @@ async function runPostPatch() {
                         }
                     case 'custom':
                         {
-                            var _f_config3;
-                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;
@@ -777,8 +808,7 @@ async function runPostPatch() {
                         }
                     default:
                         {
-                            var _f_config4;
-                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                            configFile = JSON.parse(_fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
                                 encoding: 'utf-8'
                             }));
                             isIC = false;

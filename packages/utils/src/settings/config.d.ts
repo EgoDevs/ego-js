@@ -37,6 +37,7 @@ export interface ThisArgv {
     upgrade: boolean | undefined;
     remove: string | undefined;
     postPatch: boolean | undefined;
+    migrate_v1: boolean | undefined;
     _: (string | number)[];
     $0: string;
 }

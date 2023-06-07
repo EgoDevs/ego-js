@@ -13,6 +13,7 @@ export interface ProjectConfig {
     custom_deploy?: string | (() => void) | (() => Promise<void>);
     post_install_sequence?: number;
     init_args?: Uint8Array;
+    env?: string;
 }
 export type Configs = Array<ProjectConfig>;
 export declare const dfxConfigTemplate: {

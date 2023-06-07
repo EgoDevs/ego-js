@@ -20,6 +20,7 @@ export interface ProjectConfig {
   // if pass this script, deployer.js will run this shell after first install/deploy
   post_install_sequence?: number;
   init_args?: Uint8Array;
+  env?: string;
 }
 
 export type Configs = Array<ProjectConfig>;
@@ -60,13 +61,13 @@ export function getEgos(argv: ThisArgv): Configs {
     const ego = egos.find(e => e.package === project);
     if (ego) {
       if ((argv as ThisArgv).install || (argv as ThisArgv).reinstall || (argv as ThisArgv).upgrade || (argv as ThisArgv).postPatch) {
-        egos = [{ ...ego, no_deploy: false }];
+        egos = [{ ...ego, no_deploy: false, env: ((argv as ThisArgv).env as string | undefined) ?? 'local' }];
       } else {
-        egos = [ego];
+        egos = [{ ...ego, env: ((argv as ThisArgv).env as string | undefined) ?? 'local' }];
       }
     }
   }
-  return egos;
+  return egos.map(e => ({ ...e, env: ((argv as ThisArgv).env as string | undefined) ?? 'local' }));
 }
 // export const infraConfig: Configs = [
 //   {

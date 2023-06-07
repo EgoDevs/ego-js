@@ -1,14 +1,24 @@
 import file, { fstat } from 'fs';
 import shell from 'shelljs';
 import yargs from 'yargs';
-import { credentials, dfxConfigTemplate, generatePemfile, generateSeedphraseText, getEgos, productionPem, seedPhrase, ThisArgv } from '@ego-js/utils';
+import {
+  argv,
+  credentials,
+  dfxConfigTemplate,
+  generatePemfile,
+  generateSeedphraseText,
+  getEgos,
+  productionPem,
+  seedPhrase,
+  ThisArgv,
+} from '@ego-js/utils';
 import { cycleWalletActor, cycleWalletCanisterId, managementActor, readConfig, readEgoDfxJson, readWasm } from '@ego-js/utils';
 import { Principal } from '@dfinity/principal';
 import { artifacts, configs, cyclesCreateCanister, isProduction } from '@ego-js/utils';
 import { identity } from '@ego-js/utils';
 import { hasOwnProperty } from '@ego-js/utils';
 import { IDL } from '@dfinity/candid';
-import { argv } from '.';
+
 import { fetch, Headers } from 'cross-fetch';
 
 if (!globalThis.fetch) {
@@ -125,11 +135,41 @@ export async function runCreate() {
     const dfx_folder = process.cwd() + '/' + `${artifacts}` + '/' + f.package + '/.dfx';
     const dfx_local_json = dfx_folder + '/local/canister_ids.json';
     const dfx_ic_json = dfx_folder + '/ic/canister_ids.json';
-    let configFile = f.config ?? `${process.cwd()}/${configs}/${f.package}.json`;
+
+    let configFile: string;
+    let isIC = false;
+    switch (f.env) {
+      case 'local': {
+        configFile = f.config ?? `${process.cwd()}/configs/local.json`;
+        isIC = false;
+        break;
+      }
+      case 'mainnet': {
+        configFile = f.config ?? `${process.cwd()}/configs/mainnet.json`;
+        isIC = true;
+        break;
+      }
+      case 'testnet': {
+        configFile = f.config ?? `${process.cwd()}/configs/testnet.json`;
+        isIC = true;
+        break;
+      }
+      case 'custom': {
+        configFile = f.config ?? `${process.cwd()}/configs/custom.json`;
+        isIC = false;
+        break;
+      }
+      default: {
+        configFile = f.config ?? `${process.cwd()}/configs/local.json`;
+        isIC = false;
+        break;
+      }
+    }
 
     if (!f.no_deploy) {
       let canister_id;
-      if (!isProduction) {
+
+      if (!isIC) {
         canister_id = (
           await actor.provisional_create_canister_with_cycles({
             settings: [
@@ -155,6 +195,7 @@ export async function runCreate() {
             compute_allocation: [],
           },
         });
+
         if (hasOwnProperty(walletCreateResult, 'Ok')) {
           canister_id = walletCreateResult.Ok.canister_id;
         } else {
@@ -163,7 +204,7 @@ export async function runCreate() {
         // canister_id =
       }
 
-      if (!isProduction) {
+      if (!isIC) {
         const localCanisterId = canister_id.toText();
         console.log(`Creating canister ${f.package}...`);
         console.log(`${f.package} canister created with canister id: ${localCanisterId}`);
@@ -178,13 +219,14 @@ export async function runCreate() {
 
         const configObject = {
           ...JSON.parse(configJson),
-          LOCAL_CANISTERID: localCanisterId,
         };
+        configObject[`${f.package}`] = { local: localCanisterId };
 
         if (f.url) {
-          Object.assign(configObject, {
-            LOCAL_URL: `http://${localCanisterId}.localhost:8000`,
-          });
+          // Object.assign(configObject, {
+          //   LOCAL_URL: `http://${localCanisterId}.localhost:8000`,
+          // });
+          configObject[`${f.package}_url`] = `http://${localCanisterId}.localhost:8000`;
         }
 
         file.writeFileSync(configFile, JSON.stringify(configObject));
@@ -205,13 +247,16 @@ export async function runCreate() {
 
         const configObject = {
           ...JSON.parse(configJson),
-          PRODUCTION_CANISTERID: productionId,
+          // PRODUCTION_CANISTERID: productionId,
         };
+        configObject[`${f.package}`] = { ic: productionId };
 
         if (f.url) {
-          Object.assign(configObject, {
-            PRODUCTION_URL: `https://${productionId}.icp0.io`,
-          });
+          // Object.assign(configObject, {
+          //   PRODUCTION_URL: `https://${productionId}.icp0.io`,
+
+          // });
+          configObject[`${f.package}_url`] = `https://${productionId}.icp0.io`;
         }
 
         const canister_ids_json = {};
@@ -247,11 +292,40 @@ export async function runInstall() {
       } else {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
-        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
+        // const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
+        let configFile;
+        let isIC = false;
+        switch (f.env) {
+          case 'local': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          case 'mainnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/mainnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'testnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/testnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'custom': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/custom.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          default: {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+        }
 
-        if (!isProduction) {
+        if (!isIC) {
           try {
-            console.log(`installing ${f.package} to ${config.LOCAL_CANISTERID!}`);
+            console.log(`installing ${f.package} to ${configFile[`${f.package}`]!['local']}`);
             let initArgs = Array.from(
               new Uint8Array(
                 IDL.encode(
@@ -272,7 +346,7 @@ export async function runInstall() {
               arg: initArgs,
               wasm_module: wasm,
               mode: { install: null },
-              canister_id: Principal.fromText(config.LOCAL_CANISTERID!),
+              canister_id: Principal.fromText(configFile[`${f.package}`]['local']),
             });
             console.log(`Success with wasm bytes length: ${wasm.length}`);
           } catch (error) {
@@ -280,7 +354,7 @@ export async function runInstall() {
           }
         } else {
           try {
-            console.log(`installing ${f.package} to ${config.PRODUCTION_CANISTERID!}`);
+            console.log(`installing ${f.package} to ${configFile[`${f.package}`]['ic']}`);
             const walletActor = (await cycleWalletActor()).actor;
             const wasm_module = IDL.Vec(IDL.Nat8);
             const idl = IDL.Record({
@@ -319,7 +393,7 @@ export async function runInstall() {
                   arg: initArgs,
                   wasm_module: wasm,
                   mode: { install: null },
-                  canister_id: Principal.fromText(config.PRODUCTION_CANISTERID!),
+                  canister_id: Principal.fromText(configFile[`${f.package}`]['ic']),
                 },
               ],
             );
@@ -365,11 +439,39 @@ export async function runReInstall() {
       } else {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
-        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
-
-        if (!isProduction) {
+        // const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
+        let configFile;
+        let isIC = false;
+        switch (f.env) {
+          case 'local': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          case 'mainnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/mainnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'testnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/testnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'custom': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/custom.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          default: {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+        }
+        if (!isIC) {
           try {
-            console.log(`reinstalling ${f.package} to ${config.LOCAL_CANISTERID!}`);
+            console.log(`reinstalling ${f.package} to ${configFile[`${f.package}`]['local']}`);
             const initArgs = Array.from(
               new Uint8Array(
                 IDL.encode(
@@ -386,7 +488,7 @@ export async function runReInstall() {
               arg: initArgs,
               wasm_module: wasm,
               mode: { reinstall: null },
-              canister_id: Principal.fromText(config.LOCAL_CANISTERID!),
+              canister_id: Principal.fromText(configFile[`${f.package}`]['local']),
             });
 
             console.log(`Success with wasm bytes length: ${wasm.length}`);
@@ -395,7 +497,7 @@ export async function runReInstall() {
           }
         } else {
           try {
-            console.log(`reinstalling ${f.package} to ${config.PRODUCTION_CANISTERID!}`);
+            console.log(`reinstalling ${f.package} to ${configFile[`${f.package}`]['ic']}`);
             const walletActor = (await cycleWalletActor()).actor;
             const wasm_module = IDL.Vec(IDL.Nat8);
             const idl = IDL.Record({
@@ -431,7 +533,7 @@ export async function runReInstall() {
                   arg: initArgs,
                   wasm_module: wasm,
                   mode: { reinstall: null },
-                  canister_id: Principal.fromText(config.PRODUCTION_CANISTERID!),
+                  canister_id: Principal.fromText(configFile[`${f.package}`]['ic']),
                 },
               ],
             );
@@ -476,15 +578,45 @@ export async function runUpgrade() {
       } else {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
-        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
-        if (!isProduction) {
+        // const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
+        let configFile;
+        let isIC = false;
+        switch (f.env) {
+          case 'local': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          case 'mainnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/mainnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'testnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/testnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'custom': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/custom.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          default: {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+        }
+
+        if (!isIC) {
           try {
-            console.log(`upgrading ${f.package} to ${config.LOCAL_CANISTERID!}`);
+            console.log(`upgrading ${f.package} to ${configFile[`${f.package}`]['local']}`);
             await actor.install_code({
               arg: [],
               wasm_module: wasm,
               mode: { upgrade: null },
-              canister_id: Principal.fromText(config.LOCAL_CANISTERID!),
+              canister_id: Principal.fromText(configFile[`${f.package}`]['local']),
             });
             console.log(`Success with wasm bytes length: ${wasm.length}`);
           } catch (error) {
@@ -492,7 +624,7 @@ export async function runUpgrade() {
           }
         } else {
           try {
-            console.log(`upgrading ${f.package} to ${config.PRODUCTION_CANISTERID!}`);
+            console.log(`upgrading ${f.package} to ${configFile[`${f.package}`]['ic']}`);
             const walletActor = (await cycleWalletActor()).actor;
             const wasm_module = IDL.Vec(IDL.Nat8);
             const idl = IDL.Record({
@@ -527,7 +659,7 @@ export async function runUpgrade() {
                   arg: initArgs,
                   wasm_module: wasm,
                   mode: { upgrade: null },
-                  canister_id: Principal.fromText(config.PRODUCTION_CANISTERID!),
+                  canister_id: Principal.fromText(configFile[`${f.package}`]['ic']),
                 },
               ],
             );
@@ -573,13 +705,42 @@ export async function runPostPatch() {
         const pkg = readEgoDfxJson(dfx_folder, f.package);
         const wasm = readWasm(dfx_folder + '/' + pkg.wasm);
         console.log(pkg.wasm);
-        const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
-        if (!isProduction) {
+        // const config = readConfig(process.cwd() + `/${configs}/` + f.package + '.json');
+        let configFile;
+        let isIC = false;
+        switch (f.env) {
+          case 'local': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          case 'mainnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/mainnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'testnet': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/testnet.json`, { encoding: 'utf-8' }));
+            isIC = true;
+            break;
+          }
+          case 'custom': {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/custom.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+          default: {
+            configFile = JSON.parse(f.config ?? file.readFileSync(`${process.cwd()}/configs/local.json`, { encoding: 'utf-8' }));
+            isIC = false;
+            break;
+          }
+        }
+        if (!isIC) {
           shell.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '("${identity().getPrincipal()}")'`);
         } else {
           const walletActor = (await cycleWalletActor()).actor;
           try {
-            console.log(`postPatching ${f.package} to ${config.PRODUCTION_CANISTERID!}`);
+            console.log(`postPatching ${f.package} to ${f.package} to ${configFile[`${f.package}`]['ic']}`);
             const idl = IDL.Principal;
 
             const buf = IDL.encode([idl], [identity().getPrincipal()]);
@@ -587,7 +748,7 @@ export async function runPostPatch() {
             const args = Array.from(new Uint8Array(buf));
 
             const result = await walletActor.wallet_call({
-              canister: Principal.fromText(config.PRODUCTION_CANISTERID!),
+              canister: Principal.fromText(configFile[`${f.package}`]['ic']),
               cycles: BigInt(0),
               method_name: 'ego_owner_add',
               args,

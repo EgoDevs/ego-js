@@ -90,7 +90,7 @@ function getIdentityFromPhraseWithSeed(phrase) {
     };
 }
 var identity = function() {
-    if (!_env.isProduction) {
+    if (!_env.isIC) {
         if (_fs.default.existsSync(_path.default.join(process.cwd(), _env.seedPhrase))) {
             var seedPhrase = _fs.default.readFileSync(_path.default.join(process.cwd(), _env.seedPhrase), {
                 encoding: "utf8"

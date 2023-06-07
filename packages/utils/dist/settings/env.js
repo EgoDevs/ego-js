@@ -44,9 +44,16 @@ _export(exports, {
     },
     cyclesCreateCanister () {
         return cyclesCreateCanister;
+    },
+    getEgoEnv () {
+        return getEgoEnv;
+    },
+    isIC () {
+        return isIC;
     }
 });
 var _fs = _interopRequireDefault(require("fs"));
+var _utils = require("./utils");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -71,3 +78,8 @@ var productionCyclesWallet = (_getEgoConfig_production_cycles_wallet = getEgoCon
 var seedPhrase = getEgoConfig("credentials").seedPhrase;
 var isProduction = process.env.NODE_ENV === "production";
 var cyclesCreateCanister = BigInt(getEgoConfig("cycles_install_code").replace("_", ""));
+function getEgoEnv() {
+    var _argv_env, _ref;
+    return (_ref = (_argv_env = _utils.argv.env) !== null && _argv_env !== void 0 ? _argv_env : process.env.NODE_ENV) !== null && _ref !== void 0 ? _ref : "local";
+}
+var isIC = getEgoEnv() === "mainnet" || getEgoEnv() === "testnet" || getEgoEnv() === "production";

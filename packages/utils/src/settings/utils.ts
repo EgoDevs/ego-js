@@ -4,7 +4,8 @@ import { fetch } from 'cross-fetch';
 import { Principal } from '@dfinity/principal';
 import { sha224 } from 'js-sha256';
 import crc from 'crc';
-import { configs } from './env';
+import { configs, getEgoEnv } from './env';
+import yargs from 'yargs';
 
 const toHexString = (bytes: Uint8Array) => bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 export type AccountIdentifier = string;
@@ -24,16 +25,52 @@ export function hasOwnProperty<X extends Record<string, unknown>, Y extends Prop
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
 
-export function getCanisterId(configName: string): string | undefined {
-  const isProd = process.env.NODE_ENV === 'production';
-  let canisterId: string | undefined;
-  if (isProd) {
-    const localFile = fs.readFileSync(path.resolve(`./${configs}/${configName}.json`), { encoding: 'utf8' });
-    canisterId = JSON.parse(localFile).PRODUCTION_CANISTERID;
-  } else {
-    const localFile = fs.readFileSync(path.resolve(`./${configs}/${configName}.json`), { encoding: 'utf8' });
-    canisterId = JSON.parse(localFile).LOCAL_CANISTERID;
+// export function getCanisterId(configName: string): string | undefined {
+//   const isProd = process.env.NODE_ENV === 'production';
+//   let canisterId: string | undefined;
+//   if (isProd) {
+//     const localFile = fs.readFileSync(path.resolve(`./${configs}/${configName}.json`), { encoding: 'utf8' });
+//     canisterId = JSON.parse(localFile).PRODUCTION_CANISTERID;
+//   } else {
+//     const localFile = fs.readFileSync(path.resolve(`./${configs}/${configName}.json`), { encoding: 'utf8' });
+//     canisterId = JSON.parse(localFile).LOCAL_CANISTERID;
+//   }
+//   return canisterId;
+// }
+
+export function getCanisterId(configName: string, env?: string): string | undefined {
+  let fileName: string;
+  let combinedEnv = env ?? getEgoEnv();
+  let key = 'ic';
+  switch (combinedEnv) {
+    case 'local': {
+      fileName = `${process.cwd()}/configs/local.json`;
+      key = 'local';
+      break;
+    }
+    case 'mainnet': {
+      fileName = `${process.cwd()}/configs/mainnet.json`;
+      key = 'ic';
+      break;
+    }
+    case 'testnet': {
+      fileName = `${process.cwd()}/configs/testnet.json`;
+      key = 'ic';
+      break;
+    }
+    case 'custom': {
+      fileName = `${process.cwd()}/configs/custom.json`;
+      key = 'local';
+      break;
+    }
+    default: {
+      fileName = `${process.cwd()}/configs/local.json`;
+      key = 'local';
+      break;
+    }
   }
+  const localFile = fs.readFileSync(path.resolve(fileName), { encoding: 'utf8' });
+  const canisterId = JSON.parse(localFile)[configName][key];
   return canisterId;
 }
 
@@ -81,3 +118,47 @@ export const calculateCrc32 = (bytes: Uint8Array): Uint8Array => {
 };
 
 // export const
+
+export const argv = yargs
+  .option('clean', {
+    alias: 'c',
+    description: 'clean .dfx/ folder',
+    type: 'boolean',
+  })
+  .option('create', {
+    alias: 'n',
+    description: 'create only',
+    type: 'boolean',
+  })
+  .option('credentials', {
+    alias: 'd',
+    description: 'bootstrap credentials',
+    type: 'boolean',
+  })
+  .option('init', {
+    alias: 'init',
+    description: 'init config',
+    type: 'boolean',
+  })
+  .option('install', {
+    alias: 'i',
+    description: 'install only',
+    type: 'boolean',
+  })
+  .option('reinstall', {
+    alias: 'r',
+    description: 'reinstall only',
+    type: 'boolean',
+  })
+  .option('upgrade', {
+    alias: 'u',
+    description: 'upgrade only',
+    type: 'boolean',
+  })
+  .option('postPatch', {
+    alias: 'post',
+    description: 'postPatch only',
+    type: 'boolean',
+  })
+  .help()
+  .alias('help', 'h').argv;

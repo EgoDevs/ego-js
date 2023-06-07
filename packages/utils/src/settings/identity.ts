@@ -19,7 +19,7 @@ const ecc = require('tiny-secp256k1');
 
 import { SignIdentity } from '@dfinity/agent';
 import curve from 'starkbank-ecdsa';
-import { isProduction, productionPem, seedPhrase as seedPhraseFile } from './env';
+import { isIC, isProduction, productionPem, seedPhrase as seedPhraseFile } from './env';
 
 export function fromHexString(hexString: string): ArrayBuffer {
   return new Uint8Array((hexString.match(/.{1,2}/g) ?? []).map(byte => parseInt(byte, 16))).buffer;
@@ -78,7 +78,7 @@ export function getIdentityFromPhraseWithSeed(phrase: string): {
 }
 
 const identity = () => {
-  if (!isProduction) {
+  if (!isIC) {
     if (fs.existsSync(path.join(process.cwd(), seedPhraseFile))) {
       const seedPhrase = fs
         .readFileSync(path.join(process.cwd(), seedPhraseFile), {

@@ -16,3 +16,5 @@ export declare const productionCyclesWallet: string;
 export declare const seedPhrase: string;
 export declare const isProduction: boolean;
 export declare const cyclesCreateCanister: bigint;
+export declare function getEgoEnv(): string;
+export declare const isIC: boolean;

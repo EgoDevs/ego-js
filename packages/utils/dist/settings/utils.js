@@ -29,6 +29,9 @@ _export(exports, {
     },
     calculateCrc32 () {
         return calculateCrc32;
+    },
+    argv () {
+        return argv;
     }
 });
 var _fs = _interopRequireDefault(require("fs"));
@@ -38,6 +41,7 @@ var _principal = require("@dfinity/principal");
 var _jsSha256 = require("js-sha256");
 var _crc = _interopRequireDefault(require("crc"));
 var _env = require("./env");
+var _yargs = _interopRequireDefault(require("yargs"));
 function _arrayLikeToArray(arr, len) {
     if (len == null || len > arr.length) len = arr.length;
     for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
@@ -82,20 +86,49 @@ if (!global.fetch) {
 function hasOwnProperty(obj, prop) {
     return Object.prototype.hasOwnProperty.call(obj, prop);
 }
-function getCanisterId(configName) {
-    var isProd = process.env.NODE_ENV === "production";
-    var canisterId;
-    if (isProd) {
-        var localFile = _fs.default.readFileSync(_path.default.resolve("./".concat(_env.configs, "/").concat(configName, ".json")), {
-            encoding: "utf8"
-        });
-        canisterId = JSON.parse(localFile).PRODUCTION_CANISTERID;
-    } else {
-        var localFile1 = _fs.default.readFileSync(_path.default.resolve("./".concat(_env.configs, "/").concat(configName, ".json")), {
-            encoding: "utf8"
-        });
-        canisterId = JSON.parse(localFile1).LOCAL_CANISTERID;
+function getCanisterId(configName, env) {
+    var fileName;
+    var combinedEnv = env !== null && env !== void 0 ? env : (0, _env.getEgoEnv)();
+    var key = "ic";
+    console.log({
+        combinedEnv
+    });
+    switch(combinedEnv){
+        case "local":
+            {
+                fileName = "".concat(process.cwd(), "/configs/local.json");
+                key = "local";
+                break;
+            }
+        case "mainnet":
+            {
+                fileName = "".concat(process.cwd(), "/configs/mainnet.json");
+                key = "ic";
+                break;
+            }
+        case "testnet":
+            {
+                fileName = "".concat(process.cwd(), "/configs/testnet.json");
+                key = "ic";
+                break;
+            }
+        case "custom":
+            {
+                fileName = "".concat(process.cwd(), "/configs/custom.json");
+                key = "local";
+                break;
+            }
+        default:
+            {
+                fileName = "".concat(process.cwd(), "/configs/local.json");
+                key = "local";
+                break;
+            }
     }
+    var localFile = _fs.default.readFileSync(_path.default.resolve(fileName), {
+        encoding: "utf8"
+    });
+    var canisterId = JSON.parse(localFile)[configName][key];
     return canisterId;
 }
 var asciiStringToByteArray = function(text) {
@@ -134,3 +167,36 @@ var calculateCrc32 = function(bytes) {
     view.setUint32(0, _crc.default.crc32(Buffer.from(bytes)), false);
     return Buffer.from(checksumArrayBuf);
 };
+var argv = _yargs.default.option("clean", {
+    alias: "c",
+    description: "clean .dfx/ folder",
+    type: "boolean"
+}).option("create", {
+    alias: "n",
+    description: "create only",
+    type: "boolean"
+}).option("credentials", {
+    alias: "d",
+    description: "bootstrap credentials",
+    type: "boolean"
+}).option("init", {
+    alias: "init",
+    description: "init config",
+    type: "boolean"
+}).option("install", {
+    alias: "i",
+    description: "install only",
+    type: "boolean"
+}).option("reinstall", {
+    alias: "r",
+    description: "reinstall only",
+    type: "boolean"
+}).option("upgrade", {
+    alias: "u",
+    description: "upgrade only",
+    type: "boolean"
+}).option("postPatch", {
+    alias: "post",
+    description: "postPatch only",
+    type: "boolean"
+}).help().alias("help", "h").argv;

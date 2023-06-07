@@ -1,7 +1,7 @@
 import { Actor, ActorSubclass, HttpAgent, SignIdentity } from '@dfinity/agent';
 import { InterfaceFactory } from '@dfinity/candid/lib/cjs/idl';
 import { Principal } from '@dfinity/principal';
-import { dfxPort, isProduction } from './env';
+import { dfxPort, isIC, isProduction } from './env';
 import { fetch, Headers } from 'cross-fetch';
 
 if (!globalThis.fetch) {
@@ -27,10 +27,10 @@ export async function _createActor<T>(
 ): Promise<CreateActorResult<T>> {
   const agent = new HttpAgent({
     identity,
-    host: host ?? !isProduction ? `http://127.0.0.1:${dfxPort}` : 'https://icp-api.io/',
+    host: host ?? !isIC ? `http://127.0.0.1:${dfxPort}` : 'https://icp-api.io/',
   });
   // Only fetch the root key when we're not in prod
-  if (!isProduction) {
+  if (!isIC) {
     await agent.fetchRootKey();
   }
 

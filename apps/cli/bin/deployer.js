@@ -25,7 +25,6 @@ const _shelljs = _interopRequireDefault(require("shelljs"));
 const _utils = require("@ego-js/utils");
 const _principal = require("@dfinity/principal");
 const _candid = require("@dfinity/candid");
-const _ = require(".");
 const _crossFetch = require("cross-fetch");
 function _defineProperty(obj, key, value) {
     if (key in obj) {
@@ -60,30 +59,6 @@ function _objectSpread(target) {
     }
     return target;
 }
-function ownKeys(object, enumerableOnly) {
-    var keys = Object.keys(object);
-    if (Object.getOwnPropertySymbols) {
-        var symbols = Object.getOwnPropertySymbols(object);
-        if (enumerableOnly) {
-            symbols = symbols.filter(function(sym) {
-                return Object.getOwnPropertyDescriptor(object, sym).enumerable;
-            });
-        }
-        keys.push.apply(keys, symbols);
-    }
-    return keys;
-}
-function _objectSpreadProps(target, source) {
-    source = source != null ? source : {};
-    if (Object.getOwnPropertyDescriptors) {
-        Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
-    } else {
-        ownKeys(Object(source)).forEach(function(key) {
-            Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
-        });
-    }
-    return target;
-}
 if (!globalThis.fetch) {
     globalThis.fetch = _crossFetch.fetch;
     globalThis.Headers = _crossFetch.Headers;
@@ -94,7 +69,7 @@ if (!global.fetch) {
 }
 function runClean() {
     console.log('run clean');
-    for (const f of (0, _utils.getEgos)(_.argv)){
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         _shelljs.default.exec(`rm -rf ${dfx_folder}`);
     }
@@ -128,7 +103,7 @@ function readDFX() {
 }
 function checkAndArtifacts() {
     console.log('run checkAndArtifacts');
-    for (const ego of (0, _utils.getEgos)(_.argv)){
+    for (const ego of (0, _utils.getEgos)(_utils.argv)){
         let folder_exist = true;
         try {
             folder_exist = _fs.default.existsSync(`${process.cwd()}/${_utils.artifacts}/${ego.package}`);
@@ -144,7 +119,7 @@ function checkAndArtifacts() {
 }
 function generateDFXJson() {
     console.log('run generateDFXJson');
-    for (const ego of (0, _utils.getEgos)(_.argv)){
+    for (const ego of (0, _utils.getEgos)(_utils.argv)){
         let shouldSaveName = `${process.cwd()}/${_utils.artifacts}/${ego.package}/dfx.json`;
         _shelljs.default.exec(`rm -rf ${shouldSaveName}`);
         const packageItem = {};
@@ -161,15 +136,52 @@ function generateDFXJson() {
 async function runCreate() {
     console.log('run runCreate');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)(_.argv)){
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package + '/.dfx';
         const dfx_local_json = dfx_folder + '/local/canister_ids.json';
         const dfx_ic_json = dfx_folder + '/ic/canister_ids.json';
-        var _f_config;
-        let configFile = (_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : `${process.cwd()}/${_utils.configs}/${f.package}.json`;
+        let configFile;
+        let isIC = false;
+        switch(f.env){
+            case 'local':
+                {
+                    var _f_config;
+                    configFile = (_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : `${process.cwd()}/configs/local.json`;
+                    isIC = false;
+                    break;
+                }
+            case 'mainnet':
+                {
+                    var _f_config1;
+                    configFile = (_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : `${process.cwd()}/configs/mainnet.json`;
+                    isIC = true;
+                    break;
+                }
+            case 'testnet':
+                {
+                    var _f_config2;
+                    configFile = (_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : `${process.cwd()}/configs/testnet.json`;
+                    isIC = true;
+                    break;
+                }
+            case 'custom':
+                {
+                    var _f_config3;
+                    configFile = (_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : `${process.cwd()}/configs/custom.json`;
+                    isIC = false;
+                    break;
+                }
+            default:
+                {
+                    var _f_config4;
+                    configFile = (_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : `${process.cwd()}/configs/local.json`;
+                    isIC = false;
+                    break;
+                }
+        }
         if (!f.no_deploy) {
             let canister_id;
-            if (!_utils.isProduction) {
+            if (!isIC) {
                 canister_id = (await actor.provisional_create_canister_with_cycles({
                     settings: [
                         {
@@ -208,7 +220,7 @@ async function runCreate() {
                     throw new Error(`canister id create failed : ${walletCreateResult.Err}`);
                 }
             }
-            if (!_utils.isProduction) {
+            if (!isIC) {
                 const localCanisterId = canister_id.toText();
                 console.log(`Creating canister ${f.package}...`);
                 console.log(`${f.package} canister created with canister id: ${localCanisterId}`);
@@ -218,13 +230,12 @@ async function runCreate() {
                 } catch (error) {
                     _fs.default.writeFileSync(configFile, JSON.stringify({}));
                 }
-                const configObject = _objectSpreadProps(_objectSpread({}, JSON.parse(configJson)), {
-                    LOCAL_CANISTERID: localCanisterId
-                });
+                const configObject = _objectSpread({}, JSON.parse(configJson));
+                configObject[`${f.package}`] = {
+                    local: localCanisterId
+                };
                 if (f.url) {
-                    Object.assign(configObject, {
-                        LOCAL_URL: `http://${localCanisterId}.localhost:8000`
-                    });
+                    configObject[`${f.package}_url`] = `http://${localCanisterId}.localhost:8000`;
                 }
                 _fs.default.writeFileSync(configFile, JSON.stringify(configObject));
                 const json = {};
@@ -242,13 +253,12 @@ async function runCreate() {
                 } catch (error1) {
                     _fs.default.writeFileSync(configFile, JSON.stringify({}));
                 }
-                const configObject1 = _objectSpreadProps(_objectSpread({}, JSON.parse(configJson1)), {
-                    PRODUCTION_CANISTERID: productionId
-                });
+                const configObject1 = _objectSpread({}, JSON.parse(configJson1));
+                configObject1[`${f.package}`] = {
+                    ic: productionId
+                };
                 if (f.url) {
-                    Object.assign(configObject1, {
-                        PRODUCTION_URL: `https://${productionId}.icp0.io`
-                    });
+                    configObject1[`${f.package}_url`] = `https://${productionId}.icp0.io`;
                 }
                 const canister_ids_json = {};
                 canister_ids_json[`${f.package}`] = {
@@ -271,7 +281,7 @@ async function runCreate() {
 async function runInstall() {
     console.log('run runInstall');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)(_.argv)){
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -283,10 +293,58 @@ async function runInstall() {
             } else {
                 const pkg = (0, _utils.readEgoDfxJson)(dfx_folder, f.package);
                 const wasm = (0, _utils.readWasm)(dfx_folder + '/' + pkg.wasm);
-                const config = (0, _utils.readConfig)(process.cwd() + `/${_utils.configs}/` + f.package + '.json');
-                if (!_utils.isProduction) {
+                let configFile;
+                let isIC = false;
+                switch(f.env){
+                    case 'local':
+                        {
+                            var _f_config;
+                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    case 'mainnet':
+                        {
+                            var _f_config1;
+                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'testnet':
+                        {
+                            var _f_config2;
+                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'custom':
+                        {
+                            var _f_config3;
+                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    default:
+                        {
+                            var _f_config4;
+                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                }
+                if (!isIC) {
                     try {
-                        console.log(`installing ${f.package} to ${config.LOCAL_CANISTERID}`);
+                        console.log(`installing ${f.package} to ${configFile[`${f.package}`]['local']}`);
                         let initArgs = Array.from(new Uint8Array(_candid.IDL.encode([
                             _candid.IDL.Record({
                                 init_caller: _candid.IDL.Opt(_candid.IDL.Principal)
@@ -307,7 +365,7 @@ async function runInstall() {
                             mode: {
                                 install: null
                             },
-                            canister_id: _principal.Principal.fromText(config.LOCAL_CANISTERID)
+                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local'])
                         });
                         console.log(`Success with wasm bytes length: ${wasm.length}`);
                     } catch (error) {
@@ -315,7 +373,7 @@ async function runInstall() {
                     }
                 } else {
                     try {
-                        console.log(`installing ${f.package} to ${config.PRODUCTION_CANISTERID}`);
+                        console.log(`installing ${f.package} to ${configFile[`${f.package}`]['ic']}`);
                         const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                         const wasm_module = _candid.IDL.Vec(_candid.IDL.Nat8);
                         const idl = _candid.IDL.Record({
@@ -351,7 +409,7 @@ async function runInstall() {
                                 mode: {
                                     install: null
                                 },
-                                canister_id: _principal.Principal.fromText(config.PRODUCTION_CANISTERID)
+                                canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['ic'])
                             }
                         ]);
                         const args = Array.from(new Uint8Array(buf));
@@ -378,7 +436,7 @@ async function runInstall() {
 async function runReInstall() {
     console.log('run runReInstall');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)(_.argv)){
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -390,10 +448,58 @@ async function runReInstall() {
             } else {
                 const pkg = (0, _utils.readEgoDfxJson)(dfx_folder, f.package);
                 const wasm = (0, _utils.readWasm)(dfx_folder + '/' + pkg.wasm);
-                const config = (0, _utils.readConfig)(process.cwd() + `/${_utils.configs}/` + f.package + '.json');
-                if (!_utils.isProduction) {
+                let configFile;
+                let isIC = false;
+                switch(f.env){
+                    case 'local':
+                        {
+                            var _f_config;
+                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    case 'mainnet':
+                        {
+                            var _f_config1;
+                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'testnet':
+                        {
+                            var _f_config2;
+                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'custom':
+                        {
+                            var _f_config3;
+                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    default:
+                        {
+                            var _f_config4;
+                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                }
+                if (!isIC) {
                     try {
-                        console.log(`reinstalling ${f.package} to ${config.LOCAL_CANISTERID}`);
+                        console.log(`reinstalling ${f.package} to ${configFile[`${f.package}`]['local']}`);
                         const initArgs = Array.from(new Uint8Array(_candid.IDL.encode([
                             _candid.IDL.Record({
                                 init_caller: _candid.IDL.Opt(_candid.IDL.Principal)
@@ -411,7 +517,7 @@ async function runReInstall() {
                             mode: {
                                 reinstall: null
                             },
-                            canister_id: _principal.Principal.fromText(config.LOCAL_CANISTERID)
+                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local'])
                         });
                         console.log(`Success with wasm bytes length: ${wasm.length}`);
                     } catch (error) {
@@ -419,7 +525,7 @@ async function runReInstall() {
                     }
                 } else {
                     try {
-                        console.log(`reinstalling ${f.package} to ${config.PRODUCTION_CANISTERID}`);
+                        console.log(`reinstalling ${f.package} to ${configFile[`${f.package}`]['ic']}`);
                         const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                         const wasm_module = _candid.IDL.Vec(_candid.IDL.Nat8);
                         const idl = _candid.IDL.Record({
@@ -452,7 +558,7 @@ async function runReInstall() {
                                 mode: {
                                     reinstall: null
                                 },
-                                canister_id: _principal.Principal.fromText(config.PRODUCTION_CANISTERID)
+                                canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['ic'])
                             }
                         ]);
                         const args = Array.from(new Uint8Array(buf));
@@ -479,7 +585,7 @@ async function runReInstall() {
 async function runUpgrade() {
     console.log('run runUpgrade');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)(_.argv)){
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -491,17 +597,65 @@ async function runUpgrade() {
             } else {
                 const pkg = (0, _utils.readEgoDfxJson)(dfx_folder, f.package);
                 const wasm = (0, _utils.readWasm)(dfx_folder + '/' + pkg.wasm);
-                const config = (0, _utils.readConfig)(process.cwd() + `/${_utils.configs}/` + f.package + '.json');
-                if (!_utils.isProduction) {
+                let configFile;
+                let isIC = false;
+                switch(f.env){
+                    case 'local':
+                        {
+                            var _f_config;
+                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    case 'mainnet':
+                        {
+                            var _f_config1;
+                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'testnet':
+                        {
+                            var _f_config2;
+                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'custom':
+                        {
+                            var _f_config3;
+                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    default:
+                        {
+                            var _f_config4;
+                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                }
+                if (!isIC) {
                     try {
-                        console.log(`upgrading ${f.package} to ${config.LOCAL_CANISTERID}`);
+                        console.log(`upgrading ${f.package} to ${configFile[`${f.package}`]['local']}`);
                         await actor.install_code({
                             arg: [],
                             wasm_module: wasm,
                             mode: {
                                 upgrade: null
                             },
-                            canister_id: _principal.Principal.fromText(config.LOCAL_CANISTERID)
+                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local'])
                         });
                         console.log(`Success with wasm bytes length: ${wasm.length}`);
                     } catch (error) {
@@ -509,7 +663,7 @@ async function runUpgrade() {
                     }
                 } else {
                     try {
-                        console.log(`upgrading ${f.package} to ${config.PRODUCTION_CANISTERID}`);
+                        console.log(`upgrading ${f.package} to ${configFile[`${f.package}`]['ic']}`);
                         const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                         const wasm_module = _candid.IDL.Vec(_candid.IDL.Nat8);
                         const idl = _candid.IDL.Record({
@@ -542,7 +696,7 @@ async function runUpgrade() {
                                 mode: {
                                     upgrade: null
                                 },
-                                canister_id: _principal.Principal.fromText(config.PRODUCTION_CANISTERID)
+                                canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['ic'])
                             }
                         ]);
                         const args = Array.from(new Uint8Array(buf));
@@ -569,7 +723,7 @@ async function runUpgrade() {
 async function runPostPatch() {
     console.log('run runPostPatch');
     const { actor  } = await (0, _utils.managementActor)();
-    for (const f of (0, _utils.getEgos)(_.argv)){
+    for (const f of (0, _utils.getEgos)(_utils.argv)){
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package;
         if (!f.no_deploy) {
             if (f.custom_deploy) {
@@ -582,13 +736,61 @@ async function runPostPatch() {
                 const pkg = (0, _utils.readEgoDfxJson)(dfx_folder, f.package);
                 const wasm = (0, _utils.readWasm)(dfx_folder + '/' + pkg.wasm);
                 console.log(pkg.wasm);
-                const config = (0, _utils.readConfig)(process.cwd() + `/${_utils.configs}/` + f.package + '.json');
-                if (!_utils.isProduction) {
+                let configFile;
+                let isIC = false;
+                switch(f.env){
+                    case 'local':
+                        {
+                            var _f_config;
+                            configFile = JSON.parse((_f_config = f.config) !== null && _f_config !== void 0 ? _f_config : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    case 'mainnet':
+                        {
+                            var _f_config1;
+                            configFile = JSON.parse((_f_config1 = f.config) !== null && _f_config1 !== void 0 ? _f_config1 : _fs.default.readFileSync(`${process.cwd()}/configs/mainnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'testnet':
+                        {
+                            var _f_config2;
+                            configFile = JSON.parse((_f_config2 = f.config) !== null && _f_config2 !== void 0 ? _f_config2 : _fs.default.readFileSync(`${process.cwd()}/configs/testnet.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = true;
+                            break;
+                        }
+                    case 'custom':
+                        {
+                            var _f_config3;
+                            configFile = JSON.parse((_f_config3 = f.config) !== null && _f_config3 !== void 0 ? _f_config3 : _fs.default.readFileSync(`${process.cwd()}/configs/custom.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                    default:
+                        {
+                            var _f_config4;
+                            configFile = JSON.parse((_f_config4 = f.config) !== null && _f_config4 !== void 0 ? _f_config4 : _fs.default.readFileSync(`${process.cwd()}/configs/local.json`, {
+                                encoding: 'utf-8'
+                            }));
+                            isIC = false;
+                            break;
+                        }
+                }
+                if (!isIC) {
                     _shelljs.default.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '("${(0, _utils.identity)().getPrincipal()}")'`);
                 } else {
                     const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                     try {
-                        console.log(`postPatching ${f.package} to ${config.PRODUCTION_CANISTERID}`);
+                        console.log(`postPatching ${f.package} to ${f.package} to ${configFile[`${f.package}`]['ic']}`);
                         const idl = _candid.IDL.Principal;
                         const buf = _candid.IDL.encode([
                             idl
@@ -597,7 +799,7 @@ async function runPostPatch() {
                         ]);
                         const args = Array.from(new Uint8Array(buf));
                         const result = await walletActor.wallet_call({
-                            canister: _principal.Principal.fromText(config.PRODUCTION_CANISTERID),
+                            canister: _principal.Principal.fromText(configFile[`${f.package}`]['ic']),
                             cycles: BigInt(0),
                             method_name: 'ego_owner_add',
                             args

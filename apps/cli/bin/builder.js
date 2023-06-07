@@ -10,7 +10,6 @@ const _fs = _interopRequireDefault(require("fs"));
 const _shelljs = _interopRequireDefault(require("shelljs"));
 const _yargs = _interopRequireDefault(require("yargs"));
 const _utils = require("@ego-js/utils");
-const _ = require(".");
 const _crossFetch = require("cross-fetch");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
@@ -86,7 +85,11 @@ function runBuildRust(ego) {
           cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --bin ${ego.bin_name} --release -j1
           TARGET="wasm32-unknown-unknown"
           cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --lib --target $TARGET --release -j1
-          cargo install ic-wasm
+          if [[ ! "$(command -v ic-wasm)" ]]
+          then
+              echo "installing ic-wasm"
+              run cargo install ic-wasm
+          fi
           STATUS=$?
           echo "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm"
           if [ "$STATUS" -eq "0" ]; then
@@ -105,7 +108,7 @@ function runBuildRust(ego) {
     }
 }
 function runEgoBuilder() {
-    (0, _utils.getEgos)(_.argv).forEach((ego)=>{
+    (0, _utils.getEgos)(_utils.argv).forEach((ego)=>{
         runBuildRust(ego);
         if (argv2.idl) {
             buildIDL(ego);

@@ -95,17 +95,27 @@ function getEgos(argv) {
         });
         if (ego) {
             if (argv.install || argv.reinstall || argv.upgrade || argv.postPatch) {
+                var _argv_env;
                 egos = [
                     _objectSpreadProps(_objectSpread({}, ego), {
-                        no_deploy: false
+                        no_deploy: false,
+                        env: (_argv_env = argv.env) !== null && _argv_env !== void 0 ? _argv_env : "local"
                     })
                 ];
             } else {
+                var _argv_env1;
                 egos = [
-                    ego
+                    _objectSpreadProps(_objectSpread({}, ego), {
+                        env: (_argv_env1 = argv.env) !== null && _argv_env1 !== void 0 ? _argv_env1 : "local"
+                    })
                 ];
             }
         }
     }
-    return egos;
+    var _argv_env2;
+    return egos.map(function(e) {
+        return _objectSpreadProps(_objectSpread({}, e), {
+            env: (_argv_env2 = argv.env) !== null && _argv_env2 !== void 0 ? _argv_env2 : "local"
+        });
+    });
 }

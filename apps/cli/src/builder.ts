@@ -2,9 +2,8 @@ import file, { fstat } from 'fs';
 import shell from 'shelljs';
 import yargs from 'yargs';
 
-import { ProjectConfig, getEgos, ThisArgv } from '@ego-js/utils';
+import { ProjectConfig, getEgos, ThisArgv, argv } from '@ego-js/utils';
 import { artifacts, canisters } from '@ego-js/utils';
-import { argv } from '.';
 import { fetch, Headers } from 'cross-fetch';
 
 if (!globalThis.fetch) {
@@ -93,7 +92,11 @@ function runBuildRust(ego: ProjectConfig) {
           cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --bin ${ego.bin_name} --release -j1
           TARGET="wasm32-unknown-unknown"
           cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --lib --target $TARGET --release -j1
-          cargo install ic-wasm
+          if [[ ! "$(command -v ic-wasm)" ]]
+          then
+              echo "installing ic-wasm"
+              run cargo install ic-wasm
+          fi
           STATUS=$?
           echo "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm"
           if [ "$STATUS" -eq "0" ]; then

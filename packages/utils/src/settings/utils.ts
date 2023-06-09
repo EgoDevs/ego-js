@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { fetch } from 'cross-fetch';
+import { fetch, Headers } from 'cross-fetch';
 import { Principal } from '@dfinity/principal';
 import { sha224 } from 'js-sha256';
 import crc from 'crc';
@@ -16,6 +16,14 @@ if (!globalThis.fetch) {
 
 if (!global.fetch) {
   (global as any).fetch = fetch;
+}
+
+if (globalThis) {
+  (globalThis as any).Headers = Headers;
+}
+
+if (global) {
+  (global as any).Headers = Headers;
 }
 
 export function hasOwnProperty<X extends Record<string, unknown>, Y extends PropertyKey>(

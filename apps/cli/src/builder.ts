@@ -8,11 +8,17 @@ import { fetch, Headers } from 'cross-fetch';
 
 if (!globalThis.fetch) {
   (globalThis as any).fetch = fetch;
-  (globalThis as any).Headers = Headers;
 }
 
 if (!global.fetch) {
   (global as any).fetch = fetch;
+}
+
+if (globalThis) {
+  (globalThis as any).Headers = Headers;
+}
+
+if (global) {
   (global as any).Headers = Headers;
 }
 

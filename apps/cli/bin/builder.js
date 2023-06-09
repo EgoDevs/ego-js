@@ -18,10 +18,14 @@ function _interopRequireDefault(obj) {
 }
 if (!globalThis.fetch) {
     globalThis.fetch = _crossFetch.fetch;
-    globalThis.Headers = _crossFetch.Headers;
 }
 if (!global.fetch) {
     global.fetch = _crossFetch.fetch;
+}
+if (globalThis) {
+    globalThis.Headers = _crossFetch.Headers;
+}
+if (global) {
     global.Headers = _crossFetch.Headers;
 }
 const argv2 = _yargs.default.option('idl', {

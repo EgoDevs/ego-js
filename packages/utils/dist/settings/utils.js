@@ -83,6 +83,12 @@ if (!globalThis.fetch) {
 if (!global.fetch) {
     global.fetch = _crossFetch.fetch;
 }
+if (globalThis) {
+    globalThis.Headers = _crossFetch.Headers;
+}
+if (global) {
+    global.Headers = _crossFetch.Headers;
+}
 function hasOwnProperty(obj, prop) {
     return Object.prototype.hasOwnProperty.call(obj, prop);
 }

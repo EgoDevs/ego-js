@@ -88,6 +88,19 @@ function getEgos(argv) {
         encoding: "utf-8"
     });
     var egos = JSON.parse(file);
+    var features = [];
+    if (argv["features"]) {
+        var str = argv["features"];
+        if (str.includes(",")) {
+            argv["features"].split(",").forEach(function(f) {
+                return features.push(f.trim());
+            });
+        } else {
+            argv["features"].split(" ").forEach(function(f) {
+                return features.push(f.trim());
+            });
+        }
+    }
     if (argv.project) {
         var project = argv.project;
         var ego = egos.find(function(e) {
@@ -99,14 +112,16 @@ function getEgos(argv) {
                 egos = [
                     _objectSpreadProps(_objectSpread({}, ego), {
                         no_deploy: false,
-                        env: (_argv_env = argv.env) !== null && _argv_env !== void 0 ? _argv_env : "local"
+                        env: (_argv_env = argv.env) !== null && _argv_env !== void 0 ? _argv_env : "local",
+                        features
                     })
                 ];
             } else {
                 var _argv_env1;
                 egos = [
                     _objectSpreadProps(_objectSpread({}, ego), {
-                        env: (_argv_env1 = argv.env) !== null && _argv_env1 !== void 0 ? _argv_env1 : "local"
+                        env: (_argv_env1 = argv.env) !== null && _argv_env1 !== void 0 ? _argv_env1 : "local",
+                        features
                     })
                 ];
             }
@@ -115,7 +130,8 @@ function getEgos(argv) {
     var _argv_env2;
     return egos.map(function(e) {
         return _objectSpreadProps(_objectSpread({}, e), {
-            env: (_argv_env2 = argv.env) !== null && _argv_env2 !== void 0 ? _argv_env2 : "local"
+            env: (_argv_env2 = argv.env) !== null && _argv_env2 !== void 0 ? _argv_env2 : "local",
+            features
         });
     });
 }

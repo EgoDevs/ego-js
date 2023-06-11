@@ -80,15 +80,19 @@ function buildIDL(ego) {
     `);
 }
 function runBuildRust(ego) {
+    let withFeatures = '';
+    if (ego.features && ego.features.length > 0) {
+        withFeatures = `--features '${ego.features.join(' ')}'`;
+    }
     if (ego.no_build === false || ego.no_build === undefined) {
         let shouldSaveName = `${process.cwd()}/${_utils.artifacts}/${ego.package}/${ego.package}_opt.wasm`;
         _shelljs.default.exec(`
           PARENT_DIR="${process.cwd()}/${_utils.canisters}"
           EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
           CAT_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}"
-          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --bin ${ego.bin_name} --release -j1
+          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" ${withFeatures} --bin ${ego.bin_name} --release -j1 
           TARGET="wasm32-unknown-unknown"
-          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" --lib --target $TARGET --release -j1
+          cargo build --manifest-path "$EGO_DIR/actor/Cargo.toml" ${withFeatures} --lib --target $TARGET --release -j1
           if [[ ! "$(command -v ic-wasm)" ]]
           then
               echo "installing ic-wasm"

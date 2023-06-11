@@ -14,6 +14,7 @@ export interface ProjectConfig {
     post_install_sequence?: number;
     init_args?: Uint8Array;
     env?: string;
+    features?: string[];
 }
 export type Configs = Array<ProjectConfig>;
 export declare const dfxConfigTemplate: {

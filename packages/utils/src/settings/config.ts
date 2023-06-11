@@ -21,6 +21,7 @@ export interface ProjectConfig {
   post_install_sequence?: number;
   init_args?: Uint8Array;
   env?: string;
+  features?: string[];
 }
 
 export type Configs = Array<ProjectConfig>;
@@ -57,18 +58,28 @@ export function getEgos(argv: ThisArgv): Configs {
 
   let egos: Configs = JSON.parse(file) as Configs;
 
+  let features: string[] = [];
+  if (argv['features']) {
+    let str = argv['features'] as String;
+    if (str.includes(',')) {
+      (argv['features'] as String).split(',').forEach(f => features.push(f.trim()));
+    } else {
+      (argv['features'] as String).split(' ').forEach(f => features.push(f.trim()));
+    }
+  }
+
   if ((argv as ThisArgv).project) {
     const project = (argv as ThisArgv).project;
     const ego = egos.find(e => e.package === project);
     if (ego) {
       if ((argv as ThisArgv).install || (argv as ThisArgv).reinstall || (argv as ThisArgv).upgrade || (argv as ThisArgv).postPatch) {
-        egos = [{ ...ego, no_deploy: false, env: ((argv as ThisArgv).env as string | undefined) ?? 'local' }];
+        egos = [{ ...ego, no_deploy: false, env: ((argv as ThisArgv).env as string | undefined) ?? 'local', features }];
       } else {
-        egos = [{ ...ego, env: ((argv as ThisArgv).env as string | undefined) ?? 'local' }];
+        egos = [{ ...ego, env: ((argv as ThisArgv).env as string | undefined) ?? 'local', features }];
       }
     }
   }
-  return egos.map(e => ({ ...e, env: ((argv as ThisArgv).env as string | undefined) ?? 'local' }));
+  return egos.map(e => ({ ...e, env: ((argv as ThisArgv).env as string | undefined) ?? 'local', features }));
 }
 // export const infraConfig: Configs = [
 //   {

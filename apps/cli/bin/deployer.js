@@ -820,7 +820,7 @@ async function runPostPatch() {
                         }
                 }
                 if (!isIC) {
-                    _shelljs.default.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '("${(0, _utils.identity)().getPrincipal()}")'`);
+                    _shelljs.default.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '(principal "${(0, _utils.identity)().getPrincipal()}")'`);
                 } else {
                     const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
                     try {

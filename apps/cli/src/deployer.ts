@@ -808,7 +808,7 @@ export async function runPostPatch() {
           }
         }
         if (!isIC) {
-          shell.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '("${identity().getPrincipal()}")'`);
+          shell.exec(`cd ${dfx_folder} && dfx canister call ${f.package} ego_owner_add '(principal "${identity().getPrincipal()}")'`);
         } else {
           const walletActor = (await cycleWalletActor()).actor;
           try {

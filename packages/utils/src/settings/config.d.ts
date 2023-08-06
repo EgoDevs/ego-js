@@ -15,6 +15,7 @@ export interface ProjectConfig {
     init_args?: Uint8Array;
     env?: string;
     features?: string[];
+    single_mod?: boolean;
 }
 export type Configs = Array<ProjectConfig>;
 export declare const dfxConfigTemplate: {

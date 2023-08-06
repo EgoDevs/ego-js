@@ -49,11 +49,17 @@ export function hasOwnProperty<X extends Record<string, unknown>, Y extends Prop
 export function getCanisterId(configName: string, env?: string): string | undefined {
   let fileName: string;
   let combinedEnv = env ?? getEgoEnv();
+
   let key = 'ic';
   switch (combinedEnv) {
     case 'local': {
       fileName = `${process.cwd()}/configs/local.json`;
       key = 'local';
+      break;
+    }
+    case 'production': {
+      fileName = `${process.cwd()}/configs/mainnet.json`;
+      key = 'ic';
       break;
     }
     case 'mainnet': {

@@ -103,6 +103,12 @@ function getCanisterId(configName, env) {
                 key = "local";
                 break;
             }
+        case "production":
+            {
+                fileName = "".concat(process.cwd(), "/configs/mainnet.json");
+                key = "ic";
+                break;
+            }
         case "mainnet":
             {
                 fileName = "".concat(process.cwd(), "/configs/mainnet.json");

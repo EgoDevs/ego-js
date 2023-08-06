@@ -5,6 +5,7 @@ import yargs from 'yargs';
 import { ProjectConfig, getEgos, ThisArgv, argv } from '@ego-js/utils';
 import { artifacts, canisters } from '@ego-js/utils';
 import { fetch, Headers } from 'cross-fetch';
+import { generateCandidFile } from './wasm_candid';
 
 if (!globalThis.fetch) {
   (globalThis as any).fetch = fetch;
@@ -58,22 +59,31 @@ function buildDID(ego: ProjectConfig) {
   console.log({ did_file_exist });
   if (did_file_exist && ego.custom_candid) {
     // EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
-    const exist = file.existsSync(`${process.cwd()}/${canisters}/target/release/${ego.bin_name}`);
-    const dir = exist ? `${process.cwd()}/${canisters}/target/release` : `${process.cwd()}/${canisters}`;
-    const useCargo = exist ? './' : 'cargo run --release --bin ';
-    shell.exec(`
-    EGO_DIR= ${dir}
-    cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName}
-    `);
+    if (!ego.single_mod) {
+      const exist = file.existsSync(`${process.cwd()}/${canisters}/target/release/${ego.bin_name}`);
+      const dir = exist ? `${process.cwd()}/${canisters}/target/release` : `${process.cwd()}/${canisters}`;
+      const useCargo = exist ? './' : 'cargo run --release --bin ';
+      shell.exec(`
+      EGO_DIR= ${dir}
+      cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName}
+      `);
+    } else {
+      generateCandidFile(shouldSaveAutoName, `${process.cwd()}/${canisters}/target/wasm32-unknown-unknown/release/${ego.package}.wasm`);
+    }
   } else {
     console.log('Generating DID files');
-    const exist = file.existsSync(`${process.cwd()}/${canisters}/target/release/${ego.bin_name}`);
-    const dir = exist ? `${process.cwd()}/${canisters}/target/release` : `${process.cwd()}/${canisters}`;
-    const useCargo = exist ? './' : 'cargo run --release --bin ';
-    shell.exec(`
+    if (!ego.single_mod) {
+      const exist = file.existsSync(`${process.cwd()}/${canisters}/target/release/${ego.bin_name}`);
+      const dir = exist ? `${process.cwd()}/${canisters}/target/release` : `${process.cwd()}/${canisters}`;
+      const useCargo = exist ? './' : 'cargo run --release --bin ';
+      shell.exec(`
     EGO_DIR=${dir}
     cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName} && ${useCargo}${ego.bin_name}> ${shouldSaveName}
     `);
+    } else {
+      generateCandidFile(shouldSaveAutoName, `${process.cwd()}/${canisters}/target/wasm32-unknown-unknown/release/${ego.package}.wasm`);
+      generateCandidFile(shouldSaveName, `${process.cwd()}/${canisters}/target/wasm32-unknown-unknown/release/${ego.package}.wasm`);
+    }
   }
 }
 
@@ -92,11 +102,10 @@ function runBuildRust(ego: ProjectConfig) {
   if (ego.features && ego.features.length > 0) {
     withFeatures = `--features '${ego.features.join(' ')}'`;
   }
-
   if (ego.no_build === false || ego.no_build === undefined) {
     let shouldSaveName = `${process.cwd()}/${artifacts}/${ego.package}/${ego.package}_opt.wasm`;
-
-    shell.exec(`
+    if (!ego.single_mod) {
+      shell.exec(`
           PARENT_DIR="${process.cwd()}/${canisters}"
           EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
           CAT_DIR="${process.cwd()}/${canisters}/${ego.category}"
@@ -113,7 +122,7 @@ function runBuildRust(ego: ProjectConfig) {
           if [ "$STATUS" -eq "0" ]; then
                  ic-wasm \
                  "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm" \
-                 -o "${shouldSaveName}" shrink
+                 -o "${shouldSaveName}" shrink --optimize O3
                  gzip -c ${shouldSaveName} > ${shouldSaveName}.gz
           
              true
@@ -123,6 +132,33 @@ function runBuildRust(ego: ProjectConfig) {
            fi
           
           `);
+    } else {
+      shell.exec(`
+          PARENT_DIR="${process.cwd()}/${canisters}"
+          EGO_DIR="${process.cwd()}/${canisters}/${ego.category}/${ego.package}"
+          CAT_DIR="${process.cwd()}/${canisters}/${ego.category}"
+          TARGET="wasm32-unknown-unknown"
+          cargo build --manifest-path "$EGO_DIR/Cargo.toml" ${withFeatures} --lib --target $TARGET --release -j1
+          if [[ ! "$(command -v ic-wasm)" ]]
+          then
+              echo "installing ic-wasm"
+              run cargo install ic-wasm
+          fi
+          STATUS=$?
+          echo "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm"
+          if [ "$STATUS" -eq "0" ]; then
+                 ic-wasm \
+                 "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm" \
+                 -o "${shouldSaveName}" shrink --optimize O3
+                 gzip -c ${shouldSaveName} > ${shouldSaveName}.gz
+          
+             true
+           else
+             echo Could not install ic-wasm.
+             false
+           fi
+          `);
+    }
   }
 }
 

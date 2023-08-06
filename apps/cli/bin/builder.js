@@ -11,6 +11,7 @@ const _shelljs = _interopRequireDefault(require("shelljs"));
 const _yargs = _interopRequireDefault(require("yargs"));
 const _utils = require("@ego-js/utils");
 const _crossFetch = require("cross-fetch");
+const _wasmCandid = require("./wasm_candid");
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {
         default: obj
@@ -53,22 +54,31 @@ function buildDID(ego) {
         did_file_exist
     });
     if (did_file_exist && ego.custom_candid) {
-        const exist = _fs.default.existsSync(`${process.cwd()}/${_utils.canisters}/target/release/${ego.bin_name}`);
-        const dir = exist ? `${process.cwd()}/${_utils.canisters}/target/release` : `${process.cwd()}/${_utils.canisters}`;
-        const useCargo = exist ? './' : 'cargo run --release --bin ';
-        _shelljs.default.exec(`
-    EGO_DIR= ${dir}
-    cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName}
-    `);
+        if (!ego.single_mod) {
+            const exist = _fs.default.existsSync(`${process.cwd()}/${_utils.canisters}/target/release/${ego.bin_name}`);
+            const dir = exist ? `${process.cwd()}/${_utils.canisters}/target/release` : `${process.cwd()}/${_utils.canisters}`;
+            const useCargo = exist ? './' : 'cargo run --release --bin ';
+            _shelljs.default.exec(`
+      EGO_DIR= ${dir}
+      cd $EGO_DIR && ${useCargo}${ego.bin_name} > ${shouldSaveAutoName}
+      `);
+        } else {
+            (0, _wasmCandid.generateCandidFile)(shouldSaveAutoName, `${process.cwd()}/${_utils.canisters}/target/wasm32-unknown-unknown/release/${ego.package}.wasm`);
+        }
     } else {
         console.log('Generating DID files');
-        const exist1 = _fs.default.existsSync(`${process.cwd()}/${_utils.canisters}/target/release/${ego.bin_name}`);
-        const dir1 = exist1 ? `${process.cwd()}/${_utils.canisters}/target/release` : `${process.cwd()}/${_utils.canisters}`;
-        const useCargo1 = exist1 ? './' : 'cargo run --release --bin ';
-        _shelljs.default.exec(`
+        if (!ego.single_mod) {
+            const exist1 = _fs.default.existsSync(`${process.cwd()}/${_utils.canisters}/target/release/${ego.bin_name}`);
+            const dir1 = exist1 ? `${process.cwd()}/${_utils.canisters}/target/release` : `${process.cwd()}/${_utils.canisters}`;
+            const useCargo1 = exist1 ? './' : 'cargo run --release --bin ';
+            _shelljs.default.exec(`
     EGO_DIR=${dir1}
     cd $EGO_DIR && ${useCargo1}${ego.bin_name} > ${shouldSaveAutoName} && ${useCargo1}${ego.bin_name}> ${shouldSaveName}
     `);
+        } else {
+            (0, _wasmCandid.generateCandidFile)(shouldSaveAutoName, `${process.cwd()}/${_utils.canisters}/target/wasm32-unknown-unknown/release/${ego.package}.wasm`);
+            (0, _wasmCandid.generateCandidFile)(shouldSaveName, `${process.cwd()}/${_utils.canisters}/target/wasm32-unknown-unknown/release/${ego.package}.wasm`);
+        }
     }
 }
 function buildIDL(ego) {
@@ -86,7 +96,8 @@ function runBuildRust(ego) {
     }
     if (ego.no_build === false || ego.no_build === undefined) {
         let shouldSaveName = `${process.cwd()}/${_utils.artifacts}/${ego.package}/${ego.package}_opt.wasm`;
-        _shelljs.default.exec(`
+        if (!ego.single_mod) {
+            _shelljs.default.exec(`
           PARENT_DIR="${process.cwd()}/${_utils.canisters}"
           EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
           CAT_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}"
@@ -103,7 +114,7 @@ function runBuildRust(ego) {
           if [ "$STATUS" -eq "0" ]; then
                  ic-wasm \
                  "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm" \
-                 -o "${shouldSaveName}" shrink
+                 -o "${shouldSaveName}" shrink --optimize O3
                  gzip -c ${shouldSaveName} > ${shouldSaveName}.gz
           
              true
@@ -113,6 +124,33 @@ function runBuildRust(ego) {
            fi
           
           `);
+        } else {
+            _shelljs.default.exec(`
+          PARENT_DIR="${process.cwd()}/${_utils.canisters}"
+          EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
+          CAT_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}"
+          TARGET="wasm32-unknown-unknown"
+          cargo build --manifest-path "$EGO_DIR/Cargo.toml" ${withFeatures} --lib --target $TARGET --release -j1
+          if [[ ! "$(command -v ic-wasm)" ]]
+          then
+              echo "installing ic-wasm"
+              run cargo install ic-wasm
+          fi
+          STATUS=$?
+          echo "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm"
+          if [ "$STATUS" -eq "0" ]; then
+                 ic-wasm \
+                 "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm" \
+                 -o "${shouldSaveName}" shrink --optimize O3
+                 gzip -c ${shouldSaveName} > ${shouldSaveName}.gz
+          
+             true
+           else
+             echo Could not install ic-wasm.
+             false
+           fi
+          `);
+        }
     }
 }
 function runEgoBuilder() {

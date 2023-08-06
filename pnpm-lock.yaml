@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -15,25 +19,25 @@ importers:
         version: 2.5.1
       turbo:
         specifier: latest
-        version: 1.9.4
+        version: 1.10.12
 
   apps/cli:
     devDependencies:
       '@dfinity/agent':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       '@dfinity/candid':
-        specifier: ^0.15.6
-        version: 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1
       '@dfinity/identity':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/agent@0.15.6)(@dfinity/principal@0.15.6)(@peculiar/webcrypto@1.4.3)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/agent@0.18.1)(@dfinity/principal@0.18.1)(@peculiar/webcrypto@1.4.3)
       '@dfinity/identity-secp256k1':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       '@dfinity/principal':
-        specifier: ^0.15.6
-        version: 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1
       '@ego-js/utils':
         specifier: workspace:*
         version: link:../../packages/utils
@@ -205,20 +209,20 @@ importers:
         specifier: ^2.26.0
         version: 2.26.0
       '@dfinity/agent':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       '@dfinity/candid':
-        specifier: ^0.15.6
-        version: 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1
       '@dfinity/identity':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/agent@0.15.6)(@dfinity/principal@0.15.6)(@peculiar/webcrypto@1.4.3)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/agent@0.18.1)(@dfinity/principal@0.18.1)(@peculiar/webcrypto@1.4.3)
       '@dfinity/identity-secp256k1':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       '@dfinity/principal':
-        specifier: ^0.15.6
-        version: 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1
       '@ego-js/utils':
         specifier: workspace:*
         version: link:../utils
@@ -333,7 +337,7 @@ importers:
         version: 8.6.0(eslint@7.32.0)
       eslint-config-turbo:
         specifier: latest
-        version: 1.9.4(eslint@7.32.0)
+        version: 1.10.12(eslint@7.32.0)
       eslint-plugin-react:
         specifier: 7.31.8
         version: 7.31.8(eslint@7.32.0)
@@ -374,20 +378,20 @@ importers:
         specifier: ^2.26.0
         version: 2.26.0
       '@dfinity/agent':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       '@dfinity/candid':
-        specifier: ^0.15.6
-        version: 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1
       '@dfinity/identity':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/agent@0.15.6)(@dfinity/principal@0.15.6)(@peculiar/webcrypto@1.4.3)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/agent@0.18.1)(@dfinity/principal@0.18.1)(@peculiar/webcrypto@1.4.3)
       '@dfinity/identity-secp256k1':
-        specifier: ^0.15.6
-        version: 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       '@dfinity/principal':
-        specifier: ^0.15.6
-        version: 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+        specifier: ^0.18.1
+        version: 0.18.1
       '@swc/cli':
         specifier: ^0.1.55
         version: 0.1.59(@swc/core@1.3.25)
@@ -987,76 +991,53 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+    dev: false
 
-  /@dfinity/agent@0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4):
-    resolution: {integrity: sha512-Ch+tXAszPap0zwRgr/oFEgJLDld4RDwBdFDqR1JUg38xhHWTFMrTkjMT6uQFvqf6d2wDXnh3zwhqbg5P7OCv7A==}
+  /@dfinity/agent@0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1):
+    resolution: {integrity: sha512-nMFK/y0ZkPfQYECdojmltXsBIdGvXa1Sxa4rDV2cibEq9lsjWMEIUqPsiBaNHuwuz+gzsGVq4N2b9umKQIQaRQ==}
     peerDependencies:
-      '@dfinity/candid': ^0.15.6
-      '@dfinity/principal': ^0.15.6
+      '@dfinity/candid': ^0.18.1
+      '@dfinity/principal': ^0.18.1
     dependencies:
-      '@dfinity/candid': 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
-      '@dfinity/principal': 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+      '@dfinity/candid': 0.18.1
+      '@dfinity/principal': 0.18.1
       base64-arraybuffer: 0.2.0
-      bignumber.js: 9.1.1
       borc: 2.1.2
       js-sha256: 0.9.0
       simple-cbor: 0.4.1
-      ts-node: 10.9.1(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - typescript
 
-  /@dfinity/candid@0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4):
-    resolution: {integrity: sha512-Q9PGvhTE/1dTLfSo0pu0+ifzA7NA4X1rgSy9TE6O1Glk6Kl8Nf+Pg2sCHS2hWt0RAiKfR2glEVlbUAm6S8vRxA==}
-    dependencies:
-      ts-node: 10.9.1(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - typescript
+  /@dfinity/candid@0.18.1:
+    resolution: {integrity: sha512-/PC3wDnrGcWhaF/veYKevcAAn5A5jK0mRkVKcz0YxK/a78Ai9wMJg0fUk7aoyZryCOz8JPVgR4nK1/zTmvEBHg==}
 
-  /@dfinity/identity-secp256k1@0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4):
-    resolution: {integrity: sha512-rN3SM5AreO53fxYPjEo2ALPyEbwrq7HOY7Wvol+oEQo9uEziN7b87DfGLlQI7jB6yAdlkUDVB54678paHmcw1A==}
+  /@dfinity/identity-secp256k1@0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1):
+    resolution: {integrity: sha512-3yaXQ2awLJAprarMjhtv8XtXMV8+AfqF6Q6Et0K3qMzIwgff31WQrl/98ZzP5QLs0vfeT1Q8yJT2OFuhwgL2nA==}
     dependencies:
-      '@dfinity/agent': 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+      '@dfinity/agent': 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
       bip39: 3.0.4
       bs58check: 2.1.2
       secp256k1: 4.0.3
     transitivePeerDependencies:
       - '@dfinity/candid'
       - '@dfinity/principal'
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - typescript
 
-  /@dfinity/identity@0.15.6(@dfinity/agent@0.15.6)(@dfinity/principal@0.15.6)(@peculiar/webcrypto@1.4.3):
-    resolution: {integrity: sha512-hzTyKXAWPHxkZkOWxGj4JUITwdv92VEKnh3l334Yk9h6aw3m7Gi/ujEBLfszsl0LUA82tV4W2MDIz99KMAuW+g==}
+  /@dfinity/identity@0.18.1(@dfinity/agent@0.18.1)(@dfinity/principal@0.18.1)(@peculiar/webcrypto@1.4.3):
+    resolution: {integrity: sha512-u8pXzjEciaLad8WykwIO4nuASr0MdJHwFjd32TKr6oquJ6caMCDj0N8vlHfoWM6oInhYIWIME4pucjAM/isP2A==}
     peerDependencies:
-      '@dfinity/agent': ^0.15.6
-      '@dfinity/principal': ^0.15.6
+      '@dfinity/agent': ^0.18.1
+      '@dfinity/principal': ^0.18.1
       '@peculiar/webcrypto': ^1.4.0
     dependencies:
-      '@dfinity/agent': 0.15.6(@dfinity/candid@0.15.6)(@dfinity/principal@0.15.6)(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
-      '@dfinity/principal': 0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
+      '@dfinity/agent': 0.18.1(@dfinity/candid@0.18.1)(@dfinity/principal@0.18.1)
+      '@dfinity/principal': 0.18.1
       '@peculiar/webcrypto': 1.4.3
       borc: 2.1.2
       js-sha256: 0.9.0
       tweetnacl: 1.0.3
 
-  /@dfinity/principal@0.15.6(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4):
-    resolution: {integrity: sha512-eMsS5YofRk5Hm6LlhzyBvw1RzDxM5FWPtepQuYeZbZyD/ztq4TrUiScqoKBFw/LLODd0znt8rGnNgqtt+7JnQA==}
+  /@dfinity/principal@0.18.1:
+    resolution: {integrity: sha512-xeV+5zV7VQRT2xJTbXW4IDra1urEcchuwuKFTU/ERcJWBWEk8chsZcd6DBc8SPq83xRgXW2ZTVVSOZR8NKaVoQ==}
     dependencies:
       js-sha256: 0.9.0
-      ts-node: 10.9.1(@swc/core@1.3.25)(@types/node@17.0.45)(typescript@4.9.4)
-    transitivePeerDependencies:
-      - '@swc/core'
-      - '@swc/wasm'
-      - '@types/node'
-      - typescript
 
   /@eslint/eslintrc@0.4.3:
     resolution: {integrity: sha512-J6KFFz5QCYUJq3pf0mjEcCJVERbzv71PUIDczuh9JkwGEzced6CO5ADLHB1rbf/+oPBtoPfMYNOpGDzCANlbXw==}
@@ -1370,6 +1351,7 @@ packages:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
+    dev: false
 
   /@manypkg/find-root@1.1.0:
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
@@ -1705,15 +1687,19 @@ packages:
 
   /@tsconfig/node10@1.0.9:
     resolution: {integrity: sha512-jNsYVVxU8v5g43Erja32laIDHXeoNvFEpX33OK4d6hljo3jDhCBDhx5dhCCTMWUojscpAagGiRkBKxpdl9fxqA==}
+    dev: false
 
   /@tsconfig/node12@1.0.11:
     resolution: {integrity: sha512-cqefuRsh12pWyGsIoBKJA9luFu3mRxCA+ORZvA4ktLSzIuCUtWVxGIuXigEwO5/ywWFMZ2QEGKWvkZG1zDMTag==}
+    dev: false
 
   /@tsconfig/node14@1.0.3:
     resolution: {integrity: sha512-ysT8mhdixWK6Hw3i1V2AeRqZ5WfXg1G43mqoYlM2nc6388Fq5jcXyr5mRsqViLx/GJYdoL0bfXD8nmF+Zn/Iow==}
+    dev: false
 
   /@tsconfig/node16@1.0.3:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
+    dev: false
 
   /@types/babel__core@7.1.20:
     resolution: {integrity: sha512-PVb6Bg2QuscZ30FvOU7z4guG6c926D9YRvOxEaelzndpMsvP+YM74Q/dAFASpg2l6+XLalxSGxcq/lrgYWZtyQ==}
@@ -2234,6 +2220,7 @@ packages:
   /acorn-walk@8.2.0:
     resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
     engines: {node: '>=0.4.0'}
+    dev: false
 
   /acorn@7.4.1:
     resolution: {integrity: sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==}
@@ -2244,6 +2231,7 @@ packages:
     resolution: {integrity: sha512-7zFpHzhnqYKrkYdUjF1HI1bzd0VygEGX8lFk4k5zVMqHEoES+P+7TKI+EvLO9WVMJ8eekdO0aDEK044xTXwPPA==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+    dev: false
 
   /agent-base@6.0.2:
     resolution: {integrity: sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==}
@@ -2328,6 +2316,7 @@ packages:
 
   /arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
+    dev: false
 
   /argparse@1.0.10:
     resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
@@ -2970,6 +2959,7 @@ packages:
 
   /create-require@1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
+    dev: false
 
   /cross-env@7.0.3:
     resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
@@ -3215,6 +3205,7 @@ packages:
   /diff@4.0.2:
     resolution: {integrity: sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==}
     engines: {node: '>=0.3.1'}
+    dev: false
 
   /dir-glob@3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -3240,6 +3231,11 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       webidl-conversions: 5.0.0
+    dev: false
+
+  /dotenv@16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
     dev: false
 
   /download-git-repo@3.0.2:
@@ -3455,13 +3451,13 @@ packages:
       eslint: 8.22.0
     dev: false
 
-  /eslint-config-turbo@1.9.4(eslint@7.32.0):
-    resolution: {integrity: sha512-pB9Jg1Zn0Qo25LLxmvcMgjBmw8sEt6rwJO8oTKjO4DEQVUAMoNHcR7bdQCdIszHV3c1tYUjbJgm0L1B9qU81nw==}
+  /eslint-config-turbo@1.10.12(eslint@7.32.0):
+    resolution: {integrity: sha512-z3jfh+D7UGYlzMWGh+Kqz++hf8LOE96q3o5R8X4HTjmxaBWlLAWG+0Ounr38h+JLR2TJno0hU9zfzoPNkR9BdA==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
       eslint: 7.32.0
-      eslint-plugin-turbo: 1.9.4(eslint@7.32.0)
+      eslint-plugin-turbo: 1.10.12(eslint@7.32.0)
     dev: false
 
   /eslint-import-resolver-node@0.3.6:
@@ -3640,11 +3636,12 @@ packages:
       string.prototype.matchall: 4.0.8
     dev: false
 
-  /eslint-plugin-turbo@1.9.4(eslint@7.32.0):
-    resolution: {integrity: sha512-ySDJl63nIWa+j9WOAnblBWKDyaCTfGCYhSNSMCe0N5Jk01YWMEowFr2bGw31Zg0dOijioYo9ewwfLLKbJYOUmQ==}
+  /eslint-plugin-turbo@1.10.12(eslint@7.32.0):
+    resolution: {integrity: sha512-uNbdj+ohZaYo4tFJ6dStRXu2FZigwulR1b3URPXe0Q8YaE7thuekKNP+54CHtZPH9Zey9dmDx5btAQl9mfzGOw==}
     peerDependencies:
       eslint: '>6.6.0'
     dependencies:
+      dotenv: 16.0.3
       eslint: 7.32.0
     dev: false
 
@@ -5494,6 +5491,7 @@ packages:
 
   /make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
+    dev: false
 
   /makeerror@1.0.12:
     resolution: {integrity: sha512-JmqCvUhmt43madlpFzG4BQzG2Z3m6tvQDNKdClZnO3VbIudJYmxsT0FNJMeiB2+JTSlTQTSbU8QdesVmwJcmLg==}
@@ -7004,6 +7002,7 @@ packages:
       typescript: 4.9.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
+    dev: false
 
   /tsc-alias@1.8.2:
     resolution: {integrity: sha512-ukBkcNekOgwtnSWYLD5QsMX3yQWg7JviAs8zg3qJGgu4LGtY3tsV4G6vnqvOXIDkbC+XL9vbhObWSpRA5/6wbg==}
@@ -7065,65 +7064,65 @@ packages:
     dependencies:
       safe-buffer: 5.2.1
 
-  /turbo-darwin-64@1.9.4:
-    resolution: {integrity: sha512-kCmDmxyUWWI+BstTZQKNM87UbNx40C0ZHUTFqs9tmeH7d5+gA2QhqrSoBuwQYw7YYNLpbkqu1ObbppsUlIFPdQ==}
+  /turbo-darwin-64@1.10.12:
+    resolution: {integrity: sha512-vmDfGVPl5/aFenAbOj3eOx3ePNcWVUyZwYr7taRl0ZBbmv2TzjRiFotO4vrKCiTVnbqjQqAFQWY2ugbqCI1kOQ==}
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-darwin-arm64@1.9.4:
-    resolution: {integrity: sha512-Of64jMEaDDHx0dzU7RwdOuh1lP021vtQun9wmEHhT0Hk/TQF+kDCywoHcY7R5nlSRcssFjysVyhCeZW6CkWrrA==}
+  /turbo-darwin-arm64@1.10.12:
+    resolution: {integrity: sha512-3JliEESLNX2s7g54SOBqqkqJ7UhcOGkS0ywMr5SNuvF6kWVTbuUq7uBU/sVbGq8RwvK1ONlhPvJne5MUqBCTCQ==}
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-64@1.9.4:
-    resolution: {integrity: sha512-kajvUnXlUNtgVzLW3Y/RoHrC64G+G0Ky/o1F+oP6QK/T85H8NwNHXq2F6hyIrZPNGbKpPgpetuQ1waIibxJ0rA==}
+  /turbo-linux-64@1.10.12:
+    resolution: {integrity: sha512-siYhgeX0DidIfHSgCR95b8xPee9enKSOjCzx7EjTLmPqPaCiVebRYvbOIYdQWRqiaKh9yfhUtFmtMOMScUf1gg==}
     cpu: [x64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-linux-arm64@1.9.4:
-    resolution: {integrity: sha512-11P9Y8MoimqUzib3SU3md4g1loLF0FRHpYCbPzUTWPT3beOcdM2nop2u/yFHyBnbSxz1rTWczRJPnNoAki0B/Q==}
+  /turbo-linux-arm64@1.10.12:
+    resolution: {integrity: sha512-K/ZhvD9l4SslclaMkTiIrnfcACgos79YcAo4kwc8bnMQaKuUeRpM15sxLpZp3xDjDg8EY93vsKyjaOhdFG2UbA==}
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-64@1.9.4:
-    resolution: {integrity: sha512-2tFcFhuqs1c1DGFAk2wjU0TXrOXKoPdma9vxrTVdwvtz5Nc8XPF8RNW+1jbmRjpumGUkXou6Pe973GSvPjvD5w==}
+  /turbo-windows-64@1.10.12:
+    resolution: {integrity: sha512-7FSgSwvktWDNOqV65l9AbZwcoueAILeE4L7JvjauNASAjjbuzXGCEq5uN8AQU3U5BOFj4TdXrVmO2dX+lLu8Zg==}
     cpu: [x64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo-windows-arm64@1.9.4:
-    resolution: {integrity: sha512-wJfEwUyWXxn6VKD2Vbycke6cm99gJ0llkr9gUnbR06eaRu1TiLY24FcFqN95/wftp0n5nne7b6K7Wz1TLh1fJQ==}
+  /turbo-windows-arm64@1.10.12:
+    resolution: {integrity: sha512-gCNXF52dwom1HLY9ry/cneBPOKTBHhzpqhMylcyvJP0vp9zeMQQkt6yjYv+6QdnmELC92CtKNp2FsNZo+z0pyw==}
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
     dev: true
     optional: true
 
-  /turbo@1.9.4:
-    resolution: {integrity: sha512-PqhlMCmu6sOqcVswt1tYL0TV/O0uQ8kUZWfmlEl0EHPusc2R3nzg7KVXrZbXTHXzQH5HE2oJm9iUI0mYz31i7Q==}
+  /turbo@1.10.12:
+    resolution: {integrity: sha512-WM3+jTfQWnB9W208pmP4oeehZcC6JQNlydb/ZHMRrhmQa+htGhWLCzd6Q9rLe0MwZLPpSPFV2/bN5egCLyoKjQ==}
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.9.4
-      turbo-darwin-arm64: 1.9.4
-      turbo-linux-64: 1.9.4
-      turbo-linux-arm64: 1.9.4
-      turbo-windows-64: 1.9.4
-      turbo-windows-arm64: 1.9.4
+      turbo-darwin-64: 1.10.12
+      turbo-darwin-arm64: 1.10.12
+      turbo-linux-64: 1.10.12
+      turbo-linux-arm64: 1.10.12
+      turbo-windows-64: 1.10.12
+      turbo-windows-arm64: 1.10.12
     dev: true
 
   /tweetnacl@1.0.3:
@@ -7268,6 +7267,7 @@ packages:
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
+    dev: false
 
   /v8-compile-cache@2.3.0:
     resolution: {integrity: sha512-l8lCEmLcLYZh4nbunNZvQCJc5pv7+RCwa8q/LdUx8u7lsWvPDKmpodJAJNwkAhJC//dFY48KuIEmjtd4RViDrA==}
@@ -7600,6 +7600,7 @@ packages:
   /yn@3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
+    dev: false
 
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}

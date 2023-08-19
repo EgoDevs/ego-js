@@ -125,12 +125,13 @@ function runBuildRust(ego) {
           
           `);
         } else {
+            let actor_entry = ego.actor_entry ? 'actor/' : '';
             _shelljs.default.exec(`
           PARENT_DIR="${process.cwd()}/${_utils.canisters}"
           EGO_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}/${ego.package}"
           CAT_DIR="${process.cwd()}/${_utils.canisters}/${ego.category}"
           TARGET="wasm32-unknown-unknown"
-          cargo build --manifest-path "$EGO_DIR/Cargo.toml" ${withFeatures} --lib --target $TARGET --release -j1
+          cargo build --manifest-path "$EGO_DIR/${actor_entry}Cargo.toml" ${withFeatures} --lib --target $TARGET --release -j1
           if [[ ! "$(command -v ic-wasm)" ]]
           then
               echo "installing ic-wasm"

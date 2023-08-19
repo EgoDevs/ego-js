@@ -16,6 +16,7 @@ export interface ProjectConfig {
     env?: string;
     features?: string[];
     single_mod?: boolean;
+    actor_entry?: boolean;
 }
 export type Configs = Array<ProjectConfig>;
 export declare const dfxConfigTemplate: {

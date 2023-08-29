@@ -160,6 +160,7 @@ var path = require("path");
 var downloadGitRepo = require("download-git-repo");
 var chalk = require("chalk");
 var fs = require("fs-extra");
+var shell = require("shelljs");
 function wrapLoading(fn, message) {
     return _wrapLoading.apply(this, arguments);
 }
@@ -310,6 +311,32 @@ var Generator = function() {
             });
         })();
     };
+    _proto.maybePostRun = function maybePostRun() {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var targetAir, ifPostRunExist;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        targetAir = path.join(process.cwd(), _this.name);
+                        return [
+                            4,
+                            fs.pathExists(path.join(targetAir, "post_run.js"))
+                        ];
+                    case 1:
+                        ifPostRunExist = _state.sent();
+                        if (ifPostRunExist) {
+                            shell.exec("cd  ".concat(targetAir, "&& node post_run.js"));
+                            shell.exec("rm -rf ".concat(targetAir, "/post_run.js"));
+                            shell.exec("rm -rf ".concat(targetAir, "/post_run.json"));
+                        }
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
     _proto.create = function create() {
         var _this = this;
         return _asyncToGenerator(function() {
@@ -328,6 +355,18 @@ var Generator = function() {
                             _this.download(repo, undefined)
                         ];
                     case 2:
+                        _state.sent();
+                        return [
+                            4,
+                            _this.modify_package()
+                        ];
+                    case 3:
+                        _state.sent();
+                        return [
+                            4,
+                            _this.maybePostRun()
+                        ];
+                    case 4:
                         _state.sent();
                         console.log("\r\nSuccessfully created project ".concat(chalk.cyan(_this.name)));
                         console.log("\r\n  cd ".concat(chalk.cyan(_this.name)));

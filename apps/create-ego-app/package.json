@@ -1,6 +1,6 @@
 {
     "name": "create-ego-app",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "license": "MIT",
     "bin": {
         "create-ego-app": "bin/cli.js"
@@ -25,6 +25,7 @@
         "fs-extra": "^10.0.0",
         "inquirer": "^8.0.0",
         "ora": "^5.4.0",
+        "shelljs": "^0.8.5",
         "swc-loader": "^0.2.3",
         "swcify": "^1.0.1",
         "terser-webpack-plugin": "^5.3.3",

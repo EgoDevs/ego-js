@@ -6,6 +6,7 @@ const path = require('path');
 const downloadGitRepo = require('download-git-repo');
 const chalk = require('chalk');
 const fs = require('fs-extra');
+const shell = require('shelljs');
 
 async function wrapLoading(fn, message, ...args) {
   const spinner = ora(message);
@@ -72,6 +73,16 @@ class Generator {
     await fs.writeJson(pkgPath, pkg, { spaces: 2 });
   }
 
+  async maybePostRun() {
+    const targetAir = path.join(process.cwd(), this.name);
+    const ifPostRunExist = await fs.pathExists(path.join(targetAir, 'post_run.js'));
+    if (ifPostRunExist) {
+      shell.exec(`cd  ${targetAir}&& node post_run.js`);
+      shell.exec(`rm -rf ${targetAir}/post_run.js`);
+      shell.exec(`rm -rf ${targetAir}/post_run.json`);
+    }
+  }
+
   async create() {
     const repo = await this.getRepo();
 
@@ -79,6 +90,7 @@ class Generator {
 
     await this.download(repo, undefined);
     await this.modify_package();
+    await this.maybePostRun();
 
     console.log(`\r\nSuccessfully created project ${chalk.cyan(this.name)}`);
     console.log(`\r\n  cd ${chalk.cyan(this.name)}`);

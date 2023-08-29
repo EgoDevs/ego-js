@@ -64,12 +64,21 @@ class Generator {
     await wrapLoading(this.downloadGitRepo, 'waiting download template', requestUrl, path.resolve(process.cwd(), this.targetDir));
   }
 
+  async modify_package() {
+    const targetAir = path.join(process.cwd(), this.name);
+    const pkgPath = path.join(targetAir, 'package.json');
+    const pkg = await fs.readJson(pkgPath);
+    pkg.name = this.name;
+    await fs.writeJson(pkgPath, pkg, { spaces: 2 });
+  }
+
   async create() {
     const repo = await this.getRepo();
 
     // const tag = await this.getTag(repo);
 
     await this.download(repo, undefined);
+    await this.modify_package();
 
     console.log(`\r\nSuccessfully created project ${chalk.cyan(this.name)}`);
     console.log(`\r\n  cd ${chalk.cyan(this.name)}`);

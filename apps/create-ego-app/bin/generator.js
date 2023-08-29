@@ -279,6 +279,37 @@ var Generator = function() {
             });
         })();
     };
+    _proto.modify_package = function modify_package() {
+        var _this = this;
+        return _asyncToGenerator(function() {
+            var targetAir, pkgPath, pkg;
+            return __generator(this, function(_state) {
+                switch(_state.label){
+                    case 0:
+                        targetAir = path.join(process.cwd(), _this.name);
+                        pkgPath = path.join(targetAir, "package.json");
+                        return [
+                            4,
+                            fs.readJson(pkgPath)
+                        ];
+                    case 1:
+                        pkg = _state.sent();
+                        pkg.name = _this.name;
+                        return [
+                            4,
+                            fs.writeJson(pkgPath, pkg, {
+                                spaces: 2
+                            })
+                        ];
+                    case 2:
+                        _state.sent();
+                        return [
+                            2
+                        ];
+                }
+            });
+        })();
+    };
     _proto.create = function create() {
         var _this = this;
         return _asyncToGenerator(function() {

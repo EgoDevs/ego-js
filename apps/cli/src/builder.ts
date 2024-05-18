@@ -122,7 +122,7 @@ function runBuildRust(ego: ProjectConfig) {
           if [ "$STATUS" -eq "0" ]; then
                  ic-wasm \
                  "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm" \
-                 -o "${shouldSaveName}" shrink optimize O3
+                 -o "${shouldSaveName}" optimize O3
                  gzip -c ${shouldSaveName} > ${shouldSaveName}.gz
           
              true
@@ -150,7 +150,7 @@ function runBuildRust(ego: ProjectConfig) {
           if [ "$STATUS" -eq "0" ]; then
                  ic-wasm \
                  "$PARENT_DIR/target/$TARGET/release/${ego.package}.wasm" \
-                 -o "${shouldSaveName}" shrink optimize O3
+                 -o "${shouldSaveName}" optimize O3
                  gzip -c ${shouldSaveName} > ${shouldSaveName}.gz
           
              true

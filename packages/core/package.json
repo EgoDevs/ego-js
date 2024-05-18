@@ -1,6 +1,6 @@
 {
     "name": "@ego-js/core",
-    "version": "2.2.51",
+    "version": "2.2.52",
     "main": "./dist/index.js",
     "types": "./src/index.d.ts",
     "license": "MIT",

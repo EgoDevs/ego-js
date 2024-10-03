@@ -242,7 +242,8 @@ async function runCreate() {
                             freezing_threshold: [],
                             controllers: [
                                 [
-                                    (0, _utils.identity)().getPrincipal()
+                                    (0, _utils.identity)().getPrincipal(),
+                                    _principal.Principal.fromText(_utils.cycleWalletCanisterId)
                                 ]
                             ],
                             memory_allocation: [],

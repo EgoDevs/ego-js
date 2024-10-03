@@ -30,7 +30,7 @@ interface ThatArgv {
   $0: string;
 }
 
-const argv2 = yargs
+const argv2 = (yargs as any)
   .option('idl', {
     alias: 'i',
     description: 'build idl only',

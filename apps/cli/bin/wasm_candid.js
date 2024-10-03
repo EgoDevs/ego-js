@@ -58,6 +58,7 @@ function generateCandidFile(candidPath, wasmFilePath) {
             stable64_read: ()=>{},
             stable64_size: ()=>{},
             stable64_write: ()=>{},
+            cycles_burn128: ()=>{},
             time: ()=>{},
             trap: ()=>{}
         }

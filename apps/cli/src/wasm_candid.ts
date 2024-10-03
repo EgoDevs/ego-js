@@ -52,6 +52,7 @@ export function generateCandidFile(candidPath: string, wasmFilePath: string) {
       stable64_read: () => {},
       stable64_size: () => {},
       stable64_write: () => {},
+      cycles_burn128: () => {},
       time: () => {},
       trap: () => {},
     },

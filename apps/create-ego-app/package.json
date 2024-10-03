@@ -17,7 +17,7 @@
         "@types/inquirer": "^9.0.3",
         "@swc/cli": "^0.1.55",
         "@swc/core": "^1.2.141",
-        "axios": "^1.2.2",
+        "axios": "^1.7.7",
         "chalk": "^4.1.1",
         "commander": "^9.5.0",
         "download-git-repo": "^3.0.2",
@@ -29,6 +29,6 @@
         "swc-loader": "^0.2.3",
         "swcify": "^1.0.1",
         "terser-webpack-plugin": "^5.3.3",
-        "webpack": "^5.73.0"
+        "webpack": "^5.95.0"
     }
 }

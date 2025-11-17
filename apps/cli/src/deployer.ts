@@ -207,6 +207,7 @@ export async function runCreate() {
     const dfx_folder = process.cwd() + '/' + `${artifacts}` + '/' + f.package + '/.dfx';
     const dfx_local_json = dfx_folder + '/local/canister_ids.json';
     const dfx_ic_json = dfx_folder + '/ic/canister_ids.json';
+    const _canister_id = f.canister_id;
 
     let configFile: string;
     let isIC = false;
@@ -250,9 +251,14 @@ export async function runCreate() {
                 controllers: [[identity().getPrincipal(), Principal.fromText(cycleWalletCanisterId)]],
                 memory_allocation: [],
                 compute_allocation: [],
+                reserved_cycles_limit: [],
+                log_visibility: [],
+                wasm_memory_limit: [],
               },
             ],
             amount: [],
+            specified_id: _canister_id ? [Principal.fromText(_canister_id)] : [],
+            sender_canister_version: [],
           })
         ).canister_id;
       } else {
@@ -419,6 +425,7 @@ export async function runInstall() {
               wasm_module: wasm,
               mode: { install: null },
               canister_id: Principal.fromText(configFile[`${f.package}`]['local']),
+              sender_canister_version: [],
             });
             console.log(`Success with wasm bytes length: ${wasm.length}`);
           } catch (error) {
@@ -561,6 +568,7 @@ export async function runReInstall() {
               wasm_module: wasm,
               mode: { reinstall: null },
               canister_id: Principal.fromText(configFile[`${f.package}`]['local']),
+              sender_canister_version: [],
             });
 
             console.log(`Success with wasm bytes length: ${wasm.length}`);
@@ -687,8 +695,9 @@ export async function runUpgrade() {
             await actor.install_code({
               arg: [],
               wasm_module: wasm,
-              mode: { upgrade: null },
+              mode: { upgrade: [] },
               canister_id: Principal.fromText(configFile[`${f.package}`]['local']),
+              sender_canister_version: [],
             });
             console.log(`Success with wasm bytes length: ${wasm.length}`);
           } catch (error) {

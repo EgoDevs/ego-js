@@ -1,5 +1,5 @@
 import { ActorMethod, ActorSubclass, SignIdentity } from '@dfinity/agent';
-import { InterfaceFactory } from '@dfinity/candid/lib/cjs/idl';
+import type { InterfaceFactory } from '@dfinity/candid/lib/esm/idl';
 import { Principal } from '@dfinity/principal';
 import { EgoInfraCanister } from '@ego-js/utils';
 import { Result_5, Result_6, Result_7, Result_8, Result_9, Result_10 } from './idls/ego_store';

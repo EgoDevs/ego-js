@@ -97,7 +97,7 @@ export class ManagementApi {
   }) {
     const manager = await ManagementApi.create(id);
     console.log(`installing ${name} to ${canister_id}`);
-    let mode: { install: null } | { reinstall: null } | { upgrade: null };
+    let mode: { install: null } | { reinstall: null } | { upgrade: [] };
     switch (installMode) {
       case InstallMode.install:
         mode = { install: null };
@@ -106,7 +106,7 @@ export class ManagementApi {
         mode = { reinstall: null };
         break;
       case InstallMode.upgrade:
-        mode = { upgrade: null };
+        mode = { upgrade: [] };
         break;
       default:
         mode = { install: null };
@@ -119,6 +119,7 @@ export class ManagementApi {
         wasm_module: readWasm(wasm_path),
         mode,
         canister_id: Principal.fromText(canister_id),
+        sender_canister_version: [],
       });
 
       console.log(`Success with wasm bytes length: ${wasm.length}`);
@@ -156,6 +157,7 @@ export class ManagementApi {
     await manager.actor.update_settings({
       canister_id: Principal.fromText(canister_id),
       settings,
+      sender_canister_version: [],
     });
   }
 }

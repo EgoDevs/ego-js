@@ -319,7 +319,7 @@ var ManagementApi = function() {
                                 break;
                             case InstallMode.upgrade:
                                 mode = {
-                                    upgrade: null
+                                    upgrade: []
                                 };
                                 break;
                             default:
@@ -343,7 +343,8 @@ var ManagementApi = function() {
                                 arg: [],
                                 wasm_module: readWasm(wasm_path),
                                 mode,
-                                canister_id: _principal.Principal.fromText(canister_id)
+                                canister_id: _principal.Principal.fromText(canister_id),
+                                sender_canister_version: []
                             })
                         ];
                     case 3:
@@ -429,7 +430,8 @@ var ManagementApi = function() {
                             4,
                             manager.actor.update_settings({
                                 canister_id: _principal.Principal.fromText(canister_id),
-                                settings
+                                settings,
+                                sender_canister_version: []
                             })
                         ];
                     case 2:

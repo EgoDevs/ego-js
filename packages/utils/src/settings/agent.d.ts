@@ -1,5 +1,5 @@
 import { ActorSubclass, HttpAgent, SignIdentity } from '@dfinity/agent';
-import { InterfaceFactory } from '@dfinity/candid/lib/cjs/idl';
+import type { InterfaceFactory } from '@dfinity/candid/lib/esm/idl';
 export interface CreateActorResult<T> {
     actor: ActorSubclass<T>;
     agent: HttpAgent;

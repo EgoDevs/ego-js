@@ -22,7 +22,7 @@ _export(exports, {
 var _mockjs = _interopRequireDefault(require("mockjs"));
 var _identitySecp256K1 = require("@dfinity/identity-secp256k1");
 var _fs = _interopRequireDefault(require("fs"));
-var _candid = require("@dfinity/candid");
+var _identity = require("./settings/identity");
 var _keyEncoder = _interopRequireDefault(require("key-encoder"));
 var _crossFetch = require("cross-fetch");
 function _interopRequireDefault(obj) {
@@ -68,6 +68,6 @@ function generatePemfile(pathToSave, param) {
     var seedPhrase = param.seedPhrase;
     var str = seedPhrase !== null && seedPhrase !== void 0 ? seedPhrase : bip39.generateMnemonic();
     var res = getIdentityFromPhraseWithSeed2(str);
-    var save = keyEncoder.encodePrivate((0, _candid.toHexString)(res.identity.getKeyPair().secretKey), "raw", "pem");
+    var save = keyEncoder.encodePrivate((0, _identity.toHexString)(res.identity.getKeyPair().secretKey), "raw", "pem");
     _fs.default.writeFileSync(pathToSave, save);
 }

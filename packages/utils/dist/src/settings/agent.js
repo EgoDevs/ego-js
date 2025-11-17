@@ -9,15 +9,20 @@ function _export(target, all) {
     });
 }
 _export(exports, {
-    getInfra () {
-        return getInfra;
+    "_createActor" () {
+        return _createActor;
     },
-    add_controller_to_canister () {
-        return add_controller_to_canister;
+    getActor () {
+        return getActor;
+    },
+    getActor2 () {
+        return getActor2;
     }
 });
+var _agent = require("@dfinity/agent");
 var _principal = require("@dfinity/principal");
-var _utils = require("@ego-js/utils");
+var _env = require("./env");
+var _crossFetch = require("cross-fetch");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
     try {
         var info = gen[key](arg);
@@ -142,64 +147,102 @@ var __generator = (void 0) && (void 0).__generator || function(thisArg, body) {
         };
     }
 };
-function getInfra(name) {
-    try {
-        return _utils.egoInfra.find(function(infra) {
-            return infra.name === name;
+if (!globalThis.fetch) {
+    globalThis.fetch = _crossFetch.fetch;
+}
+if (!global.fetch) {
+    global.fetch = _crossFetch.fetch;
+}
+if (globalThis) {
+    globalThis.Headers = _crossFetch.Headers;
+}
+if (global) {
+    global.Headers = _crossFetch.Headers;
+}
+function _createActor(interfaceFactory, canisterId, identity, host) {
+    return __createActor.apply(this, arguments);
+}
+function __createActor() {
+    __createActor = _asyncToGenerator(function(interfaceFactory, canisterId, identity, host) {
+        var agent, actor;
+        return __generator(this, function(_state) {
+            switch(_state.label){
+                case 0:
+                    agent = _agent.HttpAgent.createSync({
+                        identity,
+                        host: host !== null && host !== void 0 ? host : !_env.isIC ? "http://127.0.0.1:".concat(_env.dfxPort) : "https://icp-api.io/"
+                    });
+                    if (!!_env.isIC) return [
+                        3,
+                        2
+                    ];
+                    return [
+                        4,
+                        agent.fetchRootKey()
+                    ];
+                case 1:
+                    _state.sent();
+                    _state.label = 2;
+                case 2:
+                    actor = _agent.Actor.createActor(interfaceFactory, {
+                        agent,
+                        canisterId: canisterId === "" ? _principal.Principal.fromText("aaaaa-aa") : canisterId
+                    });
+                    return [
+                        2,
+                        {
+                            actor,
+                            agent
+                        }
+                    ];
+            }
         });
-    } catch (error) {
-        throw new Error("Ego Infra ".concat(name, " not found"));
-    }
+    });
+    return __createActor.apply(this, arguments);
 }
-function add_controller_to_canister(canisterId, controller, id, name) {
-    return _add_controller_to_canister.apply(this, arguments);
-}
-function _add_controller_to_canister() {
-    _add_controller_to_canister = _asyncToGenerator(function(canisterId, controller, id, name) {
-        var status, list;
+var getActor = function() {
+    var _ref = _asyncToGenerator(function(signIdentity, interfaceFactory, canisterId) {
+        var actor;
         return __generator(this, function(_state) {
             switch(_state.label){
                 case 0:
                     return [
                         4,
-                        _utils.ManagementApi.status(canisterId, id)
+                        _createActor(interfaceFactory, canisterId, signIdentity)
                     ];
                 case 1:
-                    status = _state.sent();
-                    list = status.settings.controllers;
-                    list.push(typeof controller === "string" ? _principal.Principal.fromText(controller) : controller);
-                    return [
-                        4,
-                        _utils.ManagementApi.updateSettings(name !== null && name !== void 0 ? name : "", canisterId, {
-                            freezing_threshold: [
-                                status.settings.freezing_threshold
-                            ],
-                            compute_allocation: [
-                                status.settings.compute_allocation
-                            ],
-                            memory_allocation: [
-                                status.settings.memory_allocation
-                            ],
-                            controllers: [
-                                list
-                            ]
-                        }, id)
-                    ];
-                case 2:
-                    _state.sent();
-                    return [
-                        4,
-                        _utils.ManagementApi.status(canisterId, id)
-                    ];
-                case 3:
+                    actor = _state.sent();
                     return [
                         2,
-                        _state.sent().settings.controllers.map(function(e) {
-                            return e.toText();
-                        })
+                        actor.actor
                     ];
             }
         });
     });
-    return _add_controller_to_canister.apply(this, arguments);
-}
+    return function getActor(signIdentity, interfaceFactory, canisterId) {
+        return _ref.apply(this, arguments);
+    };
+}();
+var getActor2 = function() {
+    var _ref = _asyncToGenerator(function(signIdentity, interfaceFactory, canisterId) {
+        var actor;
+        return __generator(this, function(_state) {
+            switch(_state.label){
+                case 0:
+                    return [
+                        4,
+                        _createActor(interfaceFactory, canisterId, signIdentity)
+                    ];
+                case 1:
+                    actor = _state.sent();
+                    return [
+                        2,
+                        actor
+                    ];
+            }
+        });
+    });
+    return function getActor2(signIdentity, interfaceFactory, canisterId) {
+        return _ref.apply(this, arguments);
+    };
+}();

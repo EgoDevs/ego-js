@@ -51,7 +51,8 @@ export const arrayOfNumberToUint8Array = (
 export const arrayOfNumberToArrayBuffer = (
   numbers: Array<number>,
 ): ArrayBuffer => {
-  return arrayOfNumberToUint8Array(numbers).buffer;
+  const typedArray = arrayOfNumberToUint8Array(numbers);
+  return typedArray.buffer as ArrayBuffer;
 };
 
 export const arrayBufferToNumber = (buffer: ArrayBuffer): number => {

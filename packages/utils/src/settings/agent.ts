@@ -1,5 +1,5 @@
 import { Actor, ActorSubclass, HttpAgent, SignIdentity } from '@dfinity/agent';
-import { InterfaceFactory } from '@dfinity/candid/lib/cjs/idl';
+import type { InterfaceFactory } from '@dfinity/candid/lib/esm/idl';
 import { Principal } from '@dfinity/principal';
 import { dfxPort, isIC, isProduction } from './env';
 import { fetch, Headers } from 'cross-fetch';
@@ -31,7 +31,7 @@ export async function _createActor<T>(
   identity?: SignIdentity,
   host?: string,
 ): Promise<CreateActorResult<T>> {
-  const agent = new HttpAgent({
+  const agent = HttpAgent.createSync({
     identity,
     host: host ?? (!isIC ? `http://127.0.0.1:${dfxPort}` : 'https://icp-api.io/'),
   });

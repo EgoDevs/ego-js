@@ -27,8 +27,8 @@ import { SignIdentity } from '@dfinity/agent';
 import curve from 'starkbank-ecdsa';
 import { isIC, isProduction, productionPem, seedPhrase as seedPhraseFile } from './env';
 
-export function fromHexString(hexString: string): ArrayBuffer {
-  return new Uint8Array((hexString.match(/.{1,2}/g) ?? []).map(byte => parseInt(byte, 16))).buffer;
+export function fromHexString(hexString: string): Uint8Array {
+  return new Uint8Array((hexString.match(/.{1,2}/g) ?? []).map(byte => parseInt(byte, 16)));
 }
 
 export const toHexString = (bytes: Uint8Array) => bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');

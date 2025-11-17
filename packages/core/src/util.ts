@@ -28,6 +28,9 @@ export async function add_controller_to_canister(
       compute_allocation: [status.settings.compute_allocation],
       memory_allocation: [status.settings.memory_allocation],
       controllers: [list],
+      reserved_cycles_limit: [],
+      log_visibility: [],
+      wasm_memory_limit: [],
     },
     id,
   );

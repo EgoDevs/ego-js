@@ -14,7 +14,7 @@
     "publish-packages": "changeset && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.26.0",
+    "@changesets/cli": "^2.29.7",
     "eslint-config-custom": "workspace:*",
     "prettier": "latest",
     "turbo": "latest"

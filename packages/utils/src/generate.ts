@@ -2,7 +2,7 @@ import Mock from 'mockjs';
 import { Secp256k1KeyIdentity } from '@dfinity/identity-secp256k1';
 import curve from 'starkbank-ecdsa';
 import fs from 'fs';
-import { toHexString } from '@dfinity/candid';
+import { toHexString } from './settings/identity';
 import KeyEncoder from 'key-encoder';
 import { fetch, Headers } from 'cross-fetch';
 

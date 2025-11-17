@@ -159,7 +159,8 @@ var arrayOfNumberToUint8Array = function(numbers) {
     return new Uint8Array(numbers);
 };
 var arrayOfNumberToArrayBuffer = function(numbers) {
-    return arrayOfNumberToUint8Array(numbers).buffer;
+    var typedArray = arrayOfNumberToUint8Array(numbers);
+    return typedArray.buffer;
 };
 var arrayBufferToNumber = function(buffer) {
     var view = new DataView(buffer);

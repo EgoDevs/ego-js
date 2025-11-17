@@ -17,6 +17,7 @@ export interface ProjectConfig {
     features?: string[];
     single_mod?: boolean;
     actor_entry?: boolean;
+    canister_id?: string;
 }
 export type Configs = Array<ProjectConfig>;
 export declare const dfxConfigTemplate: {
@@ -41,6 +42,7 @@ export interface ThisArgv {
     remove: string | undefined;
     postPatch: boolean | undefined;
     migrate_v1: boolean | undefined;
+    canister_id: string | undefined;
     _: (string | number)[];
     $0: string;
 }

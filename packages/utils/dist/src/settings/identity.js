@@ -58,7 +58,7 @@ function fromHexString(hexString) {
     var _hexString_match;
     return new Uint8Array(((_hexString_match = hexString.match(/.{1,2}/g)) !== null && _hexString_match !== void 0 ? _hexString_match : []).map(function(byte) {
         return parseInt(byte, 16);
-    })).buffer;
+    }));
 }
 var toHexString = function(bytes) {
     return bytes.reduce(function(str, byte) {

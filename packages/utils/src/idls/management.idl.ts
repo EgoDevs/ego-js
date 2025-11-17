@@ -1,4 +1,3 @@
-/* Do not edit.  Compiled with ./scripts/compile-idl-js from packages/ic-management/candid/ic-management.did */
 export const idlFactory = ({ IDL }) => {
   const bitcoin_network = IDL.Variant({
     mainnet: IDL.Null,

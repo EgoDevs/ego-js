@@ -199,6 +199,7 @@ async function runCreate() {
         const dfx_folder = process.cwd() + '/' + `${_utils.artifacts}` + '/' + f.package + '/.dfx';
         const dfx_local_json = dfx_folder + '/local/canister_ids.json';
         const dfx_ic_json = dfx_folder + '/ic/canister_ids.json';
+        const _canister_id = f.canister_id;
         let configFile;
         let isIC = false;
         switch(f.env){
@@ -247,10 +248,17 @@ async function runCreate() {
                                 ]
                             ],
                             memory_allocation: [],
-                            compute_allocation: []
+                            compute_allocation: [],
+                            reserved_cycles_limit: [],
+                            log_visibility: [],
+                            wasm_memory_limit: []
                         }
                     ],
-                    amount: []
+                    amount: [],
+                    specified_id: _canister_id ? [
+                        _principal.Principal.fromText(_canister_id)
+                    ] : [],
+                    sender_canister_version: []
                 })).canister_id;
             } else {
                 const walletActor = (await (0, _utils.cycleWalletActor)()).actor;
@@ -415,7 +423,8 @@ async function runInstall() {
                             mode: {
                                 install: null
                             },
-                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local'])
+                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local']),
+                            sender_canister_version: []
                         });
                         console.log(`Success with wasm bytes length: ${wasm.length}`);
                     } catch (error) {
@@ -562,7 +571,8 @@ async function runReInstall() {
                             mode: {
                                 reinstall: null
                             },
-                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local'])
+                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local']),
+                            sender_canister_version: []
                         });
                         console.log(`Success with wasm bytes length: ${wasm.length}`);
                     } catch (error) {
@@ -693,9 +703,10 @@ async function runUpgrade() {
                             arg: [],
                             wasm_module: wasm,
                             mode: {
-                                upgrade: null
+                                upgrade: []
                             },
-                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local'])
+                            canister_id: _principal.Principal.fromText(configFile[`${f.package}`]['local']),
+                            sender_canister_version: []
                         });
                         console.log(`Success with wasm bytes length: ${wasm.length}`);
                     } catch (error) {
